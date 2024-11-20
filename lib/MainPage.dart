@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'dart:async';
 
 class Mainpage extends StatefulWidget {
   const Mainpage({super.key});
@@ -14,27 +15,8 @@ class Mainpage extends StatefulWidget {
 
 
 class _MainpageState extends State<Mainpage> {
-  // dio 라이브러리
-  void postDio() async{
-    final dio = Dio();
-    //Response res = await dio.get('http://192.168.219.73:8000/',
-    //queryParameters : {'data' : 'test res', 'send' : 'get'});
 
-    // post 방식의 데이터 전달을 위한 option
-    dio.options.contentType = Headers.formUrlEncodedContentType;
-    Response res = await dio.post('http://192.168.219.73:8000/',
-    data: {'data' : 'asdsad', 'send' : 'post'});
 
-    // 전송결과 출력
-    print(res);
-    if(res.statusCode == 200){
-      print('dio|${res}');
-    } else {
-      print('error 발생');
-    }
-    // get : 데이터 전송시 주소값에 연결해 전송 = 쿼리스트링 기법
-    // post : 데아터를 전달할때 주소값에 연결하지 않고
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +31,13 @@ class _MainpageState extends State<Mainpage> {
   }
 }
 
-class SmartPotHome extends StatelessWidget {
+class SmartPotHome extends StatefulWidget {
+
+  @override
+  State<SmartPotHome> createState() => _SmartPotHomeState();
+}
+
+class _SmartPotHomeState extends State<SmartPotHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -110,6 +98,7 @@ class SmartPotHome extends StatelessWidget {
             // 하단 버튼 (CCTV로 이동)
             ElevatedButton.icon(
               onPressed: () {
+
                 // CCTV 화면 이동 로직 추가
               },
               icon: Icon(Icons.camera_alt),
@@ -159,6 +148,26 @@ class SensorDataCard extends StatelessWidget {
 }
 
 class ControlButtons extends StatelessWidget {
+  void postDio() async{
+    final dio = Dio();
+    //Response res = await dio.get('http://192.168.219.73:8000/',
+    //queryParameters : {'data' : 'test res', 'send' : 'get'});
+
+    // post 방식의 데이터 전달을 위한 option
+    dio.options.contentType = Headers.formUrlEncodedContentType;
+    Response res = await dio.post('http://192.168.219.61:8000/',
+        data: {'data' : 'asdsad', 'send' : 'post'});
+
+    // 전송결과 출력
+    print(res);
+    if(res.statusCode == 200){
+      print('dio|${res}');
+    } else {
+      print('error 발생');
+    }
+    // get : 데이터 전송시 주소값에 연결해 전송 = 쿼리스트링 기법
+    // post : 데아터를 전달할때 주소값에 연결하지 않고
+  }
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -167,6 +176,7 @@ class ControlButtons extends StatelessWidget {
         ControlButton(icon: Icons.lightbulb, label: 'Light'),
         ControlButton(icon: Icons.air, label: 'Wind'),
         ControlButton(icon: Icons.water_drop, label: 'Water'),
+        ElevatedButton(onPressed: postDio, child: Text('버튼'))
       ],
     );
   }
@@ -183,9 +193,7 @@ class ControlButton extends StatelessWidget {
     return Column(
       children: [
         IconButton(
-          onPressed: () {
-            // 원격 제어 기능 로직 추가
-          },
+          onPressed: (){},
           icon: Icon(icon),
           color: Colors.green,
           iconSize: 36,
