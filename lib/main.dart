@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'Plant.dart';
 import 'MainPage.dart';
 
 void main() {
