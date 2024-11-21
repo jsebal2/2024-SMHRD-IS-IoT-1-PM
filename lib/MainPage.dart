@@ -11,10 +11,17 @@ class Mainpage extends StatefulWidget {
 }
 
 class _MainpageState extends State<Mainpage> {
+  final dio = Dio();
+  late Timer _timer; // 타이머 선언
+  Future<Map<String, dynamic>>? _sensorDataFuture;
+  bool light_on_off = true;
+  bool wind_on_off = true;
+  bool water_on_off = true;
+
+
 
   // get 방식
   void getDio() async{
-    final dio = Dio();
     Response res = await dio.get('http://192.168.219.61:8000',
         queryParameters: {'data' : 'DDDDDDDDDDDDDDD','send':'get'}
     );
@@ -30,7 +37,6 @@ class _MainpageState extends State<Mainpage> {
 
   // post 방식
   void postDio() async{
-    final dio = Dio();
     // post 방식의 데이터 전달을 위한 option
     dio.options.contentType = Headers.formUrlEncodedContentType;
     Response res = await dio.post('http://192.168.219.61:8000/',
@@ -46,8 +52,8 @@ class _MainpageState extends State<Mainpage> {
   }
   // post 방식 끝
 
+  // 센서 데이터 화면에 출력
   Future<Map<String, dynamic>> fetchSensorData() async{
-    final dio = Dio();
     try{
       print("WWWWWWWWWWWW");
       final response = await dio.get('http://192.168.219.61:8000',
@@ -67,7 +73,59 @@ class _MainpageState extends State<Mainpage> {
     }
   }
 
+  @override
+  void initState() {
+    super.initState();
+    _sensorDataFuture = fetchSensorData(); // 초기 데이터 로드
+    _startAutoRefresh(); // 1분마다 데이터 새로고침
+  }
 
+  void _startAutoRefresh() {
+    _timer = Timer.periodic(Duration(minutes: 1), (timer) {
+      setState(() {
+        _sensorDataFuture = fetchSensorData(); // 1분뒤 데이터 다시 가져오기
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel(); // 타이머해제
+    super.dispose();
+  }
+
+  // 조명 on/off
+  void get_light_on_off(bool value) async{
+    try{
+      Response res = await dio.get('http://192.168.219.61:8000',
+          queryParameters: {'조명' : '$light_on_off'}
+      );
+    }catch (e) {
+      print('Error : $e');
+    }
+  }
+
+  // 팬 on/off
+  void get_wind_on_off(bool value) async{
+    try{
+      Response res = await dio.get('http://192.168.219.61:8000',
+          queryParameters: {'팬' : '$light_on_off'}
+      );
+    }catch (e) {
+      print('Error : $e');
+    }
+  }
+
+  // 펌프 on/off
+  void get_water_on_off(bool value) async{
+    try{
+      Response res = await dio.get('http://192.168.219.61:8000',
+          queryParameters: {'펌프' : '$light_on_off'}
+      );
+    }catch (e) {
+      print('Error : $e');
+    }
+  }
 
 
 
@@ -104,7 +162,7 @@ class _MainpageState extends State<Mainpage> {
 
             // 센서 데이터
             FutureBuilder<Map<String, dynamic>>(
-              future: fetchSensorData(), // 비동기 데이터 요청
+              future: _sensorDataFuture, // 비동기 데이터 요청
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator()); // 로딩중
@@ -130,12 +188,50 @@ class _MainpageState extends State<Mainpage> {
 
             // 원격 제어 버튼
             // ControlButtons(),
-            Row(
+            Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                ControlButton(icon : Icons.lightbulb, label : 'Light'),
-                ControlButton(icon : Icons.air, label : 'Wind'),
-                ControlButton(icon : Icons.water_drop, label : 'Water')
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ControlButton(icon : Icons.lightbulb, label : 'Light'),
+                    Switch(value: light_on_off, onChanged: (value){
+                      setState(() {
+                        light_on_off = value;
+                      });
+                      get_light_on_off(value);
+                    }
+                    )
+                  ],
+                ),
+
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ControlButton(icon : Icons.air, label : 'Wind'),
+                    Switch(value: wind_on_off, onChanged: (value){
+                      setState(() {
+                        wind_on_off = value;
+                      });
+                      get_wind_on_off(value);
+                    })
+                  ],
+                ),
+
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ControlButton(icon : Icons.water_drop, label : 'Water'),
+                    Switch(value: water_on_off, onChanged: (value){
+                      setState(() {
+                        water_on_off = value;
+                      });
+                      get_water_on_off(value);
+                    })
+                  ],
+                ),
               ],
             ),
 
