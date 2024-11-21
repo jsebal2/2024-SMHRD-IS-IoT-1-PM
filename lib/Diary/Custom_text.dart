@@ -37,9 +37,9 @@ class _CustomTextState extends State<CustomText> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('daily plant',
+          Text('  daily plant ✏',
             style: TextStyle(
-                fontSize: 16,
+                fontSize: 20,
                 fontWeight: FontWeight.bold
             ),
           ),
