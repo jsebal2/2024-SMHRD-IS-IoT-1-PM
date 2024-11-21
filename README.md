@@ -1,16 +1,37 @@
-# final_project
+// get 방식
+void getDio() async{
+    final dio = Dio();
+    Response res = await dio.get('http://192.168.219.61:8000',
+        queryParameters: {'data' : 'DDDDDDDDDDDDDDD','send':'get'}
+    );
+    // 전송결과 출력
+    print(res);
+    if(res.statusCode == 200){
+      print('dio | ${res}');
+    }else{
+      print('error 발생');
+    }
+  }
+  // get 방식 끝
 
-A new Flutter project.
 
-## Getting Started
+ // post 방식
+  void postDio() async{
+    final dio = Dio();
+    // post 방식의 데이터 전달을 위한 option
+    dio.options.contentType = Headers.formUrlEncodedContentType;
+    Response res = await dio.post('http://192.168.219.61:8000/',
+        data: {'data' : 'asdsad', 'send' : 'post'});
 
-This project is a starting point for a Flutter application.
+    // 전송결과 출력
+    print(res);
+    if(res.statusCode == 200){
+      print('dio|${res}');
+    } else {
+      print('error 발생');
+    }
+  }
+  // post 방식 끝
+  
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+  
