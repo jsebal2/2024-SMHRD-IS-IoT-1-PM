@@ -18,6 +18,9 @@ class _CalendarState extends State<Calendar> {
   DateTime _selectedDay = DateTime.now();
   DateTime _focusedDay = DateTime.now();
 
+
+
+
   // 일기 데이터를 관리하기 위한 Map
   final Map<DateTime, List<String>> _diaryevent = {};
 
@@ -38,6 +41,7 @@ class _CalendarState extends State<Calendar> {
     }
   }
   // post 방식 끝
+
 
 //==============================================================================================================
   @override
