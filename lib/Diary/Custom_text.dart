@@ -40,9 +40,11 @@ class _CustomTextState extends State<CustomText> {
     final String title = titleController.text;
     final String content = contentController.text;
 
+
     try {
       Response response = await dio.post('http://192.168.219.61:8000/diary/save',
-          data:{'title':title, 'content':content});
+          data:{'title':title, 'content':content,'user_id':'uid_134092'});
+      print(response);
       if (response.statusCode == 200) {
         print('데이터 전송 성공: ${response.data}');
       } else {
