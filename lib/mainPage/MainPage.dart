@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'dart:async';
+import 'widget.dart';
+import 'function.dart';
 
 class Mainpage extends StatefulWidget {
   const Mainpage({super.key});
@@ -14,64 +16,6 @@ class _MainpageState extends State<Mainpage> {
   final dio = Dio();
   late Timer _timer; // 타이머 선언
   Future<Map<String, dynamic>>? _sensorDataFuture;
-  bool light_on_off = true;
-  bool wind_on_off = true;
-  bool water_on_off = true;
-
-
-
-  // get 방식
-  void getDio() async{
-    Response res = await dio.get('http://192.168.219.61:8000',
-        queryParameters: {'data' : 'DDDDDDDDDDDDDDD','send':'get'}
-    );
-    // 전송결과 출력
-    print(res);
-    if(res.statusCode == 200){
-      print('dio | ${res}');
-    }else{
-      print('error 발생');
-    }
-  }
-  // get 방식 끝
-
-  // post 방식
-  void postDio() async{
-    // post 방식의 데이터 전달을 위한 option
-    dio.options.contentType = Headers.formUrlEncodedContentType;
-    Response res = await dio.post('http://192.168.219.61:8000/',
-        data: {'data' : 'asdsad', 'send' : 'post'});
-
-    // 전송결과 출력
-    print(res);
-    if(res.statusCode == 200){
-      print('dio|${res}');
-    } else {
-      print('error 발생');
-    }
-  }
-  // post 방식 끝
-
-  // 센서 데이터 화면에 출력
-  Future<Map<String, dynamic>> fetchSensorData() async{
-    try{
-      print("WWWWWWWWWWWW");
-      final response = await dio.get('http://192.168.219.61:8000',
-    queryParameters: {'data' : 'DDDDDDDDDDDDDDD','send':'get'}
-    );
-      print(response);
-      if (response.statusCode == 200) {
-        // Json 데이터에서 title만 리스트로 추출
-        return response.data; // JSON 데이터를 맵 형태로 반환
-      }else {
-        throw Exception('Failed to load data');
-      }
-    } catch (e) {
-      print("DDDDDDDDDDDDD");
-      print("errer $e");
-      throw Exception('Error : $e');
-    }
-  }
 
   @override
   void initState() {
@@ -81,7 +25,7 @@ class _MainpageState extends State<Mainpage> {
   }
 
   void _startAutoRefresh() {
-    _timer = Timer.periodic(Duration(minutes: 1), (timer) {
+    _timer = Timer.periodic(Duration(milliseconds: 30000), (timer) {
       setState(() {
         _sensorDataFuture = fetchSensorData(); // 1분뒤 데이터 다시 가져오기
       });
@@ -92,39 +36,6 @@ class _MainpageState extends State<Mainpage> {
   void dispose() {
     _timer.cancel(); // 타이머해제
     super.dispose();
-  }
-
-  // 조명 on/off
-  void get_light_on_off(bool value) async{
-    try{
-      Response res = await dio.get('http://192.168.219.61:8000',
-          queryParameters: {'조명' : '$light_on_off'}
-      );
-    }catch (e) {
-      print('Error : $e');
-    }
-  }
-
-  // 팬 on/off
-  void get_wind_on_off(bool value) async{
-    try{
-      Response res = await dio.get('http://192.168.219.61:8000',
-          queryParameters: {'팬' : '$light_on_off'}
-      );
-    }catch (e) {
-      print('Error : $e');
-    }
-  }
-
-  // 펌프 on/off
-  void get_water_on_off(bool value) async{
-    try{
-      Response res = await dio.get('http://192.168.219.61:8000',
-          queryParameters: {'펌프' : '$light_on_off'}
-      );
-    }catch (e) {
-      print('Error : $e');
-    }
   }
 
 
@@ -153,7 +64,11 @@ class _MainpageState extends State<Mainpage> {
 
                   SizedBox(height: 8,),
 
-                  Image.asset('assets/images/10.jpg'),
+                  InkWell(
+                    onTap: (){
+                      print('버튼클릭');
+                    },
+                      child: Image.asset('assets/images/10.jpg')),
                 ],
               ),
             ),
@@ -173,9 +88,9 @@ class _MainpageState extends State<Mainpage> {
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      SensorDataCard(label: '온도', value: '${data['온도']}°C'),
-                      SensorDataCard(label: '습도', value: '${data['습도']}%'),
-                      SensorDataCard(label: '조도', value: '${data['조도']}'),
+                      SensorDataCard(label: '온도', value: '${data['temp']}°C'),
+                      SensorDataCard(label: '습도', value: '${data['humidity']}%'),
+                      SensorDataCard(label: '조도', value: '${data['light']}lx'),
                     ],
                   );
                 } else {
@@ -256,59 +171,6 @@ class _MainpageState extends State<Mainpage> {
         ),
         ),
       ),
-    );
-  }
-}
-
-class SensorDataCard extends StatelessWidget {
-  final String label;
-  final String value;
-
-  const SensorDataCard({required this.label, required this.value});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.green.shade100,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        children: [
-          Text(
-            label,
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: 8),
-          Text(
-            value,
-            style: TextStyle(fontSize: 18),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class ControlButton extends StatelessWidget {
-  final IconData icon;
-  final String label;
-
-  const ControlButton({required this.icon, required this.label});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        IconButton(
-          onPressed: (){},
-          icon: Icon(icon),
-          color: Colors.green,
-          iconSize: 36,
-        ),
-        Text(label),
-      ],
     );
   }
 }

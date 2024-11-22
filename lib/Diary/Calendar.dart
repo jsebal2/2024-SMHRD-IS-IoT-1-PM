@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import 'Custom_text.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:dio/dio.dart';
 
 class Calendar extends StatefulWidget{
   const Calendar({super.key});
@@ -16,8 +17,15 @@ class _CalendarState extends State<Calendar> {
   DateTime _selectedDay = DateTime.now();
   DateTime _focusedDay = DateTime.now();
 
+
+
+
   // 일기 데이터를 관리하기 위한 Map
   final Map<DateTime, List<String>> _diaryevent = {};
+
+
+
+
 
 //==============================================================================================================
   @override

@@ -5,10 +5,11 @@ class CustomText extends StatefulWidget {
   @override
   State<CustomText> createState() => _CustomTextState();
 }
+
 class TextBox extends StatelessWidget {
   final String label;
 
-  const TextBox({
+  TextBox({
     required this.label,
     Key? key,
   }) : super(key: key);
@@ -30,6 +31,10 @@ class TextBox extends StatelessWidget {
 }
 
 class _CustomTextState extends State<CustomText> {
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -68,10 +73,10 @@ class _CustomTextState extends State<CustomText> {
                 hintText: '나의 식물에 대해 알려주세요😀🍀',
                 hintStyle: TextStyle(color: Colors.grey)
             ),
-
           )
         ],
       ),
     );
+
   }
 }
