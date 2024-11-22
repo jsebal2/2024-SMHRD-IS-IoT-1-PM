@@ -6,8 +6,8 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:dio/dio.dart';
 
 class Calendar extends StatefulWidget{
-  const Calendar({super.key});
-  //final dio = Dio();
+   Calendar({super.key});
+
 
   @override
   State<Calendar> createState() => _CalendarState();
@@ -19,29 +19,8 @@ class _CalendarState extends State<Calendar> {
   DateTime _focusedDay = DateTime.now();
 
 
-
-
   // 일기 데이터를 관리하기 위한 Map
   final Map<DateTime, List<String>> _diaryevent = {};
-
-
-  // Post방식
-  void getDio() async{
-    final dio = Dio();
-    dio.options.contentType = Headers.formUrlEncodedContentType;
-    Response res = await dio.post('http://192.168.219.61:8000',
-        data : {'title' : '제목','content':'내용'}
-    );
-    // 전송결과 출력
-    print(res);
-    if(res.statusCode == 200){
-      print('dio | ${res}');
-    }else{
-      print('error 발생');
-    }
-  }
-  // post 방식 끝
-
 
 //==============================================================================================================
   @override
