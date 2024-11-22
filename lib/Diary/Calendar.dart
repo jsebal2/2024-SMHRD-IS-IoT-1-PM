@@ -3,9 +3,11 @@ import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import 'Custom_text.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:dio/dio.dart';
 
 class Calendar extends StatefulWidget{
   const Calendar({super.key});
+  //final dio = Dio();
 
   @override
   State<Calendar> createState() => _CalendarState();
@@ -18,6 +20,24 @@ class _CalendarState extends State<Calendar> {
 
   // 일기 데이터를 관리하기 위한 Map
   final Map<DateTime, List<String>> _diaryevent = {};
+
+
+  // Post방식
+  void getDio() async{
+    final dio = Dio();
+    dio.options.contentType = Headers.formUrlEncodedContentType;
+    Response res = await dio.post('http://192.168.219.61:8000',
+        data : {'title' : '제목','content':'내용'}
+    );
+    // 전송결과 출력
+    print(res);
+    if(res.statusCode == 200){
+      print('dio | ${res}');
+    }else{
+      print('error 발생');
+    }
+  }
+  // post 방식 끝
 
 //==============================================================================================================
   @override
@@ -37,13 +57,6 @@ class _CalendarState extends State<Calendar> {
                       flex: 8,
                       child: CustomText()
                   ),
-                  Flexible(
-                    flex: 1,
-                    child: ElevatedButton(onPressed: ()=>{},
-                      child:
-                      Text('Save'),
-                    ),
-                  ),
                 ],
               );
             },
@@ -61,7 +74,7 @@ class _CalendarState extends State<Calendar> {
         children: [
           // 캘린더 위젯
           TableCalendar(
-            //locale: 'Ko_KR', // 언어설정
+            //locale: 'ko_KR', // 언어설정
             locale: 'en_US',
             rowHeight: 40,
             focusedDay: DateTime.now(),

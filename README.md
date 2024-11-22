@@ -32,6 +32,22 @@ void getDio() async{
     }
   }
   // post 방식 끝
-  
 
-  
+
+
+
+// 비동기방식을 위한 FutureBuilder
+Future<String> getting = Future<String>.delayed(
+Duration(seconds: 2),
+() => 'Data Loaded',
+);
+
+getting.then((value) => handleValue(value))
+.catchError((error) => handleError(error));
+
+try{
+String a = await getting();
+handleVlaue(value);
+} catch(error){
+handleError(error);
+}
