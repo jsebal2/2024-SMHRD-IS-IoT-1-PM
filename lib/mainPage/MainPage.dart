@@ -38,6 +38,42 @@ class _MainpageState extends State<Mainpage> {
     super.dispose();
   }
 
+  void _showSensorDataPopup(BuildContext context){
+    showDialog(context: context, builder: (BuildContext context) {
+      return AlertDialog(
+          title: Text('센서 데이터'),
+          content: FutureBuilder<Map<String, dynamic>>(
+            future: _sensorDataFuture, // 비동기 데이터 요청
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator()); // 로딩중
+              } else if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              } else if (snapshot.hasData) {
+                final data = snapshot.data!;
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    SensorDataCard(label: '온도', value: '${data['temp']}°C'),
+                    SensorDataCard(label: '습도', value: '${data['humidity']}%'),
+                    SensorDataCard(label: '조도', value: '${data['light']}lx'),
+                  ],
+                );
+              } else {
+                return Text("No Data");
+              }
+            },
+          ),
+        actions: [
+          TextButton(onPressed: (){
+            Navigator.of(context).pop();
+          }, child: Text('닫기'))
+        ],
+       );
+      }
+     );
+    }
+
 
 
   @override
@@ -65,9 +101,7 @@ class _MainpageState extends State<Mainpage> {
                   SizedBox(height: 8,),
 
                   InkWell(
-                    onTap: (){
-                      print('버튼클릭');
-                    },
+                    onTap: ()=>_showSensorDataPopup(context),
                       child: Image.asset('assets/images/10.jpg')),
                 ],
               ),
@@ -75,29 +109,6 @@ class _MainpageState extends State<Mainpage> {
 
             SizedBox(height: 16,),
 
-            // 센서 데이터
-            FutureBuilder<Map<String, dynamic>>(
-              future: _sensorDataFuture, // 비동기 데이터 요청
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator()); // 로딩중
-                } else if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}');
-                } else if (snapshot.hasData) {
-                  final data = snapshot.data!;
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      SensorDataCard(label: '온도', value: '${data['temp']}°C'),
-                      SensorDataCard(label: '습도', value: '${data['humidity']}%'),
-                      SensorDataCard(label: '조도', value: '${data['light']}lx'),
-                    ],
-                  );
-                } else {
-                  return Text("No Data");
-                }
-              },
-            ),
 
             SizedBox(height: 16,),
 
@@ -114,7 +125,7 @@ class _MainpageState extends State<Mainpage> {
                       setState(() {
                         light_on_off = value;
                       });
-                      get_light_on_off(value);
+                      controlDevice('light', value);
                     }
                     )
                   ],
@@ -129,7 +140,7 @@ class _MainpageState extends State<Mainpage> {
                       setState(() {
                         wind_on_off = value;
                       });
-                      get_wind_on_off(value);
+                      controlDevice('wind', value);
                     })
                   ],
                 ),
@@ -143,7 +154,7 @@ class _MainpageState extends State<Mainpage> {
                       setState(() {
                         water_on_off = value;
                       });
-                      get_water_on_off(value);
+                      controlDevice('water', value);
                     })
                   ],
                 ),
@@ -174,3 +185,4 @@ class _MainpageState extends State<Mainpage> {
     );
   }
 }
+

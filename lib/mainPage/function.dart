@@ -64,38 +64,18 @@ Future<Map<String, dynamic>> fetchSensorData() async{
 
 
 
-// 조명 on/off
-void get_light_on_off(bool value) async{
-  try{
-    Response res = await dio.get('http://192.168.219.61:8000/sensor/act',
-        queryParameters: {'senser' : "light","state":'$value'}
+void controlDevice(String device, bool state) async {
+  try {
+    Response res = await dio.get(
+      'http://192.168.219.61:8000/sensor/act',
+      queryParameters: {"senser": device, "state": '$state'},
     );
-  }catch (e) {
-    print('Error : $e');
+    print('Device $device set to ${state ? "ON" : "OFF"}');
+  } catch (e) {
+    print('Error controlling $device: $e');
   }
 }
 
-// 팬 on/off
-void get_wind_on_off(bool value) async{
-  try{
-    Response res = await dio.get('http://192.168.219.61:8000/sensor/act',
-        queryParameters: {"senser":'pan',"state" : '$value'}
-    );
-  }catch (e) {
-    print('Error : $e');
-  }
-}
-
-// 펌프 on/off
-void get_water_on_off(bool value) async{
-  try{
-    Response res = await dio.get('http://192.168.219.61:8000/sensor/act',
-        queryParameters: {"senser":'pump',"state" : '$value'}
-    );
-  }catch (e) {
-    print('Error : $e');
-  }
-}
 
 
 
