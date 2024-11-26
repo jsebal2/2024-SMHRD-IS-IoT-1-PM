@@ -98,7 +98,7 @@ class _CustomTextState extends State<CustomText> {
           // 내용 입력 칸
           TextFormField(
             controller: contentController,
-            maxLines: 4,
+            maxLines: 2,
             decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 hintText: '나의 식물에 대해 알려주세요😀🍀',
