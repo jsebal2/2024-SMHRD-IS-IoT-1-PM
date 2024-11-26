@@ -16,6 +16,8 @@ class _MainpageState extends State<Mainpage> {
   final dio = Dio();
   late Timer _timer; // 타이머 선언
   Future<Map<String, dynamic>>? _sensorDataFuture;
+  double currentValue = 0;
+
 
   @override
   void initState() {
@@ -80,28 +82,53 @@ class _MainpageState extends State<Mainpage> {
     );
   }
 
+  List<String> generateMessage(double temp) {
+    if (temp >= 18 && temp <= 25) {
+      return [
+        '적정', '식물 재배에 알맞은 온도입니다.'
+      ];
+    } else if (temp < 18) {
+      return [
+        '온도가 낮습니다.', '온도를 올려주는 것이 좋습니다.'
+      ];
+    } else {
+      return [
+        '온도가 높습니다.', '온도를 낮춰주는 것이 좋습니다.'
+      ];
+    }
+  }
+
   Widget buildSensorDataText(Map<String, dynamic> data) {
+    final temp = data['temp'].toDouble();
+    final tempMessages = generateMessage(temp);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'lv.${data['level']}',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
+        Text('lv.${data['level']}',
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold,),),
+        Text('${data["date"]}일차', style: TextStyle(fontSize: 18,),),
+        Container(height: 1.0, width: 370,color: Colors.grey.shade400,),
+        Row(
+          children: [
+            Icon(Icons.device_thermostat),
+            Text(tempMessages[0], style: TextStyle(fontSize: 14),),
+          ],
         ),
-        Text(
-          '${data["date"]}일차',
-          style: TextStyle(
-            fontSize: 12,
-          ),
-        ),
+        Text(tempMessages[1], style: TextStyle(fontSize: 14),),
+
       ],
     );
   }
-
-
+  
+  Future<void> lightTimer(double value) async {
+    try {
+      final respose = await dio.get('http://192.168.219.61:8000/sensor/act',
+          queryParameters: {'lightTimer' : '$value'});
+    }catch(e) {
+      print('Error => $e');
+    }
+  }
 
 
 
@@ -123,6 +150,7 @@ class _MainpageState extends State<Mainpage> {
         child: Padding(
           padding: const EdgeInsets.all(14.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // 식물 성장 단계
               Container(
@@ -156,23 +184,49 @@ class _MainpageState extends State<Mainpage> {
                         } else if (snapshot.hasError) {
                           return Center(child: Text('Error : ${snapshot.error}'),);
                         } else if (snapshot.hasData) {
-                          return  Container(
-                            child: buildSensorDataText(snapshot.data!),
+                          return  Column(children: [
+                            buildSensorDataText(snapshot.data!),
+                            Container(height: 1.0,
+                              width: 370,color: Colors.grey.shade400,)
+
+                          ],
+
                           );
                         } else {
                           return Center(child: Text('No data'),);
                         }
                           }),
-                      Container(height: 1.0,
-                      width: 370,color: Colors.grey.shade400,)
                     ],
                   ),
                 ),
               ),
 
               SizedBox(height: 16),
+              Container(height: 1.0, width: 370,color: Colors.grey.shade400,),
+              SizedBox(height: 10,),
+              Text('조명 지속 시간', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+              Text('$currentValue 시간'),
+              SizedBox(height: 10,),
 
-              // 원격 제어 버튼
+              Slider(value: currentValue, max : 10, min: 0, divisions: 10,
+                        label: '${currentValue.toStringAsFixed(0)}',
+                        onChanged: (value) {
+                setState(() {
+                  currentValue = value;
+                });
+                lightTimer(value);
+                        }
+                  
+                    ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('10',style: TextStyle(fontSize: 16),),
+                  Text('18',style: TextStyle(fontSize: 16),),
+                ],
+              ),
+              Container(height: 1.0, width: 370,color: Colors.grey.shade400,),
+
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -223,6 +277,11 @@ class _MainpageState extends State<Mainpage> {
                   ),
                 ],
               ),
+              
+              
+
+
+             
               SizedBox(height: 18),
               // 하단 버튼 (CCTV로 이동)
               ElevatedButton.icon(

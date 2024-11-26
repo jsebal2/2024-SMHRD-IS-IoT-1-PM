@@ -5,6 +5,8 @@ import 'dart:async';
 
 final dio = Dio();
 
+late Timer _timer;
+
 
 bool light_on_off = true;
 bool wind_on_off = true;
@@ -73,6 +75,8 @@ void controlDevice(String device, bool state) async {
     print('Error controlling $device: $e');
   }
 }
+
+
 
 
 
