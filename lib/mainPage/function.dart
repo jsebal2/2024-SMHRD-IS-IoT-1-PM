@@ -48,7 +48,7 @@ void postDio() async{
 Future<Map<String, dynamic>> fetchSensorData() async{
   try{
     final response = await dio.get('http://192.168.219.61:8000/sensor/sen',
-        queryParameters: {'data' : 'good','send':'get'}
+         queryParameters: {'data' : 'good','send':'get'}
     );
     if (response.statusCode == 200) {
       // Json 데이터에서 title만 리스트로 추출
@@ -75,12 +75,3 @@ void controlDevice(String device, bool state) async {
     print('Error controlling $device: $e');
   }
 }
-
-
-
-
-
-
-
-
-

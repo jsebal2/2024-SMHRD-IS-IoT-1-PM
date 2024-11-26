@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:pm_project/Diary/Calendar.dart';
 import 'package:pm_project/mainPage/MainPage.dart';
+import 'package:pm_project/user/Delete.dart';
 import 'package:pm_project/user/Login.dart';
+import 'package:pm_project/user/update.dart';
 
 class Mypage extends StatefulWidget {
   const Mypage({super.key});
@@ -15,16 +17,14 @@ class _MypageState extends State<Mypage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar( // 상단 - header
-        centerTitle: true,
-        title:
-        Text('My Page',
-          style : TextStyle(
-              fontSize: 23,
-              color: Colors.black
+      appBar: AppBar(
+        title: Text('My Page'),
+        shape: Border(
+          bottom: BorderSide(
+            color: Colors.grey,
+            width: 1,
           ),
         ),
-        backgroundColor: Colors.teal,
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),// 중단 - content
@@ -35,36 +35,56 @@ class _MypageState extends State<Mypage> {
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,),
         ),
             SizedBox(height: 30,),
+             
+             
+             Row(
+               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+               children: [
+                 // 회원정보 수정 페이지로 이동
+                 ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(
+                            builder: (context) {
+                              return Update();
+                            })
+                        );
 
-            // 회원탈퇴
-            Center(
-              child: ElevatedButton(
-                  onPressed: () {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text('회원탈퇴'),
-                            content: Text('탈퇴하겠습니까?'),
-                            actions: [
-                              TextButton(onPressed: () {
-                                Navigator.of(context).pop();
-                              }, child: Text('최소'),
-                              ),
-                              TextButton(onPressed: (){
-                                Navigator.of(context).pop();
-                              }, child: Text('확인'),
-                              )
-                            ],
-                          );
-                        },
-                    );
-                  },
-                  child: Text('회원탈퇴',
-                  style: TextStyle(fontSize: 16),
+                      },
+                      child: Text('회원정보 수정',
+                      style: TextStyle(fontSize: 16),
+                      ),
                   ),
-              ),
-            ),
+                 
+                 // 회원 탈퇴 페이지로 이동
+                 ElevatedButton(
+                   onPressed: () {
+                     Navigator.push(context, MaterialPageRoute(
+                         builder: (context) {
+                           return Delete();
+                         })
+                     );
+
+                   },
+                   child: Text('회원 탈퇴',
+                     style: TextStyle(fontSize: 16),
+                   ),
+                 ),
+
+                 ElevatedButton(
+                   onPressed: () {
+                     Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+                         builder: (context) {
+                           return Login();
+                         }), (route)=>false);
+
+                   },
+                   child: Text('로그아웃',
+                     style: TextStyle(fontSize: 16),
+                   ),
+                 ),
+               ],
+             ),
+
           ],
         ),
       ),

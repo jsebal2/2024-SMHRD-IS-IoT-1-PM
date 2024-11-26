@@ -105,7 +105,7 @@ class _CalendarPageState extends State<CalendarPage> {
                 children: [
                   Flexible(
                     flex: 8,
-                    child: CustomText(),
+                    child: CustomText(selectedDay:_selectedDay),
                   ),],);},);},
         child: Icon(Icons.add),
       ),

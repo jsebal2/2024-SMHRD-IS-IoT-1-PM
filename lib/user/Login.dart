@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:pm_project/Diary/Calendar.dart';
 import 'package:pm_project/mainPage/MainPage.dart';
 import 'package:pm_project/user/Join.dart';
 
@@ -36,7 +37,7 @@ class _LoginState extends State<Login> {
 
       Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
           builder: (context) {
-            return Mainpage();
+            return Calendar();
           }), (route)=>false);
 
 

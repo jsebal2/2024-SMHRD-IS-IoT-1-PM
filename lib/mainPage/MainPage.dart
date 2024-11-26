@@ -16,7 +16,8 @@ class _MainpageState extends State<Mainpage> {
   final dio = Dio();
   late Timer _timer; // 타이머 선언
   Future<Map<String, dynamic>>? _sensorDataFuture;
-  double currentValue = 0;
+  double lightTime = 0;
+  double lightPower = 0;
 
 
   @override
@@ -130,6 +131,15 @@ class _MainpageState extends State<Mainpage> {
     }
   }
 
+  Future<void> lightControl(double value) async {
+    try {
+      final respose = await dio.get('http://192.168.219.61:8000/sensor/act',
+          queryParameters: {'lightTimer' : '$value'});
+    }catch(e) {
+      print('Error => $e');
+    }
+  }
+
 
 
 
@@ -204,15 +214,15 @@ class _MainpageState extends State<Mainpage> {
               SizedBox(height: 16),
               Container(height: 1.0, width: 370,color: Colors.grey.shade400,),
               SizedBox(height: 10,),
-              Text('조명 지속 시간', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
-              Text('$currentValue 시간'),
+              Text('조명 지속시간', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+              Text('$lightTime 시간'),
               SizedBox(height: 10,),
 
-              Slider(value: currentValue, max : 10, min: 0, divisions: 10,
-                        label: '${currentValue.toStringAsFixed(0)}',
+              Slider(value: lightTime, max : 10, min: 0, divisions: 10,
+                        label: '${lightTime.toStringAsFixed(0)}',
                         onChanged: (value) {
                 setState(() {
-                  currentValue = value;
+                  lightTime = value;
                 });
                 lightTimer(value);
                         }
@@ -221,49 +231,44 @@ class _MainpageState extends State<Mainpage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  Text('0',style: TextStyle(fontSize: 16),),
                   Text('10',style: TextStyle(fontSize: 16),),
-                  Text('18',style: TextStyle(fontSize: 16),),
                 ],
               ),
               Container(height: 1.0, width: 370,color: Colors.grey.shade400,),
 
+              SizedBox(height: 10,),
+              Text('조명 밝기', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+              Text('$lightPower %'),
+              SizedBox(height: 10,),
+
+              Slider(value: lightPower, max : 100, min: 0, divisions: 5,
+                  label: '${lightPower.toStringAsFixed(0)}',
+                  onChanged: (value) {
+                    setState(() {
+                      lightPower = value;
+                    });
+                    lightControl(value);
+                  }
+
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('0',style: TextStyle(fontSize: 16),),
+                  Text('100',style: TextStyle(fontSize: 16),),
+                ],
+              ),
+
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
+
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      ControlButton(icon: Icons.lightbulb, label: 'Light'),
-                      Switch(
-                        value: light_on_off,
-                        onChanged: (value) {
-                          setState(() {
-                            light_on_off = value;
-                          });
-                          controlDevice('light', value);
-                        },
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      ControlButton(icon: Icons.air, label: 'Wind'),
-                      Switch(
-                        value: wind_on_off,
-                        onChanged: (value) {
-                          setState(() {
-                            wind_on_off = value;
-                          });
-                          controlDevice('wind', value);
-                        },
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      ControlButton(icon: Icons.water_drop, label: 'Water'),
+                      ControlButton(icon: Icons.water_drop, label: 'Water Cycle'),
                       Switch(
                         value: water_on_off,
                         onChanged: (value) {
@@ -278,28 +283,28 @@ class _MainpageState extends State<Mainpage> {
                 ],
               ),
               
-              
-
-
-             
               SizedBox(height: 18),
               // 하단 버튼 (CCTV로 이동)
-              ElevatedButton.icon(
-                onPressed: () {
-                  // CCTV 화면 이동 로직 추가
-                },
-                icon: Icon(Icons.camera_alt),
-                label: Text('CCTV 보기'),
-                style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-                  textStyle: TextStyle(fontSize: 18),
+              Center(
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    // CCTV 화면 이동 로직 추가
+                  },
+                  icon: Icon(Icons.camera_alt),
+                  label: Text('CCTV 보기'),
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+                    textStyle: TextStyle(fontSize: 18),
+                  ),
                 ),
               ),
             ],
           ),
         ),
       ),
+
     );
+
   }
 }
 

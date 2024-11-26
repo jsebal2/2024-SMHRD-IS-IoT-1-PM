@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:intl/intl.dart';
+import 'Calendar.dart';
 
 class CustomText extends StatefulWidget {
-  const CustomText({super.key});
+  const CustomText({super.key, required this.selectedDay});
+  final DateTime selectedDay;
   @override
   State<CustomText> createState() => _CustomTextState();
 }
@@ -42,8 +45,10 @@ class _CustomTextState extends State<CustomText> {
 
 
     try {
+      dio.options.contentType = Headers.jsonContentType;
+      var SelectedDay = DateFormat("yyyy-MM-dd").format(widget.selectedDay);
       Response response = await dio.post('http://192.168.219.61:8000/diary/save',
-          data:{'title':title, 'content':content,'user_id':'uid_134092'});
+          data:{'title':title, 'content':content,'date':SelectedDay, 'id' : 'test1'});
       print(response);
       if (response.statusCode == 200) {
         print('데이터 전송 성공: ${response.data}');
