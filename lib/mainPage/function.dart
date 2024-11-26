@@ -48,7 +48,6 @@ Future<Map<String, dynamic>> fetchSensorData() async{
     final response = await dio.get('http://192.168.219.61:8000/sensor/sen',
         queryParameters: {'data' : 'good','send':'get'}
     );
-    print(response.data["data"]["light"]);
     if (response.statusCode == 200) {
       // Json 데이터에서 title만 리스트로 추출
       return response.data["data"]; // JSON 데이터를 맵 형태로 반환
@@ -56,7 +55,6 @@ Future<Map<String, dynamic>> fetchSensorData() async{
       throw Exception('Failed to load data');
     }
   } catch (e) {
-    print("DDDDDDDDDDDDD");
     print("errer $e");
     throw Exception('Error : $e');
   }
@@ -75,6 +73,8 @@ void controlDevice(String device, bool state) async {
     print('Error controlling $device: $e');
   }
 }
+
+
 
 
 
