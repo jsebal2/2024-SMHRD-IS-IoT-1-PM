@@ -3,7 +3,7 @@ import 'package:path/path.dart';
 import 'package:pm_project/Diary/Calendar.dart';
 import 'package:pm_project/mainPage/MainPage.dart';
 import 'package:pm_project/user/Delete.dart';
-import 'package:pm_project/user/Login.dart';
+import 'package:pm_project/mainPage/Login.dart';
 import 'package:pm_project/user/update.dart';
 
 class Mypage extends StatefulWidget {

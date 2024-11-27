@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pm_project/Connect/Connecting.dart';
 import 'package:pm_project/Diary/Calendar.dart';
 import 'package:pm_project/user/Join.dart';
-import 'package:pm_project/user/Login.dart';
+import 'package:pm_project/mainPage/Login.dart';
 import 'mainPage/MainPage.dart';
 
 void main() {

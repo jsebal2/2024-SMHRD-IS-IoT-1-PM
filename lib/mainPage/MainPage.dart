@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:pm_project/Diary/Calendar.dart';
+import 'package:pm_project/user/mypage.dart';
 import 'dart:async';
 import 'widget.dart';
 import 'function.dart';
+import 'Meun.dart';
 
 class Mainpage extends StatefulWidget {
   const Mainpage({super.key});
@@ -13,13 +16,12 @@ class Mainpage extends StatefulWidget {
 }
 
 class _MainpageState extends State<Mainpage> {
+  // 💡sensor 타이머
   final dio = Dio();
   late Timer _timer; // 타이머 선언
   Future<Map<String, dynamic>>? _sensorDataFuture;
   double lightTime = 0;
   double lightPower = 0;
-
-
   @override
   void initState() {
     super.initState();
@@ -34,13 +36,11 @@ class _MainpageState extends State<Mainpage> {
       });
     });
   }
-
   @override
   void dispose() {
     _timer.cancel(); // 타이머해제
     super.dispose();
   }
-
   void _showSensorDataPopup(BuildContext context) {
     showDialog(context: context, builder: (BuildContext context){
       return AlertDialog(
@@ -130,7 +130,6 @@ class _MainpageState extends State<Mainpage> {
       print('Error => $e');
     }
   }
-
   Future<void> lightControl(double value) async {
     try {
       final respose = await dio.get('http://192.168.219.61:8000/sensor/act',
@@ -141,13 +140,10 @@ class _MainpageState extends State<Mainpage> {
   }
 
 
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: AppBar( // 상단 header
         title: Text('Smart Pot'),
         shape: Border(
           bottom: BorderSide(
@@ -156,13 +152,14 @@ class _MainpageState extends State<Mainpage> {
           ),
         ),
       ),
+
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(14.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // 식물 성장 단계
+              // 식물 성장 단계 & 캐릭터
               Container(
                 color: Colors.grey.shade300,
                 child: Center(
@@ -198,9 +195,7 @@ class _MainpageState extends State<Mainpage> {
                             buildSensorDataText(snapshot.data!),
                             Container(height: 1.0,
                               width: 370,color: Colors.grey.shade400,)
-
                           ],
-
                           );
                         } else {
                           return Center(child: Text('No data'),);
@@ -210,8 +205,8 @@ class _MainpageState extends State<Mainpage> {
                   ),
                 ),
               ),
-
               SizedBox(height: 16),
+
               Container(height: 1.0, width: 370,color: Colors.grey.shade400,),
               SizedBox(height: 10,),
               Text('조명 지속시간', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
@@ -225,9 +220,9 @@ class _MainpageState extends State<Mainpage> {
                   lightTime = value;
                 });
                 lightTimer(value);
-                        }
-                  
+                        },
                     ),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -235,8 +230,8 @@ class _MainpageState extends State<Mainpage> {
                   Text('10',style: TextStyle(fontSize: 16),),
                 ],
               ),
-              Container(height: 1.0, width: 370,color: Colors.grey.shade400,),
 
+              Container(height: 1.0, width: 370,color: Colors.grey.shade400,),
               SizedBox(height: 10,),
               Text('조명 밝기', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
               Text('$lightPower %'),
@@ -250,8 +245,9 @@ class _MainpageState extends State<Mainpage> {
                     });
                     lightControl(value);
                   }
-
               ),
+
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -263,7 +259,6 @@ class _MainpageState extends State<Mainpage> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-
 
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -282,7 +277,7 @@ class _MainpageState extends State<Mainpage> {
                   ),
                 ],
               ),
-              
+
               SizedBox(height: 18),
               // 하단 버튼 (CCTV로 이동)
               Center(
@@ -302,9 +297,8 @@ class _MainpageState extends State<Mainpage> {
           ),
         ),
       ),
-
+      bottomNavigationBar: Meun(),
     );
-
   }
 }
 

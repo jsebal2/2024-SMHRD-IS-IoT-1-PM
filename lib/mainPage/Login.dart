@@ -35,16 +35,13 @@ class _LoginState extends State<Login> {
         print('error 발생');
       }
 
-      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
-          builder: (context) {
-            return Calendar();
-          }), (route)=>false);
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => Mainpage()));
 
 
     // 로그인 로직 처리
     print('ID: $id, Password: $password');
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
