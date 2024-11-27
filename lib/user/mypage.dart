@@ -28,7 +28,7 @@ class _MypageState extends State<Mypage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: AppBar( // 상단 header
         title: Text('My Page'),
         shape: Border(
           bottom: BorderSide(
@@ -37,17 +37,18 @@ class _MypageState extends State<Mypage> {
           ),
         ),
       ),
+
       body: Padding(
         padding: EdgeInsets.all(16.0),// 중단 - content
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('\n회원님! 안녕하세요!😀',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,),
-        ),
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,),),
+
             SizedBox(height: 30,),
-             
-             
+
+             // 💡 하단 버튼 (회원정보 수정, 회원탈퇴, 로그아웃)
              Row(
                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                children: [
@@ -55,44 +56,27 @@ class _MypageState extends State<Mypage> {
                  ElevatedButton(
                       onPressed: () {
                         Navigator.push(context, MaterialPageRoute(
-                            builder: (context) {
-                              return Update();
-                            })
-                        );
-
-                      },
+                            builder: (context) {return Update();}));},
                       child: Text('회원정보 수정',
-                      style: TextStyle(fontSize: 16),
-                      ),
+                      style: TextStyle(fontSize: 16),),
                   ),
-                 
                  // 회원 탈퇴 페이지로 이동
                  ElevatedButton(
                    onPressed: () {
                      Navigator.push(context, MaterialPageRoute(
-                         builder: (context) {
-                           return Delete();
-                         })
-                     );
-
-                   },
+                         builder: (context) {return Delete();}));},
                    child: Text('회원 탈퇴',
-                     style: TextStyle(fontSize: 16),
-                   ),
+                     style: TextStyle(fontSize: 16),),
                  ),
-
+                 // 로그아웃
                  ElevatedButton(
                    onPressed: () {
                      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
-                         builder: (context) {
-                           return Login();
-                         }), (route)=>false);
-
-                   },
+                         builder: (context) {return Login();}), (route)=>false);},
                    child: Text('로그아웃',
-                     style: TextStyle(fontSize: 16),
-                   ),
+                     style: TextStyle(fontSize: 16),),
                  ),
+
                ],
              ),
 
