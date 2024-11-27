@@ -19,7 +19,7 @@ class _MeunState extends State<Meun> {
   // 각 페이지 이동
   final List<Widget> _widgetOptions = <Widget>[
     Calendar(),
-    Mainpage(),
+
     Mypage(),
   ];
 

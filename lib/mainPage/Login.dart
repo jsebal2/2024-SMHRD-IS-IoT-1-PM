@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:pm_project/Diary/Calendar.dart';
 import 'package:pm_project/mainPage/MainPage.dart';
 import 'package:pm_project/user/Join.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -16,34 +17,33 @@ class _LoginState extends State<Login> {
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final dio = Dio();
+  final FlutterSecureStorage secureStorage = FlutterSecureStorage();
 
-  void _login() async{
+  Future<void> login(BuildContext context) async {
     final id = _idController.text;
     final password = _passwordController.text;
 
+    dio.options.contentType = Headers.formUrlEncodedContentType;
+    Response res = await dio.post('http://192.168.219.61:8000/user/login',
+        data: {'id' : '$id', 'password' : '$password'});
 
-      // post 방식의 데이터 전달을 위한 option
-      dio.options.contentType = Headers.formUrlEncodedContentType;
-      Response res = await dio.post('http://192.168.219.61:8000/user/login',
-          data: {'id' : '$id', 'password' : '$password'});
+    // 전송결과 출력
+    print(res);
+    if(res.statusCode == 200){
+      print('dio|${res}');
+    } else {
+      print('error 발생');
+    }
 
-      // 전송결과 출력
-      print(res);
-      if(res.statusCode == 200){
-        print('dio|${res}');
-      } else {
-        print('error 발생');
-      }
+    String token = "sample_token"; // 실제로는 서버로부터 받아야 합니다.
+    await secureStorage.write(key: 'authToken', value: token);
 
-      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
-          builder: (context) {
-            return Calendar();
-          }), (route)=>false);
-
-
-    // 로그인 로직 처리
-    print('ID: $id, Password: $password');
+    // 홈 화면으로 이동
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => Mainpage()));
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +81,9 @@ class _LoginState extends State<Login> {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: _login,
+                onPressed: () async {
+                  await login(context);
+                },
                 child: Text('로그인'),
               ),
             ),
