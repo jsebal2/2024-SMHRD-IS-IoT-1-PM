@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pm_project/Diary/Calendar.dart';
 import 'package:pm_project/mainPage/MainPage.dart';
 import 'package:pm_project/user/Join.dart';
-import '../user/Models.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -18,45 +16,34 @@ class _LoginState extends State<Login> {
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final dio = Dio();
-  final FlutterSecureStorage secureStorage = FlutterSecureStorage();
 
-  Future<void> login(BuildContext context) async {
-
+  void _login() async{
     final id = _idController.text;
     final password = _passwordController.text;
 
 
-    // post 방식의 데이터 전달을 위한 option
-    dio.options.contentType = Headers.formUrlEncodedContentType;
-    Response res = await dio.post('http://192.168.219.61:8000/user/login',
-        data: {'id' : '$id', 'password' : '$password'});
+      // post 방식의 데이터 전달을 위한 option
+      dio.options.contentType = Headers.formUrlEncodedContentType;
+      Response res = await dio.post('http://192.168.219.61:8000/user/login',
+          data: {'id' : '$id', 'password' : '$password'});
+
+      // 전송결과 출력
+      print(res);
+      if(res.statusCode == 200){
+        print('dio|${res}');
+      } else {
+        print('error 발생');
+      }
+
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+          builder: (context) {
+            return Calendar();
+          }), (route)=>false);
 
 
-    // 전송결과 출력
-    print(res);
-    if(res.statusCode == 200){
-      print('dio|${res}');
-    } else {
-      print('error 발생');
-    }
-
-
-    String token = "sample_token"; // 서버에서 받아온 토큰 저장하기
-    await secureStorage.write(key: 'authToken', value: token);
-
-
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => Mainpage()));
+    // 로그인 로직 처리
+    print('ID: $id, Password: $password');
   }
-
-  Future<void> printToken() async {
-    // 저장된 토큰 읽기
-    String? token = await secureStorage.read(key: 'authToken');
-    print('Retrieved Token: $token'); // 토큰 값을 디버그 출력
-  }
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -94,9 +81,7 @@ class _LoginState extends State<Login> {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () async {
-                  await login(context);
-                },
+                onPressed: _login,
                 child: Text('로그인'),
               ),
             ),

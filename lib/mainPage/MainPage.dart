@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:dio/dio.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:async';
 import 'widget.dart';
 import 'function.dart';
@@ -19,7 +18,6 @@ class _MainpageState extends State<Mainpage> {
   Future<Map<String, dynamic>>? _sensorDataFuture;
   double lightTime = 0;
   double lightPower = 0;
-  final FlutterSecureStorage secureStorage = FlutterSecureStorage();
 
 
   @override
