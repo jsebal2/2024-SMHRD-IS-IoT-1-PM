@@ -3,8 +3,9 @@ import 'package:path/path.dart';
 import 'package:pm_project/Diary/Calendar.dart';
 import 'package:pm_project/mainPage/MainPage.dart';
 import 'package:pm_project/user/Delete.dart';
-import 'package:pm_project/user/Login.dart';
+import 'package:pm_project/mainPage/Login.dart';
 import 'package:pm_project/user/update.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class Mypage extends StatefulWidget {
   const Mypage({super.key});
@@ -14,6 +15,16 @@ class Mypage extends StatefulWidget {
 
 
 class _MypageState extends State<Mypage> {
+
+  final FlutterSecureStorage secureStorage = FlutterSecureStorage();
+
+  Future<void> logout (BuildContext context) async {
+    await secureStorage.delete(key: 'authToken');
+
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => Login()));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
