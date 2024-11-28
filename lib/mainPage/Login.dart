@@ -40,7 +40,7 @@ class _LoginState extends State<Login> {
 
     // 홈 화면으로 이동
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => Mainpage()));
+        context, MaterialPageRoute(builder: (context) => Calendar()));
   }
 
 

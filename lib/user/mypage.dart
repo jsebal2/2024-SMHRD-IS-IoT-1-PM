@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:pm_project/Diary/Calendar.dart';
 import 'package:pm_project/mainPage/MainPage.dart';
+import 'package:pm_project/mainPage/Menu.dart';
+import 'package:pm_project/mainPage/function.dart';
 import 'package:pm_project/user/Delete.dart';
 import 'package:pm_project/mainPage/Login.dart';
 import 'package:pm_project/user/update.dart';
@@ -12,24 +14,31 @@ class Mypage extends StatefulWidget {
   @override
   State<Mypage> createState() => _MypageState();
 }
-
-
 class _MypageState extends State<Mypage> {
-
+  // 로그아웃
   final FlutterSecureStorage secureStorage = FlutterSecureStorage();
-
   Future<void> logout (BuildContext context) async {
     await secureStorage.delete(key: 'authToken');
-
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => Login()));
   }
+
+  // id 및 식물 id 값 가져오기
+  Future<Map<String, String>> fetchUserData() async{
+    await Future.delayed(Duration(seconds: 1));
+    return {'id' : 'user1234', 'username' : '1234'};
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar( // 상단 header
         title: Text('My Page'),
+        titleTextStyle: TextStyle(fontSize: 20, fontWeight:FontWeight.bold, color: Colors.black),
+        centerTitle: true,
+        elevation: 0.5,
         shape: Border(
           bottom: BorderSide(
             color: Colors.grey,
@@ -42,44 +51,73 @@ class _MypageState extends State<Mypage> {
         padding: EdgeInsets.all(16.0),// 중단 - content
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('\n회원님! 안녕하세요!😀',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,),),
+          children: [ // 상단 프로필
+            Container(
+              child: Text('\n회원님! 안녕하세요!😀',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+            ),
+            SizedBox(height: 50),
 
-            SizedBox(height: 30,),
-
-             // 💡 하단 버튼 (회원정보 수정, 회원탈퇴, 로그아웃)
-             Row(
-               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            FutureBuilder(
+              future : fetchUserData(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator()); // 로딩중
+                } else if (snapshot.hasError) {
+                  return Text('Error : ${snapshot.error}');
+                } else if (snapshot.hasData) {
+                  final data = snapshot.data!;
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text('ID : ${snapshot.data!['id']},',
+                        style: TextStyle(fontSize: 16),),
+                      Text('나의 식물 ID: ${snapshot.data!['username']}',
+                          style: TextStyle(fontSize: 16)),
+                    ],
+                  );
+                } else {
+                  return Text('데이터를 가져오지 못했습니다.');
+                }
+              },
+            ),
+            SizedBox(height: 100,),
+            // 💡 하단 버튼 (회원정보 수정, 회원탈퇴, 로그아웃)
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
                children: [
+                 Text('계정',
+                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold
+                 ),
+                 ),
+                 Divider(color: Colors.grey,),
+                 SizedBox(height: 5,),
                  // 회원정보 수정 페이지로 이동
-                 ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(
-                            builder: (context) {return Update();}));},
-                      child: Text('회원정보 수정',
-                      style: TextStyle(fontSize: 16),),
+                 ListTile(
+                   onTap: () {
+                     Navigator.push(context, MaterialPageRoute(
+                         builder: (context) {return Update();}));},
+                   title: Text('회원정보 수정', style: TextStyle(fontSize: 16),),
+                   contentPadding: EdgeInsets.symmetric(horizontal: 0),
                   ),
                  // 회원 탈퇴 페이지로 이동
-                 ElevatedButton(
-                   onPressed: () {
+                 ListTile(
+                   onTap: () {
                      Navigator.push(context, MaterialPageRoute(
                          builder: (context) {return Delete();}));},
-                   child: Text('회원 탈퇴',
-                     style: TextStyle(fontSize: 16),),
+                   title: Text('회원 탈퇴', style: TextStyle(fontSize: 16),),
+                   contentPadding: EdgeInsets.symmetric(horizontal: 0),
                  ),
                  // 로그아웃
-                 ElevatedButton(
-                   onPressed: () {
+                 ListTile(
+                   onTap: () {
                      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
                          builder: (context) {return Login();}), (route)=>false);},
-                   child: Text('로그아웃',
-                     style: TextStyle(fontSize: 16),),
+                   title: Text('로그아웃', style: TextStyle(fontSize: 16),),
+                   contentPadding: EdgeInsets.symmetric(horizontal: 0),
                  ),
-
                ],
              ),
-
           ],
         ),
       ),

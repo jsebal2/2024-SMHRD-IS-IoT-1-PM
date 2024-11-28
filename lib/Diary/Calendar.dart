@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pm_project/mainPage/MainPage.dart';
 import 'package:pm_project/mainPage/Login.dart';
+import 'package:pm_project/mainPage/Menu.dart';
 import 'package:pm_project/user/mypage.dart';
 import 'Custom_text.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -13,57 +14,8 @@ class Calendar extends StatefulWidget {
   @override
   State<Calendar> createState() => _CalendarState();
 }
-
-// 💡 하단 메뉴바
-class _CalendarState extends State<Calendar> {
-  // 하단 네비게이션 바 관련 상태 관리
-  int _selectedIndex = 0;
-  // 각 페이지 이동
-  final List<Widget> _widgetOptions = <Widget>[
-    CalendarPage(),
-    Mainpage(),
-    Mypage(),
-  ];
-  // 탭 클릭 시 페이지 이동
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: _widgetOptions[_selectedIndex], // 선택된 페이지 표시
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_view_day),
-            label: 'Diary',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'My Page',
-          ),
-        ],
-        currentIndex: _selectedIndex, // 현재 선택된 탭 인덱스
-        selectedItemColor: Colors.teal,
-        onTap: _onItemTapped, // 탭 클릭 시 호출
-      ),
-    );
-  }
-}
-
-
 // 💡 캘린더 내용
-class CalendarPage extends StatefulWidget {
-  @override
-  State<CalendarPage> createState() => _CalendarPageState();
-}
-class _CalendarPageState extends State<CalendarPage> {
+class _CalendarState extends State<Calendar> {
   DateTime _selectedDay = DateTime.now();
   DateTime _focusedDay = DateTime.now();
   final Map<DateTime, List<String>> _diaryevent = {};
