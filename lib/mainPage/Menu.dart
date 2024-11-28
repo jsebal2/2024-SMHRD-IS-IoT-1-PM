@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
 import 'package:pm_project/Diary/Calendar.dart';
 import 'package:pm_project/mainPage/MainPage.dart';
 import 'package:pm_project/user/mypage.dart';
 
-class Menu extends StatefulWidget {
-  const Menu({super.key});
+
+class Meun extends StatefulWidget {
+  const Meun({super.key});
 
   @override
-  State<Menu> createState() => _MenuState();
+  State<Meun> createState() => _MeunState();
 }
-
-class _MenuState extends State<Menu> {
+class _MeunState extends State<Meun> {
   // 💡하단 메뉴바 설정
   // 하단 네비게이션 바 관련 상태 관리
-  int _selectedIndex = 1;  // 초기 페이지를 Mainpage로 설정
+  int _selectedIndex = 0;
 
   // 각 페이지 이동
-  static List<Widget> _pages = <Widget>[
+  final List<Widget> _widgetOptions = <Widget>[
     Calendar(),
-    Mainpage(),
+
     Mypage(),
   ];
 
@@ -29,11 +30,11 @@ class _MenuState extends State<Menu> {
     },
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages[_selectedIndex],
-
+      body: _widgetOptions[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>
         [
@@ -43,7 +44,8 @@ class _MenuState extends State<Menu> {
         ],
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
-),
-);
+      ),
+    );
+  }
 }
-}
+

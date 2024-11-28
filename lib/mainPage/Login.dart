@@ -35,8 +35,10 @@ class _LoginState extends State<Login> {
       print('error 발생');
     }
 
-    String token = "sample_token"; // 실제로는 서버로부터 받아야 합니다.
+    String token = res.data['token']; // 실제로는 서버로부터 받아야 합니다.
     await secureStorage.write(key: 'authToken', value: token);
+
+    print(await secureStorage.read(key: 'authToken'));
 
     // 홈 화면으로 이동
     Navigator.pushReplacement(

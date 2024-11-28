@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:dio/dio.dart';
+
 import 'package:pm_project/Diary/Calendar.dart';
 import 'package:pm_project/mainPage/Menu.dart';
 import 'package:pm_project/user/mypage.dart';
+
 import 'dart:async';
 import 'widget.dart';
 import 'function.dart';
+
 
 
 class Mainpage extends StatefulWidget {
@@ -317,7 +320,7 @@ class _MainpageState extends State<Mainpage> {
           ],
         ),
       ),
-      bottomNavigationBar: Menu(),
+
     );
   }
 }
