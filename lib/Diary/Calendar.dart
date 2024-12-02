@@ -126,12 +126,12 @@ class _CalendarState extends State<Calendar> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text('날짜:',
-                style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),
                 ),
                 Text(_selectedDay != null
-                  ? DateFormat('yyyy-MM-dd').format(_selectedDay!)
-                  : '날짜를 선택하세요',
-                style: TextStyle(fontSize: 18),),
+                    ? DateFormat('yyyy-MM-dd').format(_selectedDay!)
+                    : '날짜를 선택하세요',
+                  style: TextStyle(fontSize: 18),),
                 SizedBox(height: 20,),
                 Text('제목:',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),

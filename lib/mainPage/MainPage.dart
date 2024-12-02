@@ -4,9 +4,8 @@ import 'package:dio/dio.dart';
 import 'dart:async';
 import 'widget.dart';
 import 'function.dart';
-import '../Diary/Calendar.dart';
-import '../user/mypage.dart';
-import 'package:pm_project/main.dart';
+
+
 
 class Mainpage extends StatefulWidget {
   const Mainpage({super.key});
@@ -16,7 +15,6 @@ class Mainpage extends StatefulWidget {
 }
 
 class _MainpageState extends State<Mainpage> {
-  int _currentIndex = 1; // 초기 인덱스를 MainPage로 설정
   final dio = Dio();
   late Timer _timer; // 타이머 선언
   Future<Map<String, dynamic>>? _sensorDataFuture;
@@ -61,7 +59,6 @@ class _MainpageState extends State<Mainpage> {
     },
     );
   }
-
 
   Widget _buildSensorDataContent() {
     return FutureBuilder<Map<String, dynamic>>(
@@ -307,7 +304,6 @@ class _MainpageState extends State<Mainpage> {
           ),
         ),
       ),
-      // bottomNavigationBar: Bottom(),
     );
 
   }
