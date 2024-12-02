@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:pm_project/Diary/Calendar.dart';
 import 'package:pm_project/mainPage/MainPage.dart';
+import 'package:pm_project/page.dart';
 import 'package:pm_project/user/Join.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -42,7 +43,7 @@ class _LoginState extends State<Login> {
 
     // 홈 화면으로 이동
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => Mainpage()));
+        context, MaterialPageRoute(builder: (context) => PageTest()));
   }
 
 

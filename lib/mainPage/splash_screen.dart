@@ -26,7 +26,7 @@ class _SplasgScreenState extends State<SplasgScreen> {
       token = retrievedtoken;
     });
 
-    Future.delayed(Duration(seconds: 2), () {
+    Future.delayed(Duration(milliseconds: 1000), () {
       if (retrievedtoken != null) {
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => Mainpage()));
