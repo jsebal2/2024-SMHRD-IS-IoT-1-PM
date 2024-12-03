@@ -132,6 +132,16 @@
           fonts:
             - asset: assets/font/Moneygraphy-Pixel.ttf
             - asset: assets/font/Moneygraphy-Rounded.ttf
+        - family: 봄바람
+          fonts:
+            - asset: assets/font/HSBombaram3.0_Thin.ttf
+        - family: 을지로
+          fonts:
+            - asset: assets/font/BMEULJIROTTF.ttf
+        - family: 눈누토끼
+          fonts:
+            - asset: assets/font/NoonnuBasicGothicRegular.ttf
+
     #   - family: Trajan Pro
     #     fonts:
     #       - asset: fonts/TrajanPro.ttf

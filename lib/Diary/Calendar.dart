@@ -86,76 +86,92 @@ class _CalendarState extends State<Calendar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.lime.shade50,
       appBar: AppBar(
-        title: Text('달력'),
-        centerTitle: true,
+        title: Text('Diary',
+        style:
+        TextStyle(fontFamily: '산토끼', fontSize: 30, fontWeight: FontWeight.bold,color: Colors.green.shade800),),
+
       ),
+
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TableCalendar(
-            focusedDay: _focusedDay,
-            firstDay: DateTime.utc(2020, 1, 1),
-            lastDay: DateTime.utc(2030, 12, 31),
-            selectedDayPredicate: (day) {
-              return isSameDay(_selectedDay, day);
-            },
-            onDaySelected: onDaySelected,
-            headerStyle: HeaderStyle(
-              formatButtonVisible: false,
-              titleCentered: true,
-            ),
-            calendarStyle: CalendarStyle(
-              todayDecoration: BoxDecoration(
-                color: Colors.green,
-                shape: BoxShape.circle,
+          Padding(
+            padding: const EdgeInsets.all(30.0),
+            child: TableCalendar(
+              focusedDay: _focusedDay,
+              firstDay: DateTime.utc(2020, 1, 1),
+              lastDay: DateTime.utc(2030, 12, 31),
+              selectedDayPredicate: (day) {
+                return isSameDay(_selectedDay, day);
+              },
+              onDaySelected: onDaySelected,
+              headerStyle: HeaderStyle(
+                formatButtonVisible: false,
+                titleCentered: true,
+                titleTextStyle: TextStyle(
+                  fontSize: 20,
+                  fontFamily: '굴토끼',
+                  //fontWeight: FontWeight.bold,
+                  color: Colors.green.shade900,
+                ),),
+              calendarStyle: CalendarStyle(
+                todayDecoration: BoxDecoration(
+                  color: Colors.green,
+                  shape: BoxShape.circle,
+                ),
+                selectedDecoration: BoxDecoration(
+                  color: Colors.lightGreen,
+                  shape: BoxShape.circle,
+                ),
+                weekendTextStyle: TextStyle(color: Colors.red),
               ),
-              selectedDecoration: BoxDecoration(
-                color: Colors.lightGreen,
-                shape: BoxShape.circle,
+              daysOfWeekStyle: DaysOfWeekStyle(
+                weekdayStyle: TextStyle(color: Colors.black),
+                weekendStyle: TextStyle(color: Colors.red),
               ),
-              weekendTextStyle: TextStyle(color: Colors.red),
-            ),
-            daysOfWeekStyle: DaysOfWeekStyle(
-              weekdayStyle: TextStyle(color: Colors.black),
-              weekendStyle: TextStyle(color: Colors.red),
             ),
           ),
 
-          Expanded(child: Padding(padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('날짜:',
-                  style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),
-                ),
-                Text(_selectedDay != null
-                    ? DateFormat('yyyy-MM-dd').format(_selectedDay!)
-                    : '날짜를 선택하세요',
-                  style: TextStyle(fontSize: 18),),
-                SizedBox(height: 20,),
-                Text('제목:',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  title.isNotEmpty ? title : '선택된 날짜에 제목이 없습니다.',
-                  style: TextStyle(fontSize: 18),
-                ),
-                SizedBox(height: 20,),
-                Text('내용',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  content.isNotEmpty ? content : '선택된 날짜에 내용이 없습니다.',
-                  style: TextStyle(fontSize: 18),
-                )
-              ],
-            ),))
-        ],
+          
+          // 선택된 날짜와 정보 표시
+          Expanded(
+              child: Padding(
+                padding: EdgeInsets.all(15.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('선택된 날짜',
+                      style: TextStyle(fontFamily:'눈누토끼',fontSize: 18,fontWeight: FontWeight.bold,letterSpacing: 2),
+                    ),
+                    Text(_selectedDay != null
+                        ? DateFormat('yyyy-MM-dd').format(_selectedDay!)
+                        : '날짜를 선택하세요',
+                      style: TextStyle(fontFamily:'눈누토끼', fontSize: 18, letterSpacing: 2),),
+                    SizedBox(height: 20,),
+
+                    Text('제목',
+                      style: TextStyle(fontFamily:'눈누토끼', fontSize: 18, fontWeight: FontWeight.bold, letterSpacing: 2),
+                    ),
+                    Text(title.isNotEmpty ? title : '',
+                      style: TextStyle(fontFamily:'눈누토끼',fontSize: 18, letterSpacing: 2 ),
+                    ),
+                    SizedBox(height: 20,),
+
+                    Text('내용',
+                      style: TextStyle(fontFamily:'눈누토끼',fontSize: 18, fontWeight: FontWeight.bold,letterSpacing: 2),
+                    ),
+                    Text(content.isNotEmpty ? content : '',
+                      style: TextStyle(fontFamily:'눈누토끼',fontSize: 18,letterSpacing: 2),
+                    )
+                  ],
+                ),))],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showDiaryDialog(context),
         child: Icon(Icons.edit),
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.green.shade400,
       ),
     );
   }
