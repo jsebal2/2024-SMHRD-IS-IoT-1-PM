@@ -44,51 +44,79 @@ class _JoinState extends State<Join> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('회원가입'),
+        title: Text(''),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              '회원가입',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 20),
-            TextField(
-              controller: _idController,
-              decoration: InputDecoration(
-                labelText: 'ID',
-                border: OutlineInputBorder(),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(50.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                  child: Image.asset('assets/images/plantpot.png',width: 70,height: 70,color: Colors.teal.shade900,)),
+              SizedBox(height: 15),
+              Text('Welcome!',
+                style: TextStyle(fontFamily:'산토끼',fontSize: 30, color:Colors.teal.shade600,fontWeight: FontWeight.bold),
               ),
-            ),
-            SizedBox(height: 15),
-            TextField(
-              controller: _passwordController,
-              obscureText: true,
-              decoration: InputDecoration(
-                labelText: '비밀번호',
-                border: OutlineInputBorder(),
+              Text('Smart Pot',
+                style: TextStyle(fontFamily:'산토끼',fontSize: 20, color:Colors.teal.shade600,fontWeight: FontWeight.bold),
               ),
-            ),
-            SizedBox(height: 15),
-            TextField(
-              controller: _usernameController,
-              decoration: InputDecoration(
-                labelText: '사용자 이름',
-                border: OutlineInputBorder(),
+              SizedBox(height: 60),
+
+              TextField(
+                controller: _idController,
+                decoration: InputDecoration(
+                  labelText: 'ID',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.teal.shade600),
+                  ))),
+              SizedBox(height: 20),
+
+              TextField(
+                controller: _passwordController,
+                obscureText: true,
+                decoration: InputDecoration(
+                  labelText: '비밀번호',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.teal.shade600),
+                  ))),
+              SizedBox(height: 20),
+
+              TextField(
+                controller: _usernameController,
+                decoration: InputDecoration(
+                  labelText: '사용자 이름',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.teal.shade600),
+                  ))),
+              SizedBox(height: 50),
+
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: _signUp,
+                  child: Text('회원가입',style: TextStyle(fontFamily: '머니그라피',fontSize: 20,color: Colors.white,letterSpacing: 10 )),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.tealAccent.shade700,
+                    padding: EdgeInsets.all(10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    )
+                  ),
+                ),
               ),
-            ),
-            SizedBox(height: 30),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: _signUp,
-                child: Text('회원가입'),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
