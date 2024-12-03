@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:pm_project/Connect/Connecting.dart';
 import 'package:pm_project/Diary/Calendar.dart';
+import 'package:pm_project/mainPage/Login.dart';
 import 'package:pm_project/user/Join.dart';
-import 'package:pm_project/mainpage/Login.dart';
+// import 'package:pm_project/mainpage/Login.dart';
 import 'package:pm_project/user/mypage.dart';
-import 'mainPage/MainPage.dart';
+import 'package:pm_project/main.dart';
+import 'package:pm_project/mainPage/MainPage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +20,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      home: Mypage(),
+      home: Login(),
     );
   }
 }

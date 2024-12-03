@@ -36,7 +36,7 @@ class _LoginState extends State<Login> {
       print('error 발생');
     }
 
-    String token = res.data['token'];
+    String token = res.data['token']; // 실제로는 서버로부터 받아야 합니다.
     await secureStorage.write(key: 'authToken', value: token);
 
     print(await secureStorage.read(key: 'authToken'));
@@ -66,18 +66,18 @@ class _LoginState extends State<Login> {
             children: [
               Text('Smart Pot', style: TextStyle(fontFamily: '산토끼', fontSize:40,color: Colors.green.shade800,fontWeight: FontWeight.bold),),
               SizedBox(height: 70),
-              
+
               // ID 입력 필드
               TextField(
                 controller: _idController,
                 decoration: InputDecoration(
-                  labelText: 'ID',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.green.shade300),
-                  )
+                    labelText: 'ID',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.green.shade300),
+                    )
                 ),
               ),
               SizedBox(height: 30),
@@ -87,13 +87,13 @@ class _LoginState extends State<Login> {
                 controller: _passwordController,
                 obscureText: true,
                 decoration: InputDecoration(
-                  labelText: '비밀번호',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.green.shade300)
-                  )
+                    labelText: '비밀번호',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.green.shade300)
+                    )
                 ),
               ),
               SizedBox(height: 50),
@@ -105,13 +105,13 @@ class _LoginState extends State<Login> {
                     await login(context);
                   },
                   child: Text('로그인', style: TextStyle(fontFamily: '머니그라피',fontSize: 20,color: Colors.white,letterSpacing: 10 ),),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green.shade600,
-                  padding: EdgeInsets.all(20),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)
-                  )
-                ),),
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green.shade600,
+                      padding: EdgeInsets.all(20),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)
+                      )
+                  ),),
               ),
               SizedBox(height: 15),
 
