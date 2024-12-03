@@ -78,8 +78,8 @@ class _MypageState extends State<Mypage> {
                 width: MediaQuery.of(context).size.height * 0.8,
                 height: MediaQuery.of(context).size.height * 0.2,
                 decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20)
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20)
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -124,47 +124,47 @@ class _MypageState extends State<Mypage> {
                     ),
                   ],),),
 
-                    SizedBox(height: 70,),
-                    Divider(thickness: 0.5, height: 1, color: Colors.green.shade700,),
-                    SizedBox(height: 20,),
-                    // 💡 하단 버튼 (회원정보 수정, 회원탈퇴, 로그아웃)
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                    ),
+              SizedBox(height: 70,),
+              Divider(thickness: 0.5, height: 1, color: Colors.green.shade700,),
+              SizedBox(height: 20,),
+              // 💡 하단 버튼 (회원정보 수정, 회원탈퇴, 로그아웃)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+              ),
 
-                    ListTile(
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(
-                            builder: (context) {return Update();}));},
-                      title: Text('회원정보 수정', style: TextStyle(fontSize: 16),),
-                      contentPadding: EdgeInsets.symmetric(horizontal: 0),
-                    ),
-
-
-                    // 회원 탈퇴 페이지로 이동
-                    ListTile(
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(
-                            builder: (context) {return Delete();}));},
-
-                      title: Text('회원 탈퇴', style: TextStyle(fontSize: 16),),
-                      contentPadding: EdgeInsets.symmetric(horizontal: 0),
-                    ),
+              ListTile(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(
+                      builder: (context) {return Update();}));},
+                title: Text('회원정보 수정', style: TextStyle(fontSize: 16),),
+                contentPadding: EdgeInsets.symmetric(horizontal: 0),
+              ),
 
 
+              // 회원 탈퇴 페이지로 이동
+              ListTile(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(
+                      builder: (context) {return Delete();}));},
 
-                    // 로그아웃
-                    ListTile(
-                      onTap: () {
-                        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
-                             builder: (context) {return Login();}), (route)=>false);},
-                      title: Text('로그아웃', style: TextStyle(fontSize: 16),),
-                      contentPadding: EdgeInsets.symmetric(horizontal: 0),
-                    ),
-                  ],
-                ),
+                title: Text('회원 탈퇴', style: TextStyle(fontSize: 16),),
+                contentPadding: EdgeInsets.symmetric(horizontal: 0),
+              ),
+
+
+
+              // 로그아웃
+              ListTile(
+                onTap: () {
+                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+                      builder: (context) {return Login();}), (route)=>false);},
+                title: Text('로그아웃', style: TextStyle(fontSize: 16),),
+                contentPadding: EdgeInsets.symmetric(horizontal: 0),
+              ),
+            ],
           ),
         ),
+      ),
     );
   }
 }

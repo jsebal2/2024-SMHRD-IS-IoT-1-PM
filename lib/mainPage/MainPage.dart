@@ -5,6 +5,7 @@ import 'package:path/path.dart';
 import 'dart:async';
 import 'custom_widget.dart';
 import 'function.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 
 
@@ -21,6 +22,7 @@ class _MainpageState extends State<Mainpage> {
   Future<Map<String, dynamic>>? _sensorDataFuture;
   double lightTime = 0;
   double lightPower = 0;
+  final FlutterSecureStorage secureStorage = FlutterSecureStorage();
 
 
   @override
@@ -28,6 +30,7 @@ class _MainpageState extends State<Mainpage> {
     super.initState();
     _sensorDataFuture = fetchSensorData(); // 초기 데이터 로드
     _startAutoRefresh(); // 1분마다 데이터 새로고침
+    _checkPlantData();
   }
 
   void _startAutoRefresh() {
@@ -61,6 +64,38 @@ class _MainpageState extends State<Mainpage> {
     );
   }
 
+  Future<void> _checkPlantData() async {
+    try {
+      // Secure Storage에서 토큰 가져오기
+      String? token = await secureStorage.read(key: 'token');
+
+      if (token != null) {
+        // 서버에 토큰 전송
+        var response = await Dio().post(
+          'http://192.168.219.61:8000/plant/isthere',
+          data: {'id': token},
+        );
+
+        // 서버에서 데이터 반환 여부에 따라 상태 변경
+        setState(() {
+          hasPlantData = response.data['hasPlantData'] ?? false;
+          isLoading = false;
+        });
+      } else {
+        setState(() {
+          isLoading = false;
+          hasPlantData = false; // 토큰이 없으면 기본적으로 데이터 없음 처리
+        });
+      }
+    } catch (e) {
+      print("에러 발생: $e");
+      setState(() {
+        isLoading = false;
+        hasPlantData = false;
+      });
+    }
+  }
+
   Widget _buildSensorDataContent() {
     return FutureBuilder<Map<String, dynamic>>(
         future: fetchSensorData(), // 센서 데이터 가져오기
@@ -82,7 +117,7 @@ class _MainpageState extends State<Mainpage> {
           } else {
             return Text('No Data'); // 데이터 없음 처리
           }
-    }
+        }
     );
   }
 
@@ -142,7 +177,7 @@ class _MainpageState extends State<Mainpage> {
       ],
     );
   }
-  
+
   Future<void> lightTimer(double value) async {
     try {
       final respose = await dio.get('http://192.168.219.61:8000/sensor/act',
@@ -214,20 +249,20 @@ class _MainpageState extends State<Mainpage> {
 
                       FutureBuilder<Map <String, dynamic>>(future: fetchSensorData(),
                           builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator(),);
-                        } else if (snapshot.hasError) {
-                          return Center(child: Text('Error : ${snapshot.error}'),);
-                        } else if (snapshot.hasData) {
-                          return  Column(children: [
-                            buildSensorDataText(snapshot.data!),
-                            Container(height: 1.0,
-                              width: 370,color: Colors.grey.shade400,)
-                          ],
-                          );
-                        } else {
-                          return Center(child: Text('No data'),);
-                        }
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return Center(child: CircularProgressIndicator(),);
+                            } else if (snapshot.hasError) {
+                              return Center(child: Text('Error : ${snapshot.error}'),);
+                            } else if (snapshot.hasData) {
+                              return  Column(children: [
+                                buildSensorDataText(snapshot.data!),
+                                Container(height: 1.0,
+                                  width: 370,color: Colors.grey.shade400,)
+                              ],
+                              );
+                            } else {
+                              return Center(child: Text('No data'),);
+                            }
                           }),
                     ],
                   ),
@@ -240,8 +275,8 @@ class _MainpageState extends State<Mainpage> {
               Container(
                 padding: EdgeInsets.all(13.0),
                 decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20)
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20)
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -259,7 +294,7 @@ class _MainpageState extends State<Mainpage> {
                     SizedBox(height: 10,),
                     Container(
                       child: Slider(
-                        activeColor: Colors.amber.shade300,
+                          activeColor: Colors.amber.shade300,
                           value: lightTime,
                           max : 10, min: 0, divisions: 10,
                           label: '${lightTime.toStringAsFixed(0)}',
@@ -348,16 +383,19 @@ class _MainpageState extends State<Mainpage> {
               SizedBox(height: 18),
               // 하단 버튼 (CCTV로 이동)
               Center(
-                child: ElevatedButton.icon(
-                  onPressed: () {
-                    // CCTV 화면 이동 로직 추가
-                  },
-                  icon: Icon(Icons.camera_alt),
-                  label: Text('CCTV 보기'),
-                  style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-                    textStyle: TextStyle(fontSize: 18),
-                  ),
+                child: ElevatedButton(
+                  onPressed: () async {
+                    final imageBytes = await fetchImage();
+                    if (imageBytes != null){
+                      showDialog(context: context,
+                        builder: (context) => ImagePopup(imageBytes: imageBytes),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('이미지 불러오기 실패')),
+                      );
+                    }
+                  }, child: Text('Show Image Popup'),
                 ),
               ),
             ],
