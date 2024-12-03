@@ -90,12 +90,48 @@
     # "family" key with the font family name, and a "fonts" key with a
     # list giving the asset and other descriptors for the font. For
     # example:
-    # fonts:
-    #   - family: Schyler
-    #     fonts:
-    #       - asset: fonts/Schyler-Regular.ttf
-    #       - asset: fonts/Schyler-Italic.ttf
-    #         style: italic
+    fonts:
+#        - family: Schyler
+#          fonts:
+#              - asset: fonts/Schyler-Regular.ttf
+#              - asset: fonts/Schyler-Italic.ttf
+#                style: italic
+        - family: SB 어그로
+          fonts:
+              - asset: assets/font/SB 어그로 B.ttf
+                weight: 400
+              - asset: assets/font/SB 어그로 M.ttf
+                weight: 400
+        - family: Tenada
+          fonts:
+            - asset: assets/font/Tenada.ttf
+        - family: 베이글
+          fonts:
+            - asset: assets/font/BagelFatOne-Regular.ttf
+        - family: 산토끼
+          fonts:
+            - asset: assets/font/HSSanTokki2.0(2024).ttf
+        - family: 둥근모
+          fonts:
+            - asset: assets/font/neodgm.ttf
+        - family: 굴토끼
+          fonts:
+            - asset: assets/font/HSGooltokki.ttf
+        - family: 교보문고
+          fonts:
+            - asset: assets/font/교보문고손글씨2019.ttf
+        - family: 카페24
+          fonts:
+            - asset: assets/font/Cafe24Supermagic-Bold-v1.0.otf
+        - family: 모노플렉스
+          fonts:
+            - asset: assets/font/MonoplexKR-Light.ttf
+            - asset: assets/font/MonoplexKR-Medium.ttf
+            - asset: assets/font/MonoplexKR-SemiBold.ttf
+        - family: 머니그라피
+          fonts:
+            - asset: assets/font/Moneygraphy-Pixel.ttf
+            - asset: assets/font/Moneygraphy-Rounded.ttf
     #   - family: Trajan Pro
     #     fonts:
     #       - asset: fonts/TrajanPro.ttf

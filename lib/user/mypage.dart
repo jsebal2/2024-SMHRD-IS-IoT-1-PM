@@ -29,14 +29,9 @@ class _MypageState extends State<Mypage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar( // 상단 header
-        title: Text('My Page'),
-        shape: Border(
-          bottom: BorderSide(
-            color: Colors.grey,
-            width: 1,
-          ),
-        ),
+        title: Text('')
       ),
+
 
       body: Padding(
         padding: EdgeInsets.all(16.0),// 중단 - content

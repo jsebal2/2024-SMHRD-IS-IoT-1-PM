@@ -50,61 +50,86 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('로그인'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              '로그인',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 20),
-            TextField(
-              controller: _idController,
-              decoration: InputDecoration(
-                labelText: 'ID',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            SizedBox(height: 15),
-            TextField(
-              controller: _passwordController,
-              obscureText: true,
-              decoration: InputDecoration(
-                labelText: '비밀번호',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            SizedBox(height: 30),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () async {
-                  await login(context);
-                },
-                child: Text('로그인'),
-              ),
-            ),
-            SizedBox(height: 15),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('계정이 없으신가요?'),
-                TextButton(
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(
-                        builder: (context){return Join();}));
-                    print('회원가입 페이지로 이동');
-                  },
-                  child: Text('회원가입'),
+      backgroundColor: Colors.grey.shade50,
+      // appBar: AppBar(
+      //   title:
+      //   Text('Smart Pot', style: TextStyle(fontFamily: '산토끼', fontSize:40,color: Colors.green.shade900),),
+      // ),
+
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(50.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text('Smart Pot', style: TextStyle(fontFamily: '산토끼', fontSize:40,color: Colors.green.shade800,fontWeight: FontWeight.bold),),
+              SizedBox(height: 70),
+              
+              // ID 입력 필드
+              TextField(
+                controller: _idController,
+                decoration: InputDecoration(
+                  labelText: 'ID',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.green.shade300),
+                  )
                 ),
-              ],
-            ),
-          ],
+              ),
+              SizedBox(height: 30),
+
+              // 비밀번호 입력 필드
+              TextField(
+                controller: _passwordController,
+                obscureText: true,
+                decoration: InputDecoration(
+                  labelText: '비밀번호',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.green.shade300)
+                  )
+                ),
+              ),
+              SizedBox(height: 50),
+
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () async {
+                    await login(context);
+                  },
+                  child: Text('로그인', style: TextStyle(fontFamily: '머니그라피',fontSize: 20,color: Colors.white,letterSpacing: 10 ),),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green.shade600,
+                  padding: EdgeInsets.all(20),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)
+                  )
+                ),),
+              ),
+              SizedBox(height: 15),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('계정이 없으신가요?'),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (context){return Join();}));
+                      print('회원가입 페이지로 이동');
+                    },
+                    child: Text('회원가입', style: TextStyle(color: Colors.blueAccent.shade700),),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
