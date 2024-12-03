@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:path/path.dart';
 import 'dart:async';
-import 'widget.dart';
+import 'custom_widget.dart';
 import 'function.dart';
 
 
