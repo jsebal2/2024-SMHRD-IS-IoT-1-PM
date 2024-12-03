@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:pm_project/Diary/Calendar.dart';
 import 'package:pm_project/mainPage/MainPage.dart';
+import 'package:pm_project/page.dart';
 import 'package:pm_project/user/Join.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -35,14 +36,14 @@ class _LoginState extends State<Login> {
       print('error 발생');
     }
 
-    String token = res.data['token']; // 실제로는 서버로부터 받아야 합니다.
+    String token = res.data['token'];
     await secureStorage.write(key: 'authToken', value: token);
 
     print(await secureStorage.read(key: 'authToken'));
 
     // 홈 화면으로 이동
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => Mainpage()));
+        context, MaterialPageRoute(builder: (context) => PageTest()));
   }
 
 

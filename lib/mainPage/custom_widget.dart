@@ -57,26 +57,8 @@ class SensorDataCard extends StatelessWidget {
   }
 }
 
-Widget _buildAddButton() {
-  return ElevatedButton.icon(onPressed: () {
 
-  }, icon: Icon(Icons.add),
-  label: Text("식물등록"),
-  );
-}
 
-void _showAddPlantDialog(BuildContext context){
-  showDialog(context: context, barrierDismissible: true,
-  builder: (BuildContext context) {
-    return Dialog(
-      child: Container(
-        width: double.maxFinite,
-        height: 400,
-        child: AddPot(),
-      ),
-    );
-  }
-  );
-}
+
 
 

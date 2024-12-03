@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 
+
 class AddPot extends StatefulWidget {
   const AddPot({super.key});
 
@@ -20,7 +21,7 @@ class _AddPotState extends State<AddPot> {
 
     // post 방식의 데이터 전달을 위한 option
     dio.options.contentType = Headers.formUrlEncodedContentType;
-    Response res = await dio.post('http://192.168.219.61:8000/user/join',
+    Response res = await dio.post('http://192.168.219.61:8000/plant/enroll',
         data: {'name' : "$name", 'nick':'$nick'});
 
     // 전송결과 출력
@@ -45,14 +46,23 @@ class _AddPotState extends State<AddPot> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '회원가입',
+              '식물등록',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 20),
             TextField(
               controller: _nameController,
               decoration: InputDecoration(
-                labelText: 'ID',
+                labelText: '식물종류',
+                border: OutlineInputBorder(),
+              ),
+            ),
+
+            SizedBox(height: 20),
+            TextField(
+              controller: _nickController,
+              decoration: InputDecoration(
+                labelText: '별칭',
                 border: OutlineInputBorder(),
               ),
             ),
