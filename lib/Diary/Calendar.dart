@@ -18,6 +18,7 @@ class _CalendarState extends State<Calendar> {
   final FlutterSecureStorage secureStorage = FlutterSecureStorage();
   String title = '';
   String content = '';
+  String img_url = '';
 
 
 
@@ -28,14 +29,14 @@ class _CalendarState extends State<Calendar> {
     return token;
   }
 
-  // 토큰값 보내기
+  // 토큰값 보내기_다이어리
   Future<Map<String, dynamic>?> fetchDateForServer(String token,
-      DateTime selectedDate) async {
+      DateTime selectedDate, String endpoint) async {
     final formattedDate = DateFormat('yyyy-MM-dd').format(selectedDate);
 
     try {
       print('보내는 함수 내부 프린트 $token');
-      final response = await dio.post('http://192.168.219.61:8000/diary/load',
+      final response = await dio.post(endpoint,
           options: Options(
             headers: {
               'Content-Type': 'application/json', 'Authorization': '$token'
@@ -57,10 +58,13 @@ class _CalendarState extends State<Calendar> {
     }
   }
 
+
+
   void onDaySelected(DateTime selectedDate, DateTime focusedDate) async {
     setState(() {
       _selectedDay = selectedDate;
       _focusedDay = focusedDate;
+      img_url = '';
     });
 
     String? token = await getToken();
@@ -70,92 +74,164 @@ class _CalendarState extends State<Calendar> {
       return;
     }
 
-    Map<String, dynamic>? data = await fetchDateForServer(token, selectedDate);
+    Map<String, dynamic>? diaryData = await fetchDateForServer(
+        token, selectedDate, 'http://192.168.219.73:8000/diary/load');
 
-    if (data != null) {
+    Map<String, dynamic>? picData = await fetchDateForServer(
+        token, selectedDate, 'http://192.168.219.73:8000/pic/pull');
+
+    if (diaryData != null) {
       setState(() {
-        title = data['title'] ?? 'No title';
-        content = data['content'] ?? 'No content';
+        title = diaryData['title'] ?? 'No title';
+        content = diaryData['content'] ?? 'No content';
       });
     } else {
-      print('No data');
+      print('다이어리 데이터 없음');
+    }
+    if (picData != null) {
+      setState(() {
+        img_url = picData['img_url'] ?? '';
+      });
+    } else {
+      print('사진 데이터 없음');
     }
   }
+
+
+
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.lime.shade50,
       appBar: AppBar(
-        title: Text('달력'),
-        centerTitle: true,
+        title: Text('Diary',
+        style:
+        TextStyle(fontFamily: '산토끼', fontSize: 30, fontWeight: FontWeight.bold,color: Colors.green.shade800),),
+
       ),
+
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TableCalendar(
-            focusedDay: _focusedDay,
-            firstDay: DateTime.utc(2020, 1, 1),
-            lastDay: DateTime.utc(2030, 12, 31),
-            selectedDayPredicate: (day) {
-              return isSameDay(_selectedDay, day);
-            },
-            onDaySelected: onDaySelected,
-            headerStyle: HeaderStyle(
-              formatButtonVisible: false,
-              titleCentered: true,
-            ),
-            calendarStyle: CalendarStyle(
-              todayDecoration: BoxDecoration(
-                color: Colors.green,
-                shape: BoxShape.circle,
+          Padding(
+            padding: const EdgeInsets.all(30.0),
+            child: TableCalendar(
+              focusedDay: _focusedDay,
+              firstDay: DateTime.utc(2020, 1, 1),
+              lastDay: DateTime.utc(2030, 12, 31),
+              selectedDayPredicate: (day) {
+                return isSameDay(_selectedDay, day);
+              },
+              onDaySelected: onDaySelected,
+              headerStyle: HeaderStyle(
+                formatButtonVisible: false,
+                titleCentered: true,
+                titleTextStyle: TextStyle(
+                  fontSize: 20,
+                  fontFamily: '굴토끼',
+                  //fontWeight: FontWeight.bold,
+                  color: Colors.green.shade900,
+                ),),
+              calendarStyle: CalendarStyle(
+                todayDecoration: BoxDecoration(
+                  color: Colors.green,
+                  shape: BoxShape.circle,
+                ),
+                selectedDecoration: BoxDecoration(
+                  color: Colors.lightGreen,
+                  shape: BoxShape.circle,
+                ),
+                weekendTextStyle: TextStyle(color: Colors.red),
               ),
-              selectedDecoration: BoxDecoration(
-                color: Colors.lightGreen,
-                shape: BoxShape.circle,
+              daysOfWeekStyle: DaysOfWeekStyle(
+                weekdayStyle: TextStyle(color: Colors.black),
+                weekendStyle: TextStyle(color: Colors.red),
               ),
-              weekendTextStyle: TextStyle(color: Colors.red),
-            ),
-            daysOfWeekStyle: DaysOfWeekStyle(
-              weekdayStyle: TextStyle(color: Colors.black),
-              weekendStyle: TextStyle(color: Colors.red),
             ),
           ),
 
-          Expanded(child: Padding(padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('날짜:',
-                  style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),
-                ),
-                Text(_selectedDay != null
-                    ? DateFormat('yyyy-MM-dd').format(_selectedDay!)
-                    : '날짜를 선택하세요',
-                  style: TextStyle(fontSize: 18),),
-                SizedBox(height: 20,),
-                Text('제목:',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  title.isNotEmpty ? title : '선택된 날짜에 제목이 없습니다.',
-                  style: TextStyle(fontSize: 18),
-                ),
-                SizedBox(height: 20,),
-                Text('내용',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  content.isNotEmpty ? content : '선택된 날짜에 내용이 없습니다.',
-                  style: TextStyle(fontSize: 18),
-                )
-              ],
-            ),))
-        ],
+          
+          // 선택된 날짜와 정보 표시
+          Expanded(
+              child: Padding(
+                padding: EdgeInsets.all(15.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('선택된 날짜',
+                                  style: TextStyle(fontFamily:'눈누토끼',fontSize: 18,fontWeight: FontWeight.bold,letterSpacing: 2),
+                                ),
+                                Text(_selectedDay != null
+                                    ? DateFormat('yyyy-MM-dd').format(_selectedDay!)
+                                    : '날짜를 선택하세요',
+                                  style: TextStyle(fontFamily:'눈누토끼', fontSize: 18, letterSpacing: 2),),
+                                SizedBox(height: 20,),
+
+                                Text('제목',
+                                  style: TextStyle(fontFamily:'눈누토끼', fontSize: 18, fontWeight: FontWeight.bold, letterSpacing: 2),
+                                ),
+                                Text(title.isNotEmpty ? title : '',
+                                  style: TextStyle(fontFamily:'눈누토끼',fontSize: 18, letterSpacing: 2 ),
+                                ),
+                                SizedBox(height: 20,),
+                              ],
+                            ),
+
+                            Container(
+                              child: Visibility(
+                                visible: img_url.isNotEmpty, // 조건에 따라 표시 여부 결정
+                                replacement: Text(
+                                  '이미지가 없습니다.',
+                                  style: TextStyle(fontSize: 16, color: Colors.grey),
+                                ), // visible이 false일 때 대체할 위젯
+                                child: Container(
+                                  child: Image.network(img_url,
+                                    width: 200, height: 200, fit: BoxFit.contain,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+
+
+
+
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('내용',
+                              style: TextStyle(fontFamily:'눈누토끼',fontSize: 18, fontWeight: FontWeight.bold,letterSpacing: 2),
+                            ),
+                            Text(content.isNotEmpty ? content : '',
+                              style: TextStyle(fontFamily:'눈누토끼',fontSize: 18,letterSpacing: 2),
+                            )
+                          ],
+                        ),
+
+                      ],
+                    ),
+
+
+                  ],
+                ),))],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showDiaryDialog(context),
         child: Icon(Icons.edit),
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.green.shade400,
       ),
     );
   }
@@ -232,7 +308,7 @@ class _CalendarState extends State<Calendar> {
 
     try {
       final response = await dio.post(
-        'http://192.168.219.61:8000/diary/save',
+        'http://192.168.219.73:8000/diary/save',
         options: Options(
           headers: {
             'Content-Type': 'application/json',

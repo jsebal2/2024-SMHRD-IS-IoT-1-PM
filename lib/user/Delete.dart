@@ -13,13 +13,16 @@ class _DeleteState extends State<Delete> {
   final dio = Dio();
   final TextEditingController idController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final String baseUrl = 'http://192.168.219.73:8000';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('회원탈퇴'),
-        backgroundColor: Colors.red,
+        title: Text('회원탈퇴',
+          style: TextStyle(
+            fontFamily: '을지로',fontSize: 30,fontWeight: FontWeight.bold,color: Colors.white,letterSpacing: 15),),
+        backgroundColor: Colors.redAccent.shade700,
         centerTitle: true,
       ),
       body: Padding(
@@ -33,7 +36,7 @@ class _DeleteState extends State<Delete> {
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 16),
+            SizedBox(height: 20),
             Text(
               '- 회원 탈퇴 후 모든 데이터는 복구할 수 없습니다.\n'
                   '- 탈퇴 시 저장된 정보는 삭제됩니다.\n'
@@ -41,21 +44,27 @@ class _DeleteState extends State<Delete> {
               style: TextStyle(fontSize: 16, color: Colors.grey[700]),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 32),
+            SizedBox(height: 70),
 
             // 탈퇴 확인 입력 필드
             Text(
-              '회원탈퇴를 원하시면 아래 입력란에 "아이디", "비밀번호"를 입력해주세요.',
-              style: TextStyle(fontSize: 16),
+              '회원탈퇴를 원하시면 아래 입력란에 \n'
+                  '"아이디", "비밀번호"를 입력해주세요.',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 16),
+            SizedBox(height: 40),
             TextField(
               controller: idController,
               decoration: InputDecoration(
                 labelText: '아이디',
                 hintText: '"아이디"를 입력하세요',
-                border: OutlineInputBorder(),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10)
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.redAccent.shade200),
+                )
               ),
             ),
 
@@ -65,11 +74,15 @@ class _DeleteState extends State<Delete> {
               decoration: InputDecoration(
                 labelText: '비밀번호',
                 hintText: '"비밀번호"를 입력하세요',
-                border: OutlineInputBorder(),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10)
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.redAccent.shade200),
               ),
             ),
-
-            SizedBox(height: 32),
+            ),
+              SizedBox(height: 32),
 
             // 회원탈퇴 버튼
             ElevatedButton(
@@ -80,7 +93,7 @@ class _DeleteState extends State<Delete> {
                 void sendData() async{
                   // post 방식의 데이터 전달을 위한 option
                   dio.options.contentType = Headers.formUrlEncodedContentType;
-                  Response res = await dio.post('http://192.168.219.61:8000/user/change',
+                  Response res = await dio.post('$baseUrl/user/change',
                       data: {'name' : '$name', 'password' : '$password'});
 
                   // 전송결과 출력
@@ -91,23 +104,20 @@ class _DeleteState extends State<Delete> {
                     print('error 발생');
                   }
                 }
-
                 sendData();
-
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text('회원정보가 삭제되었습니다.')),
                 );
-
                 // mypage 이동
                 Navigator.pop(context);
                 
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
+                backgroundColor: Colors.redAccent.shade700,
                 padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
                 textStyle: TextStyle(fontSize: 18),
               ),
-              child: Text('회원탈퇴'),
+              child: Text('회원탈퇴', style: TextStyle(fontFamily: '을지로', fontSize: 20, color: Colors.white, letterSpacing: 10),),
             ),
             Spacer(),
 

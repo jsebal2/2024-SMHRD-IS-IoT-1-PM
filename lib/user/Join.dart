@@ -13,6 +13,7 @@ class _JoinState extends State<Join> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final dio = Dio();
+  final String baseUrl = 'http://192.168.219.73:8000';
 
   void _signUp() async{
     final id = _idController.text;
@@ -23,7 +24,7 @@ class _JoinState extends State<Join> {
 
       // post 방식의 데이터 전달을 위한 option
       dio.options.contentType = Headers.formUrlEncodedContentType;
-      Response res = await dio.post('http://192.168.219.61:8000/user/join',
+      Response res = await dio.post('$baseUrl/user/join',
           data: {'id' : "$id", 'password' : '$password', 'username':'$username'});
 
       // 전송결과 출력
@@ -54,7 +55,8 @@ class _JoinState extends State<Join> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                  child: Image.asset('assets/images/plantpot.png',width: 70,height: 70,color: Colors.teal.shade900,)),
+                  child: Image.asset('assets/images/plantpot.png',width: 70,height: 70,color: Colors.teal.shade900,)
+              ),
               SizedBox(height: 15),
               Text('Welcome!',
                 style: TextStyle(fontFamily:'산토끼',fontSize: 30, color:Colors.teal.shade600,fontWeight: FontWeight.bold),

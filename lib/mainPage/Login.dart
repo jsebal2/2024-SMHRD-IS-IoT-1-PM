@@ -19,13 +19,14 @@ class _LoginState extends State<Login> {
   final TextEditingController _passwordController = TextEditingController();
   final dio = Dio();
   final FlutterSecureStorage secureStorage = FlutterSecureStorage();
+  final String baseUrl = 'http://192.168.219.73:8000';
 
   Future<void> login(BuildContext context) async {
     final id = _idController.text;
     final password = _passwordController.text;
 
     dio.options.contentType = Headers.formUrlEncodedContentType;
-    Response res = await dio.post('http://192.168.219.61:8000/user/login',
+    Response res = await dio.post('$baseUrl/user/login',
         data: {'id' : '$id', 'password' : '$password'});
 
     // 전송결과 출력

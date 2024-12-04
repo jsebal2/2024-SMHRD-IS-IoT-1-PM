@@ -19,6 +19,7 @@ class _AddPotState extends State<AddPot> {
   final TextEditingController _nickController = TextEditingController();
   final FlutterSecureStorage secureStorage = FlutterSecureStorage();
   String? _token;
+  final String baseUrl = 'http://192.168.219.73:8000';
 
 
 
@@ -34,7 +35,7 @@ class _AddPotState extends State<AddPot> {
 
     // post 방식의 데이터 전달을 위한 option
     dio.options.contentType = Headers.formUrlEncodedContentType;
-    Response res = await dio.post('http://192.168.219.61:8000/plant/enroll',
+    Response res = await dio.post('$baseUrl/plant/enroll',
         data: {'name' : "$name", 'nick':'$nick', 'id':"$token"});
 
     //홈 화면으로 이동
