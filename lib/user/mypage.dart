@@ -6,6 +6,7 @@ import 'package:pm_project/user/Delete.dart';
 import 'package:pm_project/mainPage/Login.dart';
 import 'package:pm_project/user/update.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import '../mainPage/Pot.dart';
 
 class Mypage extends StatefulWidget {
   const Mypage({super.key});
@@ -47,6 +48,8 @@ class _MypageState extends State<Mypage> {
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => Login()));
   }
+
+
 
 
 
@@ -116,6 +119,15 @@ class _MypageState extends State<Mypage> {
                                       style: TextStyle(fontSize: 18, fontFamily: '눈누토끼',letterSpacing: 3)),
                                 ],
                               ),
+                              Center(
+                                child: ElevatedButton(
+                                    onPressed: (){
+                                      showModalBottomSheet(context: context,
+                                          builder: (BuildContext context) {
+                                        return AddPot();
+                                          });
+                                    }, child: Text('바텀시트')),
+                              )
                             ],
                           );
                         } else {
