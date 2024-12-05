@@ -38,14 +38,27 @@ class _AddPotState extends State<AddPot> {
     Response res = await dio.post('$baseUrl/plant/enroll',
         data: {'name' : "$name", 'nick':'$nick', 'id':"$token"});
 
-    //홈 화면으로 이동
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => PageTest()));
+
 
     // 전송결과 출력
     print(res);
     if(res.statusCode == 200){
       print('dio|${res}');
+
+      Navigator.of(context).pop();
+
+      showDialog(context: context,
+          builder:(BuildContext context) {
+        return AlertDialog(
+          title: Text('등록 완료'),
+          content: Text('식물 등록이 완료되었습니다.'),
+          actions: [
+            TextButton(onPressed: (){
+              Navigator.of(context).pop();
+            }, child: Text('확인'))
+          ],
+        );
+          } );
     } else {
       print('error 발생');
     }
@@ -91,6 +104,15 @@ class _AddPotState extends State<AddPot> {
                 onPressed: _signUp,
                 child: Text('식물등록'),
               ),
+            ),
+
+            SizedBox(height: 100,),
+
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // 모달 닫기
+              },
+              child: Text('Close'),
             ),
           ],
         ),
