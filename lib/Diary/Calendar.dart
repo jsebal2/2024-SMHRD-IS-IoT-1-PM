@@ -322,8 +322,9 @@ class _CalendarState extends State<Calendar> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showDiaryDialog(context),
-        child: Icon(Icons.edit),
-        backgroundColor: Colors.green.shade400,
+        child: Icon(Icons.edit,color: Colors.white,),
+        backgroundColor: Colors.orangeAccent.shade700,
+        elevation: 0,
       ),
     );
   }

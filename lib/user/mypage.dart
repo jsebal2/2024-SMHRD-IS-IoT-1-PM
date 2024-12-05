@@ -119,15 +119,31 @@ class _MypageState extends State<Mypage> {
                                       style: TextStyle(fontSize: 18, fontFamily: '눈누토끼',letterSpacing: 3)),
                                 ],
                               ),
+                              SizedBox(height: 30,),
                               Center(
                                 child: ElevatedButton(
                                     onPressed: (){
                                       showModalBottomSheet(context: context,
                                           builder: (BuildContext context) {
                                         return AddPot();
-                                          });
-                                    }, child: Text('바텀시트')),
-                              )
+                                      });
+                                      }, child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Icon(Icons.add, color: Colors.white,size: 30,),
+                                            SizedBox(width: 10,),
+                                            Text('반려식물 추가하기',style: TextStyle(fontFamily: '눈누토끼',fontSize: 18,color: Colors.white),),
+                                      ],
+                                    ),
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.green.shade500,
+                                        padding: EdgeInsets.all(10),
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(80)
+                                        )
+                                    )
+                                ),
+                              ),
                             ],
                           );
                         } else {

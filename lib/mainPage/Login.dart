@@ -65,7 +65,7 @@ class _LoginState extends State<Login> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text('Smart Pot', style: TextStyle(fontFamily: '산토끼', fontSize:40,color: Colors.green.shade800,fontWeight: FontWeight.bold),),
+              Text('Smart Pot!', style: TextStyle(fontFamily: '산토끼', fontSize:40,color: Colors.green.shade800,fontWeight: FontWeight.bold),),
               SizedBox(height: 70),
 
               // ID 입력 필드
