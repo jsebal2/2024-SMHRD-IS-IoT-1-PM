@@ -104,14 +104,11 @@ class _CalendarState extends State<Calendar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       backgroundColor: Colors.lime.shade50,
       appBar: AppBar(
-        title: Text('Diary',
-        style:
-        TextStyle(fontFamily: '산토끼', fontSize: 30, fontWeight: FontWeight.bold,color: Colors.green.shade800),),
-
-      ),
-
+        backgroundColor: Colors.lime.shade50,
+        toolbarHeight: 20,),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -152,7 +149,7 @@ class _CalendarState extends State<Calendar> {
             ),
           ),
 
-          
+
           // 선택된 날짜와 정보 표시
           Expanded(
               child: Padding(

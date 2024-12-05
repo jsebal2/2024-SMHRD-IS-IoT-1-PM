@@ -227,32 +227,44 @@ class _MainpageState extends State<Mainpage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       backgroundColor: Colors.lime.shade50,
       appBar: AppBar(
         backgroundColor: Colors.lime.shade50,
         //title: Text('Smart Pot', style: TextStyle(fontFamily:'산토끼',fontSize: 40,fontWeight: FontWeight.w600),),
+        toolbarHeight: 70,
         centerTitle: true,
          //elevation: 0.0,
           actions:[
-            IconButton(onPressed: () async {
-            final imageBytes = await fetchImage();
-            if (imageBytes != null){
-              showDialog(context: context,
-                builder: (context) => ImagePopup(imageBytes: imageBytes),
-              );
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('이미지 불러오기 실패')),
-              );
-            }
-          }, icon: Column(
-            children: [
-              Text('Live',style: TextStyle(fontFamily: '카페24',color: Colors.redAccent,),),
-              Icon(Icons.photo_camera, size: 30,color: Colors.amber.shade900,),
-            ],
-          ),
+            IconButton(
+              onPressed: () async {
+                final imageBytes = await fetchImage();
+                if (imageBytes != null){
+                  showDialog(context: context,
+                    builder: (context) => ImagePopup(imageBytes: imageBytes),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('이미지 불러오기 실패')),
+                  );
+                }
+                },
+              icon: Column(
+                children: [
+                  Text('Live',style: TextStyle(fontFamily: '카페24',color: Colors.redAccent,),),
+                  Icon(Icons.photo_camera, size: 30,color: Colors.amber.shade900,),
+                ],
+              ),
             ),
+
+            //💡 play 버튼
+            IconButton(onPressed: () async {},
+                icon: Column(
+                  children: [
+                    Text('Play', style: TextStyle(fontFamily: '카페24', color: Colors.redAccent,),),
+                    Icon(Icons.play_arrow,  size: 30,color: Colors.amber.shade900,)
+                  ],
+                ))
           ],
       ),
 
