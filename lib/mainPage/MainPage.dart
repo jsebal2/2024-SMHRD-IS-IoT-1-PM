@@ -48,22 +48,7 @@ class _MainpageState extends State<Mainpage> {
     super.dispose();
   }
 
-  void _showSensorDataPopup(BuildContext context) {
-    showDialog(context: context, builder: (BuildContext context){
-      return AlertDialog(
-        title: Text('센서 데이터'),
-        content: _buildSensorDataContent(),
-        actions: [
-          TextButton(onPressed: (){
-            Navigator.of(context).pop();
-          },
-              child: Text('닫기')
-          )
-        ],
-      );
-    },
-    );
-  }
+
 
   Future<void> _checkPlantData() async {
     try {
@@ -97,43 +82,18 @@ class _MainpageState extends State<Mainpage> {
     }
   }
 
-  Widget _buildSensorDataContent() {
-    return FutureBuilder<Map<String, dynamic>>(
-        future: fetchSensorData(), // 센서 데이터 가져오기
-        builder: (context,snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting){
-            return Center(child: CircularProgressIndicator()); // 로딩중
-          } else if (snapshot.hasError) {
-            return Text('Error : ${snapshot.error}'); // 에러처리
-          } else if (snapshot.hasData) {
-            final data = snapshot.data!;
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                SensorDataCard(label: '온도', value: '${data['temp']}°C'),
-                SensorDataCard(label: '습도', value: '${data['humidity']}%'),
-                SensorDataCard(label: '조도', value: '${data['light']}lx'),
-              ],
-            );
-          } else {
-            return Text('No Data'); // 데이터 없음 처리
-          }
-        }
-    );
-  }
-
   List<String> generateMessage(double temp) {
     if (temp >= 18 && temp <= 25) {
       return [
-        '적정', '식물 재배에 알맞은 온도입니다.',
+        '적정', '"식물 재배에 알맞은 온도입니다."',
       ];
     } else if (temp < 18) {
       return [
-        '온도가 낮습니다.', '온도를 올려주는 것이 좋습니다.'
+        '온도가 낮습니다.', '"온도를 올려주는 것이 좋습니다."'
       ];
     } else {
       return [
-        '온도가 높습니다.', '온도를 낮춰주는 것이 좋습니다.'
+        '온도가 높습니다.', '"온도를 낮춰주는 것이 좋습니다."'
       ];
     }
   }
@@ -162,19 +122,84 @@ class _MainpageState extends State<Mainpage> {
             color: Colors.lightGreen.shade100,
             borderRadius: BorderRadius.circular(8.0),
           ),
-          child:
-          Center(
-            child: Text('"함께한지 ${data["date"]}일이 지났어요!"',
-              style: TextStyle(fontFamily:'카페24',fontSize: 20,fontWeight: FontWeight.w400),),
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text('"함께한지 ${data["date"]}일이 지났어요!"',
+                    style: TextStyle(fontFamily:'카페24',fontSize: 20,fontWeight: FontWeight.w400),),
+                  SizedBox(height: 10,),
+                  Divider(thickness: 1,color: Colors.green.shade800,),
+                  SizedBox(height: 20,),
+                  FutureBuilder(future: fetchSensorData(),
+                    builder: (context,snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting){
+                        return Center(child: CircularProgressIndicator()); // 로딩중
+                      } else if (snapshot.hasError) {
+                        return Text('Error : ${snapshot.error}'); // 에러처리
+                      } else if (snapshot.hasData) {
+                        final data = snapshot.data!;
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Container(
+                                child:
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Icon(Icons.device_thermostat, size: 25,color: Colors.red.shade700,),
+                                    SensorDataCard(label: '온도', value: '${data['temp']}°C'),
+                                  ],
+                                )),
+
+                            Container(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Icon(Icons.water_drop,size: 25,color: Colors.blueAccent.shade200,),
+                                    SensorDataCard(label: '습도', value: '${data['humidity']}%'),
+                                  ],
+                                )),
+
+                            Container(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Icon(Icons.sunny, size: 25, color: Colors.amber.shade400),
+                                SensorDataCard(label: '조도', value: '${data['light']}lx'),
+                              ],
+                            )),
+
+                          ],
+                        );
+                      } else {
+                        return Text('No Data'); // 데이터 없음 처리
+                      }
+                    },
+                  )
+                ],
+              ),
+            ),
           ),
+
         ),
+
         SizedBox(height: 20,),
         Row(
           children: [
-            Icon(Icons.device_thermostat, size: 25,),
-            Text(tempMessages[0], style: TextStyle(fontFamily:'카페24', fontSize: 20),),
+            Row(
+              children: [
+                //Icon(Icons., size: 25,),
+                SizedBox(width: 30,),
+                Text(tempMessages[0], style: TextStyle(fontFamily:'카페24', fontSize: 20),),
+                SizedBox(width: 30,),
+                Text(tempMessages[1], style: TextStyle(fontFamily:'카페24', fontSize: 20),),
+              ],
+            ),
           ],),
-        Text(tempMessages[1], style: TextStyle(fontFamily:'카페24', fontSize: 20),),
+
       ],
     );
   }
@@ -199,20 +224,38 @@ class _MainpageState extends State<Mainpage> {
 
 
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.lime.shade50,
       appBar: AppBar(
-        title: Text('Smart Pot', style: TextStyle(fontFamily:'산토끼',fontSize: 40,fontWeight: FontWeight.w600),),
-        shape: Border(
-          bottom: BorderSide(
-            color: Colors.grey,
-            width: 1,
+        backgroundColor: Colors.lime.shade50,
+        //title: Text('Smart Pot', style: TextStyle(fontFamily:'산토끼',fontSize: 40,fontWeight: FontWeight.w600),),
+        centerTitle: true,
+         //elevation: 0.0,
+          actions:[
+            IconButton(onPressed: () async {
+            final imageBytes = await fetchImage();
+            if (imageBytes != null){
+              showDialog(context: context,
+                builder: (context) => ImagePopup(imageBytes: imageBytes),
+              );
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('이미지 불러오기 실패')),
+              );
+            }
+          }, icon: Column(
+            children: [
+              Text('Live',style: TextStyle(fontFamily: '카페24',color: Colors.redAccent,),),
+              Icon(Icons.photo_camera, size: 30,color: Colors.amber.shade900,),
+            ],
           ),
-        ),
+            ),
+          ],
       ),
+
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(14.0),
@@ -228,7 +271,7 @@ class _MainpageState extends State<Mainpage> {
 
                       SizedBox(height: 8),
                       InkWell(
-                        onTap: () => _showSensorDataPopup(context),
+
                         child: Container(
                           width: 250.0, // 원형의 크기 (지름)
                           height: 250.0,
@@ -270,7 +313,7 @@ class _MainpageState extends State<Mainpage> {
                 ),
               ),
 
-              SizedBox(height: 16),
+              SizedBox(height: 20),
 
               // 조명 지속 시간 부분
               Container(
@@ -383,27 +426,31 @@ class _MainpageState extends State<Mainpage> {
 
               SizedBox(height: 18),
               // 하단 버튼 (CCTV로 이동)
-              Center(
-                child: ElevatedButton(
-                  onPressed: () async {
-                    final imageBytes = await fetchImage();
-                    if (imageBytes != null){
-                      showDialog(context: context,
-                        builder: (context) => ImagePopup(imageBytes: imageBytes),
-                      );
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('이미지 불러오기 실패')),
-                      );
-                    }
-                  }, child: Text('Show Image Popup'),
-                ),
-              ),
-            ],
-          ),
+              // Center(
+              //   child: ElevatedButton(
+              //     onPressed: () async {
+              //       final imageBytes = await fetchImage();
+              //       if (imageBytes != null){
+              //         showDialog(context: context,
+              //           builder: (context) => ImagePopup(imageBytes: imageBytes),
+              //         );
+              //       } else {
+              //         ScaffoldMessenger.of(context).showSnackBar(
+              //           SnackBar(content: Text('이미지 불러오기 실패')),
+              //         );
+              //       }
+              //     }, child: Icon(Icons.camera, color: Colors.white,),
+              //     style: ElevatedButton.styleFrom(
+              //       backgroundColor: Colors.green.shade600,
+              //       padding: EdgeInsets.all(10),
+              //       shape: RoundedRectangleBorder(
+              //         borderRadius: BorderRadius.circular(10)
+              ],
+           ),
         ),
       ),
     );
+
 
   }
 }
