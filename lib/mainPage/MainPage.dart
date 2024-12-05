@@ -23,6 +23,7 @@ class _MainpageState extends State<Mainpage> {
   double lightTime = 0;
   double lightPower = 0;
   final FlutterSecureStorage secureStorage = FlutterSecureStorage();
+  final String baseUrl = 'http://192.168.219.73:8000';
 
 
   @override
@@ -57,7 +58,7 @@ class _MainpageState extends State<Mainpage> {
       if (token != null) {
         // 서버에 토큰 전송
         var response = await Dio().post(
-          'http://192.168.219.61:8000/plant/isthere',
+          '$baseUrl/plant/isthere',
           data: {'id': token},
         );
 
@@ -205,7 +206,7 @@ class _MainpageState extends State<Mainpage> {
 
   Future<void> lightTimer(double value) async {
     try {
-      final respose = await dio.get('http://192.168.219.61:8000/sensor/act',
+      final respose = await dio.get('$baseUrl/sensor/act',
           queryParameters: {'lightTimer' : '$value'});
     }catch(e) {
       print('Error => $e');
@@ -214,7 +215,7 @@ class _MainpageState extends State<Mainpage> {
 
   Future<void> lightControl(double value) async {
     try {
-      final respose = await dio.get('http://192.168.219.61:8000/sensor/act',
+      final respose = await dio.get('$baseUrl/sensor/act',
           queryParameters: {'lightTimer' : '$value'});
     }catch(e) {
       print('Error => $e');

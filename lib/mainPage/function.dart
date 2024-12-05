@@ -7,6 +7,7 @@ import 'dart:async';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 final dio = Dio();
+const String baseUrl = 'http://192.168.219.73:8000';
 
 late Timer _timer;
 
@@ -19,7 +20,7 @@ bool hasPlantData = false;
 
 // get 방식
 void getDio() async{
-  Response res = await dio.get('http://192.168.219.61:8000',
+  Response res = await dio.get('$baseUrl',
       queryParameters: {'data' : 'DDDDDDDDDDDDDDD','send':'get'}
   );
   // 전송결과 출력
@@ -52,7 +53,7 @@ void postDio() async{
 // 센서 데이터 화면에 출력
 Future<Map<String, dynamic>> fetchSensorData() async{
   try{
-    final response = await dio.get('http://192.168.219.61:8000/sensor/sen',
+    final response = await dio.get('$baseUrl/sensor/sen',
          queryParameters: {'data' : 'good','send':'get'}
     );
     if (response.statusCode == 200) {
@@ -72,7 +73,7 @@ Future<Map<String, dynamic>> fetchSensorData() async{
 void controlDevice(String device, bool state) async {
   try {
     Response res = await dio.get(
-      'http://192.168.219.61:8000/sensor/act',
+      '$baseUrl/sensor/act',
       queryParameters: {"senser": device, "state": '$state'},
     );
     print('Device $device set to ${state ? "ON" : "OFF"}');
@@ -84,7 +85,7 @@ void controlDevice(String device, bool state) async {
 Future<typed_data.Uint8List?> fetchImage() async {
   try {
     final response = await dio.get(
-      'http://192.168.219.61:8000/pic/pull', options: Options(responseType: ResponseType.bytes));
+      '$baseUrl/pic/pull', options: Options(responseType: ResponseType.bytes));
 
     if (response.statusCode == 200) {
       return typed_data.Uint8List.fromList(response.data);

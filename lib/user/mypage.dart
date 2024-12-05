@@ -18,6 +18,7 @@ class _MypageState extends State<Mypage> {
 
   final FlutterSecureStorage secureStorage = FlutterSecureStorage();
   String? _token;
+  final String baseUrl = 'http://192.168.219.73:8000';
 
   @override
   void initState() {

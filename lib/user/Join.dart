@@ -13,6 +13,7 @@ class _JoinState extends State<Join> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final dio = Dio();
+  final String baseUrl = 'http://192.168.219.73:8000';
 
   void _signUp() async{
     final id = _idController.text;
@@ -23,7 +24,7 @@ class _JoinState extends State<Join> {
 
       // post 방식의 데이터 전달을 위한 option
       dio.options.contentType = Headers.formUrlEncodedContentType;
-      Response res = await dio.post('http://192.168.219.61:8000/user/join',
+      Response res = await dio.post('$baseUrl/user/join',
           data: {'id' : "$id", 'password' : '$password', 'username':'$username'});
 
       // 전송결과 출력

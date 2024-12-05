@@ -13,6 +13,7 @@ class _DeleteState extends State<Delete> {
   final dio = Dio();
   final TextEditingController idController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final String baseUrl = 'http://192.168.219.73:8000';
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +93,7 @@ class _DeleteState extends State<Delete> {
                 void sendData() async{
                   // post 방식의 데이터 전달을 위한 option
                   dio.options.contentType = Headers.formUrlEncodedContentType;
-                  Response res = await dio.post('http://192.168.219.61:8000/user/change',
+                  Response res = await dio.post('$baseUrl/user/change',
                       data: {'name' : '$name', 'password' : '$password'});
 
                   // 전송결과 출력
