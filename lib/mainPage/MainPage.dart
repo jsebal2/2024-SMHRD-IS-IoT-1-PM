@@ -24,9 +24,11 @@ class _MainpageState extends State<Mainpage> {
   double lightPower = 0;
   final FlutterSecureStorage secureStorage = FlutterSecureStorage();
   final String baseUrl = 'http://192.168.219.73:8000';
-  String _imageUrl = 'assets/images/1level_normal.png';
+  String _imageUrl = 'assets/images/1/normal_normal_normal.png';
   int _level = 1;
   String _temperatureStatus = 'normal';
+  String _waterStatus = 'normal';
+  String _diseaseStatus = 'normal';
 
 
   @override
@@ -111,6 +113,8 @@ class _MainpageState extends State<Mainpage> {
       final sensorData = await fetchSensorData();
       int level = sensorData["level"];
       int temp = sensorData["temp"];
+      int water = sensorData['water_level'];
+      int disease = sensorData["disease"];
       print(sensorData);
 
       String temperatureStatus;
@@ -122,11 +126,17 @@ class _MainpageState extends State<Mainpage> {
         temperatureStatus = 'normal';
       }
 
+      String waterLevel = (water == 0) ? 'normal' : 'dry';
+
+      String diseaseStatus = (disease == 1) ? 'normal' : 'disease';
+
       setState(() {
         _level = level;
         // ${_level}
         _temperatureStatus =temperatureStatus;
-        _imageUrl = 'assets/images/${_level}level_${_temperatureStatus}.png';
+        _waterStatus = waterLevel;
+        _diseaseStatus = diseaseStatus;
+        _imageUrl = 'assets/images/${_level}/${_diseaseStatus}_${_waterStatus}_${_temperatureStatus}.png';
       });
     } catch (e) {
       print('사진 변경하는중에 에러 발생 $e');
