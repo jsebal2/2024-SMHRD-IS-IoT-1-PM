@@ -21,8 +21,8 @@ def readSQL(file_name, file_ext):
                                 db=os.environ.get("DB_DB"))
         cur = conn.cursor()
         # 파일사이즈 필요? diary_idx 삭제 요청
-        sql = f"""INSERT INTO tbl_file (file_rname, file_ext, uploaded_at) 
-        VALUES("{file_name}","{file_ext}",NOW())"""
+        sql = f"""INSERT INTO tbl_file (file_rname, file_ext, uploaded_at,diary_idx) 
+        VALUES("{file_name}","{file_ext}",NOW(),1)"""
         # sql문 실행
         cur.execute(sql)
     except pymysql.err.InternalError as e:
