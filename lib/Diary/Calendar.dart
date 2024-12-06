@@ -35,13 +35,13 @@ class _CalendarState extends State<Calendar> {
     try {
       print('보내는 함수 내부 프린트 $token');
       // 서버로부터 데이터 가져오기
-    final response = await dio.post("http://192.168.219.73:8000/diary/marker",
+      final response = await dio.post("http://192.168.219.73:8000/diary/marker",
         options : Options(
           headers: {
-             'Authorization': '$token'
+            'Authorization': '$token'
           },
         ),
-        );
+      );
 
       if (response.statusCode == 200) {
         //print('성공 : ${response.data}');
@@ -199,17 +199,17 @@ class _CalendarState extends State<Calendar> {
                 ),
                 weekendTextStyle: TextStyle(color: Colors.red),
 
-                  // 마커구현
-                  canMarkersOverflow: false,
-                  markersAutoAligned: true,
-                  markerSize: 10,
-                  markerSizeScale: 10,
-                  markersAnchor: 0.7,
-                  markerMargin: const EdgeInsets.symmetric(horizontal: 0.3),
-                  markersAlignment: Alignment.bottomCenter,
-                  markersMaxCount: 1,
-                  markersOffset: const PositionedOffset(),
-                  markerDecoration: BoxDecoration(
+                // 마커구현
+                canMarkersOverflow: false,
+                markersAutoAligned: true,
+                markerSize: 10,
+                markerSizeScale: 10,
+                markersAnchor: 0.7,
+                markerMargin: const EdgeInsets.symmetric(horizontal: 0.3),
+                markersAlignment: Alignment.bottomCenter,
+                markersMaxCount: 1,
+                markersOffset: const PositionedOffset(),
+                markerDecoration: BoxDecoration(
                   color:Colors.orange,
                   shape: BoxShape.circle,
                 ),
@@ -222,18 +222,18 @@ class _CalendarState extends State<Calendar> {
 
               // 📅 마커 구현
               calendarBuilders: CalendarBuilders(
-                markerBuilder: (context, day, _focusedDay) {
-                  if (_updatedDates.any((markedDate)=>
-                  markedDate.year == day.year &&
-                  markedDate.month == day.month &&
-                  markedDate.day == day.day)) {
-                    return Container(
-                      margin: EdgeInsets.all(4),
-                      child: Icon(Icons.eco, color: Colors.deepOrange,size: 20,),
-                    );
+                  markerBuilder: (context, day, _focusedDay) {
+                    if (_updatedDates.any((markedDate)=>
+                    markedDate.year == day.year &&
+                        markedDate.month == day.month &&
+                        markedDate.day == day.day)) {
+                      return Container(
+                        margin: EdgeInsets.all(4),
+                        child: Icon(Icons.eco, color: Colors.deepOrange,size: 20,),
+                      );
+                    }
+                    return null;
                   }
-                  return null;
-                }
               ),
             ),
           ),
@@ -261,8 +261,8 @@ class _CalendarState extends State<Calendar> {
                                     replacement: Container(
                                       padding: EdgeInsets.all(20),
                                       decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(20)
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(20)
                                       ),
                                       child: Container(
                                         child: Text(

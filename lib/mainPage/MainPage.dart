@@ -91,15 +91,15 @@ class _MainpageState extends State<Mainpage> {
   List<String> generateMessage(double temp) {
     if (temp >= 18 && temp <= 25) {
       return [
-        '적정', '"식물 재배에 알맞은 온도입니다."',
+        '😀', '"식물 재배에 알맞은 온도입니다."',
       ];
     } else if (temp < 18) {
       return [
-        '온도가 낮습니다.', '"온도를 올려주는 것이 좋습니다."'
+        '🤧', '"온도를 올려주는 것이 좋습니다."'
       ];
     } else {
       return [
-        '온도가 높습니다.', '"온도를 낮춰주는 것이 좋습니다."'
+        '🥵', '"온도를 낮춰주는 것이 좋습니다."'
       ];
     }
   }
@@ -224,14 +224,15 @@ class _MainpageState extends State<Mainpage> {
         SizedBox(height: 20,),
         Row(
           children: [
-            Column(
+            Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 //Icon(Icons., size: 25,),
                 SizedBox(width: 30,),
                 Text(tempMessages[0], style: TextStyle(fontFamily:'카페24', fontSize: 20),),
                 SizedBox(width: 30,),
-                Text(tempMessages[1], style: TextStyle(fontFamily:'카페24', fontSize: 20),),
+                Center(
+                    child: Text(tempMessages[1], style: TextStyle(fontFamily:'카페24', fontSize: 20, color: Colors.red.shade500),)),
               ],
             ),
           ],),
@@ -268,7 +269,7 @@ class _MainpageState extends State<Mainpage> {
       appBar: AppBar(
         backgroundColor: Colors.lime.shade50,
         //title: Text('Smart Pot', style: TextStyle(fontFamily:'산토끼',fontSize: 40,fontWeight: FontWeight.w600),),
-        toolbarHeight: 70,
+        toolbarHeight: 100,
         centerTitle: true,
          //elevation: 0.0,
           actions:[
@@ -288,7 +289,7 @@ class _MainpageState extends State<Mainpage> {
               icon: Column(
                 children: [
                   Text('Live',style: TextStyle(fontFamily: '카페24',color: Colors.redAccent,),),
-                  Icon(Icons.photo_camera, size: 30,color: Colors.amber.shade900,),
+                  Icon(Icons.photo_camera, size: 35,color: Colors.amber.shade900,),
                 ],
               ),
             ),
@@ -298,7 +299,7 @@ class _MainpageState extends State<Mainpage> {
                 icon: Column(
                   children: [
                     Text('Play', style: TextStyle(fontFamily: '카페24', color: Colors.redAccent,),),
-                    Icon(Icons.play_arrow,  size: 30,color: Colors.amber.shade900,)
+                    Icon(Icons.play_arrow,  size: 35,color: Colors.amber.shade900,)
                   ],
                 ))
           ],
@@ -473,26 +474,6 @@ class _MainpageState extends State<Mainpage> {
               ),
 
               SizedBox(height: 18),
-              // 하단 버튼 (CCTV로 이동)
-              // Center(
-              //   child: ElevatedButton(
-              //     onPressed: () async {
-              //       final imageBytes = await fetchImage();
-              //       if (imageBytes != null){
-              //         showDialog(context: context,
-              //           builder: (context) => ImagePopup(imageBytes: imageBytes),
-              //         );
-              //       } else {
-              //         ScaffoldMessenger.of(context).showSnackBar(
-              //           SnackBar(content: Text('이미지 불러오기 실패')),
-              //         );
-              //       }
-              //     }, child: Icon(Icons.camera, color: Colors.white,),
-              //     style: ElevatedButton.styleFrom(
-              //       backgroundColor: Colors.green.shade600,
-              //       padding: EdgeInsets.all(10),
-              //       shape: RoundedRectangleBorder(
-              //         borderRadius: BorderRadius.circular(10)
               ],
            ),
         ),

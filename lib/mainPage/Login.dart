@@ -52,11 +52,8 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade50,
-      // appBar: AppBar(
-      //   title:
-      //   Text('Smart Pot', style: TextStyle(fontFamily: '산토끼', fontSize:40,color: Colors.green.shade900),),
-      // ),
+      appBar: AppBar(
+      ),
 
       body: Center(
         child: Padding(
