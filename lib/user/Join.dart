@@ -55,7 +55,7 @@ class _JoinState extends State<Join> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                  child: Image.asset('assets/images/plantpot.png',width: 70,height: 70,color: Colors.teal.shade900,)
+                  child: Image.asset('assets/images/plant_icon.png',width: 70,height: 70,color: Colors.teal.shade900,)
               ),
               SizedBox(height: 15),
               Text('Welcome!',

@@ -19,8 +19,57 @@ class _CalendarState extends State<Calendar> {
   String title = '';
   String content = '';
   String img_url = '';
+  DateTime creat_at = DateTime.now();
+  List<DateTime> _updatedDates = [];
 
+  @override
+  void initState () {
+    super.initState();
+    _loadMarkedDates();
+  }
+  // 📆 달력 마커 날짜 불러오기
+  Future<void> _loadMarkedDates() async{
+    // 저장한 값 가져오기(읽기 - key : "키값")
+    String? token = await secureStorage.read(key : 'authToken');
 
+    try {
+      print('보내는 함수 내부 프린트 $token');
+      // 서버로부터 데이터 가져오기
+    final response = await dio.post("http://192.168.219.73:8000/diary/marker",
+        options : Options(
+          headers: {
+             'Authorization': '$token'
+          },
+        ),
+        );
+
+      if (response.statusCode == 200) {
+        //print('성공 : ${response.data}');
+        // 서버에서 rows 추출 및 변환
+        List<dynamic> serverData = response.data['rows'];
+        List<DateTime> updatedDates = []; // 하루씩 더한 날짜를 저장할 리스트
+
+        for (var data in serverData) {
+          // 'created_at' 필드에서 바로 DateTime으로 변환
+          DateTime originalDate = DateTime.parse(data['created_at']);// 날짜 변환
+
+          // 하루 더하기
+          DateTime updatedDate = originalDate.add(Duration(days: 1));
+          _updatedDates.add(updatedDate);
+
+          // 날짜표현 변환 (yyyy-MM-dd)
+          String addDate = DateFormat('yyyy-MM-dd').format(updatedDate);
+          print('하루 더한 날짜: $addDate');
+        }
+        return response.data;
+      } else {
+        print('데이터 받기 실패 왜? ${response.statusCode}');
+        return null;
+      }
+    }catch(e){
+      print("마커에서 에러발생 $e");
+    }
+  }
 
   // 토큰 불러오기
   Future<String?> getToken() async {
@@ -59,7 +108,6 @@ class _CalendarState extends State<Calendar> {
   }
 
 
-
   void onDaySelected(DateTime selectedDate, DateTime focusedDate) async {
     setState(() {
       _selectedDay = selectedDate;
@@ -80,6 +128,10 @@ class _CalendarState extends State<Calendar> {
     Map<String, dynamic>? picData = await fetchDateForServer(
         token, selectedDate, 'http://192.168.219.73:8000/pic/pull');
 
+    Map<dynamic, dynamic>? markerData = await fetchDateForServer(
+        token, selectedDate,'http://192.168.219.73:8000/diary/marker');
+
+
     if (diaryData != null) {
       setState(() {
         title = diaryData['title'] ?? 'No title';
@@ -95,9 +147,13 @@ class _CalendarState extends State<Calendar> {
     } else {
       print('사진 데이터 없음');
     }
+    if (markerData != null) {
+      setState(() {
+        creat_at = markerData['created_at'] ?? '';
+      });
+    }else {
+    }
   }
-
-
 
 
 
@@ -122,6 +178,7 @@ class _CalendarState extends State<Calendar> {
                 return isSameDay(_selectedDay, day);
               },
               onDaySelected: onDaySelected,
+
               headerStyle: HeaderStyle(
                 formatButtonVisible: false,
                 titleCentered: true,
@@ -141,10 +198,42 @@ class _CalendarState extends State<Calendar> {
                   shape: BoxShape.circle,
                 ),
                 weekendTextStyle: TextStyle(color: Colors.red),
+
+                  // 마커구현
+                  canMarkersOverflow: false,
+                  markersAutoAligned: true,
+                  markerSize: 10,
+                  markerSizeScale: 10,
+                  markersAnchor: 0.7,
+                  markerMargin: const EdgeInsets.symmetric(horizontal: 0.3),
+                  markersAlignment: Alignment.bottomCenter,
+                  markersMaxCount: 1,
+                  markersOffset: const PositionedOffset(),
+                  markerDecoration: BoxDecoration(
+                  color:Colors.orange,
+                  shape: BoxShape.circle,
+                ),
               ),
+
               daysOfWeekStyle: DaysOfWeekStyle(
                 weekdayStyle: TextStyle(color: Colors.black),
                 weekendStyle: TextStyle(color: Colors.red),
+              ),
+
+              // 📅 마커 구현
+              calendarBuilders: CalendarBuilders(
+                markerBuilder: (context, day, _focusedDay) {
+                  if (_updatedDates.any((markedDate)=>
+                  markedDate.year == day.year &&
+                  markedDate.month == day.month &&
+                  markedDate.day == day.day)) {
+                    return Container(
+                      margin: EdgeInsets.all(4),
+                      child: Icon(Icons.eco, color: Colors.deepOrange,size: 20,),
+                    );
+                  }
+                  return null;
+                }
               ),
             ),
           ),
@@ -158,7 +247,6 @@ class _CalendarState extends State<Calendar> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Column(
-
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
@@ -167,6 +255,31 @@ class _CalendarState extends State<Calendar> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                Container(
+                                  child: Visibility(
+                                    visible: img_url.isNotEmpty, // 조건에 따라 표시 여부 결정
+                                    replacement: Container(
+                                      padding: EdgeInsets.all(20),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(20)
+                                      ),
+                                      child: Container(
+                                        child: Text(
+                                          '이미지가 없습니다.',
+                                          style: TextStyle(fontFamily:'눈눈토끼',fontSize: 16, color: Colors.grey),
+                                        ),
+
+                                      ),
+                                    ), // visible이 false일 때 대체할 위젯
+
+                                    child: Container(
+                                      child: Image.network(img_url,
+                                        width: 200, height: 200, fit: BoxFit.contain,
+                                      ),
+                                    ),
+                                  ),
+                                ),
                                 Text('선택된 날짜',
                                   style: TextStyle(fontFamily:'눈누토끼',fontSize: 18,fontWeight: FontWeight.bold,letterSpacing: 2),
                                 ),
@@ -185,21 +298,6 @@ class _CalendarState extends State<Calendar> {
                                 SizedBox(height: 20,),
                               ],
                             ),
-
-                            Container(
-                              child: Visibility(
-                                visible: img_url.isNotEmpty, // 조건에 따라 표시 여부 결정
-                                replacement: Text(
-                                  '이미지가 없습니다.',
-                                  style: TextStyle(fontSize: 16, color: Colors.grey),
-                                ), // visible이 false일 때 대체할 위젯
-                                child: Container(
-                                  child: Image.network(img_url,
-                                    width: 200, height: 200, fit: BoxFit.contain,
-                                  ),
-                                ),
-                              ),
-                            ),
                           ],
                         ),
 
@@ -217,18 +315,16 @@ class _CalendarState extends State<Calendar> {
                             )
                           ],
                         ),
-
                       ],
                     ),
-
-
                   ],
                 ),))],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showDiaryDialog(context),
-        child: Icon(Icons.edit),
-        backgroundColor: Colors.green.shade400,
+        child: Icon(Icons.edit,color: Colors.white,),
+        backgroundColor: Colors.orangeAccent.shade700,
+        elevation: 0,
       ),
     );
   }
