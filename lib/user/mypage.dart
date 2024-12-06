@@ -51,8 +51,6 @@ class _MypageState extends State<Mypage> {
 
 
 
-
-
   // id 및 식물 id 값 가져오기
   Future<Map<String, String>> fetchUserData() async{
     await Future.delayed(Duration(seconds: 1));

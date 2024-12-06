@@ -112,7 +112,8 @@ class _LoginState extends State<Login> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10)
                       )
-                  ),),
+                  ),
+                ),
               ),
               SizedBox(height: 15),
 

@@ -57,34 +57,37 @@ class _BottomState extends State<Bottom> {
           topLeft: Radius.circular(30),
           topRight: Radius.circular(30)
         ),
-        child: BottomNavigationBar(
-          backgroundColor: Colors.lime.shade200,
-          currentIndex: _currentIndex,
-          showSelectedLabels: true,
-          showUnselectedLabels: false,
-          selectedLabelStyle: TextStyle(
-            fontFamily: '카페24',fontSize: 15, color: Colors.brown),
-          unselectedLabelStyle: TextStyle(
-            fontFamily: '카페24', fontSize: 15, color: Colors.grey),
-          unselectedItemColor: Colors.grey,
-          selectedItemColor: Colors.brown,
-        
-          onTap: _onTap,
-          items: const [
-        
-            BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_today),
-              label: 'Calendar',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'MyPage',
-            ),
-          ],
+        child: Container(
+          height: 80,
+          child: BottomNavigationBar(
+            backgroundColor: Colors.lime.shade200,
+            currentIndex: _currentIndex,
+            showSelectedLabels: true,
+            showUnselectedLabels: false,
+            selectedLabelStyle: TextStyle(
+              fontFamily: '카페24',fontSize: 15, color: Colors.brown),
+            unselectedLabelStyle: TextStyle(
+              fontFamily: '카페24', fontSize: 15, color: Colors.grey),
+            unselectedItemColor: Colors.grey,
+            selectedItemColor: Colors.brown,
+
+            onTap: _onTap,
+            items: const [
+
+              BottomNavigationBarItem(
+                icon: Icon(Icons.calendar_today),
+                label: 'Calendar',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'Home',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.person),
+                label: 'MyPage',
+              ),
+            ],
+          ),
         ),
       ),
     );
