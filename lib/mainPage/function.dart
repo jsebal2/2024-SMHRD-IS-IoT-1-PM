@@ -58,7 +58,9 @@ Future<Map<String, dynamic>> fetchSensorData() async{
     );
     if (response.statusCode == 200) {
       // Json 데이터에서 title만 리스트로 추출
-      return response.data["data"]; // JSON 데이터를 맵 형태로 반환
+      print(response.data);
+      return response.data["data"];// JSON 데이터를 맵 형태로 반환
+
     }else {
       throw Exception('Failed to load data');
     }

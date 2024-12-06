@@ -24,6 +24,9 @@ class _MainpageState extends State<Mainpage> {
   double lightPower = 0;
   final FlutterSecureStorage secureStorage = FlutterSecureStorage();
   final String baseUrl = 'http://192.168.219.73:8000';
+  String _imageUrl = 'assets/images/1level_normal.png';
+  int _level = 1;
+  String _temperatureStatus = 'normal';
 
 
   @override
@@ -35,11 +38,14 @@ class _MainpageState extends State<Mainpage> {
   }
 
   void _startAutoRefresh() {
-    _timer = Timer.periodic(Duration(milliseconds: 30000), (timer) {
-      setState(() {
-        _sensorDataFuture = fetchSensorData(); // 1분뒤 데이터 다시 가져오기
-      });
+    _timer = Timer.periodic(Duration(milliseconds: 10000), (timer) {
+      _fetchSensorDataAndSetImage();
+      // setState(() {
+      //   _sensorDataFuture = fetchSensorData(); // 1분뒤 데이터 다시 가져오기
+      //
+      // });
     });
+
   }
 
   @override
@@ -95,6 +101,35 @@ class _MainpageState extends State<Mainpage> {
       return [
         '온도가 높습니다.', '"온도를 낮춰주는 것이 좋습니다."'
       ];
+    }
+  }
+
+  Future<void> _fetchSensorDataAndSetImage() async {
+    print("dld");
+    try {
+      print("SSSSSSSSSSSSSSSSSSS");
+      final sensorData = await fetchSensorData();
+      int level = sensorData["level"];
+      int temp = sensorData["temp"];
+      print(sensorData);
+
+      String temperatureStatus;
+      if (temp < 18) {
+        temperatureStatus = 'cold';
+      } else if (temp > 25) {
+        temperatureStatus = 'hot';
+      } else {
+        temperatureStatus = 'normal';
+      }
+
+      setState(() {
+        _level = level;
+        // ${_level}
+        _temperatureStatus =temperatureStatus;
+        _imageUrl = 'assets/images/${_level}level_${_temperatureStatus}.png';
+      });
+    } catch (e) {
+      print('사진 변경하는중에 에러 발생 $e');
     }
   }
 
@@ -189,7 +224,8 @@ class _MainpageState extends State<Mainpage> {
         SizedBox(height: 20,),
         Row(
           children: [
-            Row(
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 //Icon(Icons., size: 25,),
                 SizedBox(width: 30,),
@@ -295,7 +331,7 @@ class _MainpageState extends State<Mainpage> {
                               width: 2.0,
                             ),// 원형으로 설정
                             image: DecorationImage(
-                              image: AssetImage('assets/images/10.jpg'), // 이미지 경로
+                              image: AssetImage(_imageUrl), // 이미지 경로
                               fit: BoxFit.cover, // 이미지가 원 안에 잘 채워짐
                             ),
                           ),
