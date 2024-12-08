@@ -211,11 +211,11 @@ class _MainpageState extends State<Mainpage> {
                             Container(
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Icon(Icons.sunny, size: 25, color: Colors.amber.shade400),
-                                SensorDataCard(label: '조도', value: '${data['light']}lx'),
-                              ],
-                            )),
+                                  children: [
+                                    Icon(Icons.sunny, size: 25, color: Colors.amber.shade400),
+                                    SensorDataCard(label: '조도', value: '${data['light']}lx'),
+                                  ],
+                                )),
 
                           ],
                         );
@@ -281,38 +281,38 @@ class _MainpageState extends State<Mainpage> {
         //title: Text('Smart Pot', style: TextStyle(fontFamily:'산토끼',fontSize: 40,fontWeight: FontWeight.w600),),
         toolbarHeight: 100,
         centerTitle: true,
-         //elevation: 0.0,
-          actions:[
-            IconButton(
-              onPressed: () async {
-                final imageBytes = await fetchImage();
-                if (imageBytes != null){
-                  showDialog(context: context,
-                    builder: (context) => ImagePopup(imageBytes: imageBytes),
-                  );
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('이미지 불러오기 실패')),
-                  );
-                }
-                },
+        //elevation: 0.0,
+        actions:[
+          IconButton(
+            onPressed: () async {
+              final imageBytes = await fetchImage();
+              if (imageBytes != null){
+                showDialog(context: context,
+                  builder: (context) => ImagePopup(imageBytes: imageBytes),
+                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('이미지 불러오기 실패')),
+                );
+              }
+            },
+            icon: Column(
+              children: [
+                Text('Live',style: TextStyle(fontFamily: '카페24',color: Colors.redAccent,),),
+                Icon(Icons.photo_camera, size: 35,color: Colors.amber.shade900,),
+              ],
+            ),
+          ),
+
+          //💡 play 버튼
+          IconButton(onPressed: () async {},
               icon: Column(
                 children: [
-                  Text('Live',style: TextStyle(fontFamily: '카페24',color: Colors.redAccent,),),
-                  Icon(Icons.photo_camera, size: 35,color: Colors.amber.shade900,),
+                  Text('Play', style: TextStyle(fontFamily: '카페24', color: Colors.redAccent,),),
+                  Icon(Icons.play_arrow,  size: 35,color: Colors.amber.shade900,)
                 ],
-              ),
-            ),
-
-            //💡 play 버튼
-            IconButton(onPressed: () async {},
-                icon: Column(
-                  children: [
-                    Text('Play', style: TextStyle(fontFamily: '카페24', color: Colors.redAccent,),),
-                    Icon(Icons.play_arrow,  size: 35,color: Colors.amber.shade900,)
-                  ],
-                ))
-          ],
+              ))
+        ],
       ),
 
       body: SingleChildScrollView(
@@ -484,8 +484,8 @@ class _MainpageState extends State<Mainpage> {
               ),
 
               SizedBox(height: 18),
-              ],
-           ),
+            ],
+          ),
         ),
       ),
     );
@@ -493,5 +493,3 @@ class _MainpageState extends State<Mainpage> {
 
   }
 }
-
-
