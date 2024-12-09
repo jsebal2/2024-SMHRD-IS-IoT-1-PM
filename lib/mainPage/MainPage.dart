@@ -305,9 +305,9 @@ class _MainpageState extends State<Mainpage> {
                 },
                 icon: Column(
                   children: [
-                    Text('Live',style: TextStyle(fontFamily: '카페24',color: Colors.redAccent,),),
+                    Text('Live',style: TextStyle(fontFamily: '카페24',color: Colors.orangeAccent.shade700,),),
                     Icon(Icons.photo_camera, size: 40
-                      ,color: Colors.amber.shade900,),
+                      ,color: Colors.orangeAccent.shade400,),
                   ],
                 ),
               ),
@@ -316,9 +316,9 @@ class _MainpageState extends State<Mainpage> {
               IconButton(onPressed: () async {},
                   icon: Column(
                     children: [
-                      Text('Play', style: TextStyle(fontFamily: '카페24', color: Colors.redAccent,),),
+                      Text('Play', style: TextStyle(fontFamily: '카페24', color: Colors.orangeAccent.shade700,),),
                       Icon(Icons.play_arrow,  size: 40
-                        ,color: Colors.amber.shade900,)
+                        ,color: Colors.orangeAccent.shade400,)
                     ],
                   ))
             ],
@@ -400,7 +400,9 @@ class _MainpageState extends State<Mainpage> {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10.0),
                           child:
-                          Text('조명 지속시간', style: TextStyle(fontFamily:'카페24',fontSize: 18, fontWeight: FontWeight.bold),),),
+                          Text('⋄ 조명 지속시간', style: TextStyle(fontFamily:'카페24',fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                        ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20.0),
                           child:Text('$lightTime 시간',style: TextStyle(fontFamily: '카페24',fontSize: 18)),
@@ -408,7 +410,7 @@ class _MainpageState extends State<Mainpage> {
                     SizedBox(height: 10,),
                     Container(
                       child: Slider(
-                          activeColor: Colors.redAccent,
+                          activeColor: Colors.lightGreenAccent.shade700,
                           value: lightTime,
                           max : 10, min: 0, divisions: 10,
                           label: '${lightTime.toStringAsFixed(0)}',
@@ -440,14 +442,14 @@ class _MainpageState extends State<Mainpage> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                          child: Text('조명 밝기', style: TextStyle(fontFamily:'카페24',fontSize: 18, fontWeight: FontWeight.bold),),
+                          child: Text('⋄ 조명 밝기', style: TextStyle(fontFamily:'카페24',fontSize: 18, fontWeight: FontWeight.bold),),
                         ),
                         SizedBox(width: 20,),
                         Text('$lightPower %',style: TextStyle(fontFamily: '카페24',fontSize: 18),),
                       ],),
                     SizedBox(height: 10,),
                     Slider(
-                        activeColor: Colors.redAccent,
+                        activeColor: Colors.lightGreenAccent.shade700,
                         value: lightPower, max : 100, min: 0, divisions: 5,
                         label: '${lightPower.toStringAsFixed(0)}',
                         onChanged: (value) {
@@ -474,11 +476,29 @@ class _MainpageState extends State<Mainpage> {
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child:
+                      Text('⋄ 워터 펌프 on/off', style: TextStyle(fontFamily:'카페24',fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    SizedBox(height: 10,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        ControlButton(icon: Icons.water_drop, label: 'Water Cycle'),
+                      Column(
+                        children: [
+                          Icon(
+                          Icons.water_drop,
+                          size: 40,
+                          color : Colors.lightBlue.shade200
+                              ),
+                          SizedBox(height: 10,),
+                          Text('Water Cycle')
+                        ],
+                      ),
                         Switch(
                           value: water_on_off,
                           onChanged: (value) {
@@ -487,6 +507,7 @@ class _MainpageState extends State<Mainpage> {
                             });
                             controlDevice('water', value);
                           },
+                          activeColor: Colors.lightGreenAccent.shade700,
                         ),
                       ],
                     ),
@@ -498,10 +519,8 @@ class _MainpageState extends State<Mainpage> {
 
               ],
            ),
-            ],
           )
         ),
-      ),
     );
 
 
