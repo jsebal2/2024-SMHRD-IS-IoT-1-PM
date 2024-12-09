@@ -14,3 +14,4 @@ disease = 0
 # print(temp)
 # print(he)
 print('{"light":%s,"temp":%f,"humidity":%f, "level" : %d, "date": %d, "water_level": %d, "disease" : %d}'%(light1,temp,humidity,level,date,water_level,disease))
+
