@@ -73,4 +73,16 @@ router.post("/del",(req,res)=>{
     })
 })
 
+router.post("/marker", (req, res) => {
+    console.log(req.body);
+    const token = req.header('Authorization');
+    let sql = 'select created_at from tbl_diary where user_id = ?;'
+    conn.query(sql, [token], (err, rows) => {
+        console.log("rows | ",rows);
+        console.log('err | ',err);
+        if (rows)   res.json({"result":true, "rows":rows});
+        else res.json({"result" : false});
+    })
+})
+
 module.exports = router; 
