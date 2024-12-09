@@ -280,44 +280,49 @@ class _MainpageState extends State<Mainpage> {
       resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(90), // 높이
-        child: AppBar(
-          backgroundColor: Colors.white,
-          toolbarHeight: 90,
-          centerTitle: true,
-          //elevation: 0.0,
-          actions:[
-            IconButton(
-              onPressed: () async {
-                final imageBytes = await fetchImage();
-                if (imageBytes != null){
-                  showDialog(context: context,
-                    builder: (context) => ImagePopup(imageBytes: imageBytes),
-                  );
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('이미지 불러오기 실패')),
-                  );
-                }
-              },
-              icon: Column(
-                children: [
-                  Text('Live',style: TextStyle(fontFamily: '카페24',color: Colors.redAccent,),),
-                  Icon(Icons.photo_camera, size: 35,color: Colors.amber.shade900,),
-                ],
-              ),
-            ),
-
-            //💡 play 버튼
-            IconButton(onPressed: () async {},
+        preferredSize: Size.fromHeight(150), // 높이
+        child: Padding(
+          padding: const EdgeInsets.all(30.0),
+          child: AppBar(
+            backgroundColor: Colors.white,
+            toolbarHeight: 90,
+            centerTitle: true,
+            //elevation: 0.0,
+            actions:[
+              IconButton(
+                onPressed: () async {
+                  final imageBytes = await fetchImage();
+                  if (imageBytes != null){
+                    showDialog(context: context,
+                      builder: (context) => ImagePopup(imageBytes: imageBytes),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('이미지 불러오기 실패')),
+                    );
+                  }
+                },
                 icon: Column(
                   children: [
-                    Text('Play', style: TextStyle(fontFamily: '카페24', color: Colors.redAccent,),),
-                    Icon(Icons.play_arrow,  size: 35,color: Colors.amber.shade900,)
+                    Text('Live',style: TextStyle(fontFamily: '카페24',color: Colors.redAccent,),),
+                    Icon(Icons.photo_camera, size: 40
+                      ,color: Colors.amber.shade900,),
                   ],
-                ))
-          ],
+                ),
+              ),
 
+              //💡 play 버튼
+              IconButton(onPressed: () async {},
+                  icon: Column(
+                    children: [
+                      Text('Play', style: TextStyle(fontFamily: '카페24', color: Colors.redAccent,),),
+                      Icon(Icons.play_arrow,  size: 40
+                        ,color: Colors.amber.shade900,)
+                    ],
+                  ))
+            ],
+
+          ),
         ),
       ),
 
@@ -402,7 +407,7 @@ class _MainpageState extends State<Mainpage> {
                     SizedBox(height: 10,),
                     Container(
                       child: Slider(
-                          activeColor: Colors.amber.shade300,
+                          activeColor: Colors.redAccent,
                           value: lightTime,
                           max : 10, min: 0, divisions: 10,
                           label: '${lightTime.toStringAsFixed(0)}',
@@ -441,7 +446,7 @@ class _MainpageState extends State<Mainpage> {
                       ],),
                     SizedBox(height: 10,),
                     Slider(
-                        activeColor: Colors.amber.shade300,
+                        activeColor: Colors.redAccent,
                         value: lightPower, max : 100, min: 0, divisions: 5,
                         label: '${lightPower.toStringAsFixed(0)}',
                         onChanged: (value) {
