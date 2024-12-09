@@ -103,6 +103,7 @@ class _MainpageState extends State<Mainpage> {
       int temp = sensorData["temp"];
       int water = sensorData['water_level'];
       int disease = sensorData["disease"];
+      print(sensorData);
 
       String temperatureStatus;
       if (temp < 18) {
@@ -118,7 +119,8 @@ class _MainpageState extends State<Mainpage> {
 
       setState(() {
         _level = level;
-        _temperatureStatus = temperatureStatus;
+        // ${_level}
+        _temperatureStatus =temperatureStatus;
         _waterStatus = waterLevel;
         _diseaseStatus = diseaseStatus;
         _imageUrl = 'assets/images/${_level}level/${_diseaseStatus}_${_waterStatus}_${_temperatureStatus}.png';
@@ -306,63 +308,49 @@ class _MainpageState extends State<Mainpage> {
       resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(90),
-        child: AppBar(
-          backgroundColor: Colors.white,
-          toolbarHeight: 90,
-          centerTitle: true,
-          actions: [
-            IconButton(
-              onPressed: () async {
-                final imageBytes = await fetchImage();
-                if (imageBytes != null) {
-                  showDialog(
-                    context: context,
-                    builder: (context) => ImagePopup(imageBytes: imageBytes),
-                  );
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('이미지 불러오기 실패')),
-                  );
-                }
-              },
-              icon: Column(
-                children: [
-                  Text(
-                    'Live',
-                    style: TextStyle(
-                      fontFamily: '카페24',
-                      color: Colors.redAccent,
-                    ),
-                  ),
-                  Icon(
-                    Icons.photo_camera,
-                    size: 35,
-                    color: Colors.amber.shade900,
-                  ),
-                ],
+        preferredSize: Size.fromHeight(150), // 높이
+        child: Padding(
+          padding: const EdgeInsets.all(30.0),
+          child: AppBar(
+            backgroundColor: Colors.white,
+            toolbarHeight: 90,
+            centerTitle: true,
+            //elevation: 0.0,
+            actions:[
+              IconButton(
+                onPressed: () async {
+                  final imageBytes = await fetchImage();
+                  if (imageBytes != null){
+                    showDialog(context: context,
+                      builder: (context) => ImagePopup(imageBytes: imageBytes),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('이미지 불러오기 실패')),
+                    );
+                  }
+                },
+                icon: Column(
+                  children: [
+                    Text('Live',style: TextStyle(fontFamily: '카페24',color: Colors.orangeAccent.shade700,),),
+                    Icon(Icons.photo_camera, size: 40
+                      ,color: Colors.orangeAccent.shade400,),
+                  ],
+                ),
               ),
-            ),
-            IconButton(
-              onPressed: () async {},
-              icon: Column(
-                children: [
-                  Text(
-                    'Play',
-                    style: TextStyle(
-                      fontFamily: '카페24',
-                      color: Colors.redAccent,
-                    ),
-                  ),
-                  Icon(
-                    Icons.play_arrow,
-                    size: 35,
-                    color: Colors.amber.shade900,
-                  ),
-                ],
-              ),
-            ),
-          ],
+
+              //💡 play 버튼
+              IconButton(onPressed: () async {},
+                  icon: Column(
+                    children: [
+                      Text('Play', style: TextStyle(fontFamily: '카페24', color: Colors.orangeAccent.shade700,),),
+                      Icon(Icons.play_arrow,  size: 40
+                        ,color: Colors.orangeAccent.shade400,)
+                    ],
+                  ))
+            ],
+
+          ),
         ),
       ),
       body: SingleChildScrollView(
@@ -440,15 +428,9 @@ class _MainpageState extends State<Mainpage> {
                     Row(
                       children: [
                         Padding(
-                          padding:
-                          const EdgeInsets.symmetric(horizontal: 10.0),
-                          child: Text(
-                            '조명 지속시간',
-                            style: TextStyle(
-                              fontFamily: '카페24',
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                          child:
+                          Text('⋄ 조명 지속시간', style: TextStyle(fontFamily:'카페24',fontSize: 18, fontWeight: FontWeight.bold),
                           ),
                         ),
                         Padding(
@@ -467,20 +449,15 @@ class _MainpageState extends State<Mainpage> {
                     SizedBox(height: 10),
                     Container(
                       child: Slider(
-                        activeColor: Colors.amber.shade300,
-                        value: lightTime,
-                        max: 10,
-                        min: 0,
-                        divisions: 10,
-                        label: '${lightTime.toStringAsFixed(0)}',
-                        onChanged: (value) {
-                          setState(() {
-                            lightTime = value;
-                          });
-                          lightTimer(value);
-                        },
-                      ),
-                    ),
+                          activeColor: Colors.lightGreenAccent.shade700,
+                          value: lightTime,
+                          max : 10, min: 0, divisions: 10,
+                          label: '${lightTime.toStringAsFixed(0)}',
+                          onChanged: (value) {
+                            setState(() {
+                              lightTime = value;});
+                            lightTimer(value);}
+                      ),),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -510,54 +487,73 @@ class _MainpageState extends State<Mainpage> {
                     Row(
                       children: [
                         Padding(
-                          padding:
-                          const EdgeInsets.symmetric(horizontal: 10.0),
-                          child: Text(
-                            '조명 밝기',
-                            style: TextStyle(
-                              fontFamily: '카페24',
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                          child: Text('⋄ 조명 밝기', style: TextStyle(fontFamily:'카페24',fontSize: 18, fontWeight: FontWeight.bold),),
                         ),
-                        SizedBox(width: 30),
-                        Text(
-                          '$lightPower%',
-                          style: TextStyle(
-                            fontFamily: '카페24',
-                            fontSize: 18,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 10),
-                    Container(
-                      child: Slider(
-                        activeColor: Colors.amber.shade300,
-                        value: lightPower,
-                        max: 100,
-                        min: 0,
-                        divisions: 100,
+                        SizedBox(width: 20,),
+                        Text('$lightPower %',style: TextStyle(fontFamily: '카페24',fontSize: 18),),
+                      ],),
+                    SizedBox(height: 10,),
+                    Slider(
+                        activeColor: Colors.lightGreenAccent.shade700,
+                        value: lightPower, max : 100, min: 0, divisions: 5,
                         label: '${lightPower.toStringAsFixed(0)}',
                         onChanged: (value) {
                           setState(() {
                             lightPower = value;
                           });
                           lightControl(value);
-                        },
-                      ),
-                    ),
+                        }),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          '0%',
-                          style: TextStyle(fontFamily: '카페24', fontSize: 16),
-                        ),
-                        Text(
-                          '100%',
-                          style: TextStyle(fontFamily: '카페24', fontSize: 16),
+                        Text('0',style: TextStyle(fontFamily:'카페24',fontSize: 16),),
+                        Text('100',style: TextStyle(fontFamily:'카페24',fontSize: 16),),
+                      ],),
+                  ],),),
+
+              SizedBox(height: 20,),
+              // 물 주기 버튼
+              Container(
+                padding: EdgeInsets.all(13.0),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20)
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child:
+                      Text('⋄ 워터 펌프 on/off', style: TextStyle(fontFamily:'카페24',fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    SizedBox(height: 10,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                      Column(
+                        children: [
+                          Icon(
+                          Icons.water_drop,
+                          size: 40,
+                          color : Colors.lightBlue.shade200
+                              ),
+                          SizedBox(height: 10,),
+                          Text('Water Cycle')
+                        ],
+                      ),
+                        Switch(
+                          value: water_on_off,
+                          onChanged: (value) {
+                            setState(() {
+                              water_on_off = value;
+                            });
+                            controlDevice('water', value);
+                          },
+                          activeColor: Colors.lightGreenAccent.shade700,
                         ),
                       ],
                     ),

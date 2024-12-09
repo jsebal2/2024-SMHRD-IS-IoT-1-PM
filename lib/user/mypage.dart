@@ -163,18 +163,18 @@ class _MypageState extends State<Mypage> {
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(
                       builder: (context) {return Update();}));},
-                title: Text('회원정보 수정', style: TextStyle(fontSize: 16),),
+                title: Text('회원정보 수정', style: TextStyle(fontSize: 16,color: Colors.blueAccent.shade700),),
                 contentPadding: EdgeInsets.symmetric(horizontal: 0),
               ),
 
-              SizedBox(height: 50,),
+              SizedBox(height: 100,),
               // 회원 탈퇴 페이지로 이동
               ListTile(
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(
                       builder: (context) {return Delete();}));},
 
-                title: Text('회원 탈퇴', style: TextStyle(fontSize: 13),),
+                title: Text('회원 탈퇴', style: TextStyle(fontSize: 13,color: Colors.grey.shade600 ),),
                 contentPadding: EdgeInsets.symmetric(horizontal: 0),
               ),
 
@@ -185,7 +185,7 @@ class _MypageState extends State<Mypage> {
                 onTap: () {
                   Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
                       builder: (context) {return Login();}), (route)=>false);},
-                title: Text('로그아웃', style: TextStyle(fontSize: 13),),
+                title: Text('로그아웃', style: TextStyle(fontSize: 13,color: Colors.grey.shade700),),
                 contentPadding: EdgeInsets.symmetric(horizontal: 0),
               ),
             ],
