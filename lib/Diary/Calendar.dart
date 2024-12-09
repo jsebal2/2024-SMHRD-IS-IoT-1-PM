@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'diaryCard.dart';
 
 class Calendar extends StatefulWidget {
   const Calendar({super.key});
@@ -20,13 +21,16 @@ class _CalendarState extends State<Calendar> {
   String content = '';
   String img_url = '';
   DateTime creat_at = DateTime.now();
+
   List<DateTime> _updatedDates = [];
+  List<Map<String, String>> diaryList = []; // 선택된 날짜의 일기 리스트
 
   @override
   void initState () {
     super.initState();
     _loadMarkedDates();
   }
+
   // 📆 달력 마커 날짜 불러오기
   Future<void> _loadMarkedDates() async{
     // 저장한 값 가져오기(읽기 - key : "키값")
