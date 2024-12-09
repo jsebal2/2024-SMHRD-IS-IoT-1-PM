@@ -24,7 +24,7 @@ class _MainpageState extends State<Mainpage> {
   double lightPower = 0;
   final FlutterSecureStorage secureStorage = FlutterSecureStorage();
   final String baseUrl = 'http://192.168.219.73:8000';
-  String _imageUrl = 'assets/images/1/normal_normal_normal.png';
+  String _imageUrl = 'assets/images/1level/normal_normal_normal.png';
   int _level = 1;
   String _temperatureStatus = 'normal';
   String _waterStatus = 'normal';
@@ -136,7 +136,7 @@ class _MainpageState extends State<Mainpage> {
         _temperatureStatus =temperatureStatus;
         _waterStatus = waterLevel;
         _diseaseStatus = diseaseStatus;
-        _imageUrl = 'assets/images/${_level}/${_diseaseStatus}_${_waterStatus}_${_temperatureStatus}.png';
+        _imageUrl = 'assets/images/${_level}level/${_diseaseStatus}_${_waterStatus}_${_temperatureStatus}.png';
       });
     } catch (e) {
       print('사진 변경하는중에 에러 발생 $e');
@@ -160,6 +160,7 @@ class _MainpageState extends State<Mainpage> {
         ),
         //Container(height: 1.0, width: 370,color: Colors.grey.shade400,),
         SizedBox(height: 20),
+
         Container(
           padding: EdgeInsets.all(8.0),
           decoration: BoxDecoration(
@@ -198,7 +199,7 @@ class _MainpageState extends State<Mainpage> {
                   FutureBuilder(future: fetchSensorData(),
                     builder: (context,snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting){
-                        return Center(child: CircularProgressIndicator()); // 로딩중
+                        return Center(child: Container(width: 100, height: 120, child: Center(child: CircularProgressIndicator())),); // 로딩중
                       } else if (snapshot.hasError) {
                         return Text('Error : ${snapshot.error}'); // 에러처리
                       } else if (snapshot.hasData) {
@@ -364,7 +365,7 @@ class _MainpageState extends State<Mainpage> {
                       FutureBuilder<Map <String, dynamic>>(future: fetchSensorData(),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState == ConnectionState.waiting) {
-                              return Center(child: CircularProgressIndicator(),);
+                              return Center(child: Container(width: 100, height: 300, child: Center(child: CircularProgressIndicator())),);
                             } else if (snapshot.hasError) {
                               return Center(child: Text('Error : ${snapshot.error}'),);
                             } else if (snapshot.hasData) {
@@ -494,6 +495,9 @@ class _MainpageState extends State<Mainpage> {
               ),
 
               SizedBox(height: 18),
+
+              ],
+           ),
             ],
           )
         ),
