@@ -35,13 +35,13 @@ class _UpdateState extends State<Update> {
                   style: TextStyle(
                     fontFamily:'산토끼',
                     fontSize: 30,
-                    color: Colors.teal.shade600,
+                    color: Colors.green.shade800,
                     fontWeight:FontWeight.bold,),),
                 SizedBox(height: 40,),
 
               // 이름 입력
                 Text('이름',
-                  style: TextStyle(fontFamily:'카페24',fontSize: 16, fontWeight: FontWeight.bold),),
+                  style: TextStyle(fontFamily:'머니그라피',fontSize: 16),),
               SizedBox(height: 8),
               TextFormField(
                 controller: nameController,
@@ -51,14 +51,14 @@ class _UpdateState extends State<Update> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.teal.shade600),
+                    borderSide: BorderSide(color: Colors.green.shade300),
                   ),),),
               SizedBox(height: 20),
 
               // 비밀번호 입력
               Text(
                 '비밀번호',
-                style: TextStyle(fontFamily:'카페24',fontSize: 16, fontWeight: FontWeight.bold),),
+                style: TextStyle(fontFamily:'머니그라피',fontSize: 16),),
               SizedBox(height: 8),
               TextFormField(
                 controller: passwordController,
@@ -68,7 +68,7 @@ class _UpdateState extends State<Update> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.teal.shade600)
+                    borderSide: BorderSide(color: Colors.green.shade300)
                   ),),
                 obscureText: true,
               ),
@@ -103,14 +103,14 @@ class _UpdateState extends State<Update> {
 
                     // 알림창 띄우기
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('회원정보가 수정되었습니다.')),
+                      SnackBar(content: Text('회원정보가 수정되었습니다.',style: TextStyle(fontFamily: '머니그라피'),)),
                     );
 
                     // mypage 이동
                     Navigator.pop(context);
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.tealAccent.shade700,
+                    backgroundColor: Colors.green.shade600,
                     padding: EdgeInsets.symmetric(vertical: 18, horizontal: 50),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)

@@ -52,39 +52,52 @@ class _BottomState extends State<Bottom> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _pages[_currentIndex], // 현재 선택된 페이지 표시
-      bottomNavigationBar: ClipRRect(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(30),
-          topRight: Radius.circular(30)
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+            boxShadow: <BoxShadow> [
+              BoxShadow(
+                color: Colors.grey,
+                blurRadius: 7,
+              )
+            ]
         ),
-        child: BottomNavigationBar(
-          backgroundColor: Colors.lime.shade200,
-          currentIndex: _currentIndex,
-          showSelectedLabels: true,
-          showUnselectedLabels: false,
-          selectedLabelStyle: TextStyle(
-            fontFamily: '카페24',fontSize: 15, color: Colors.brown),
-          unselectedLabelStyle: TextStyle(
-            fontFamily: '카페24', fontSize: 15, color: Colors.grey),
-          unselectedItemColor: Colors.grey,
-          selectedItemColor: Colors.brown,
-        
-          onTap: _onTap,
-          items: const [
-        
-            BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_today),
-              label: 'Calendar',
+        child: ClipRRect(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(10),
+            topRight: Radius.circular(10)
+          ),
+          child: Container(
+            height: 80,
+            child: BottomNavigationBar(
+              backgroundColor: Colors.white,
+              currentIndex: _currentIndex,
+              showSelectedLabels: true,
+              showUnselectedLabels: false,
+              selectedLabelStyle: TextStyle(
+                fontFamily: '카페24',fontSize: 15, color: Colors.orangeAccent.shade700),
+              unselectedLabelStyle: TextStyle(
+                fontFamily: '카페24', fontSize: 15, color: Colors.grey),
+              unselectedItemColor: Colors.grey,
+              selectedItemColor: Colors.orangeAccent.shade700,
+
+              onTap: _onTap,
+              items: const [
+
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.calendar_today),
+                  label: 'Calendar',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.home),
+                  label: 'Home',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.person),
+                  label: 'MyPage',
+                ),
+              ],
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'MyPage',
-            ),
-          ],
+          ),
         ),
       ),
     );

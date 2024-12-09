@@ -51,8 +51,6 @@ class _MypageState extends State<Mypage> {
 
 
 
-
-
   // id 및 식물 id 값 가져오기
   Future<Map<String, String>> fetchUserData() async{
     await Future.delayed(Duration(seconds: 1));
@@ -62,7 +60,7 @@ class _MypageState extends State<Mypage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.lime.shade50,
+      backgroundColor: Colors.white,
       body: Center(
         child: Padding(
           padding: EdgeInsets.all(50.0), // 중단 - content
@@ -82,8 +80,8 @@ class _MypageState extends State<Mypage> {
                 width: MediaQuery.of(context).size.height * 0.8,
                 height: MediaQuery.of(context).size.height * 0.2,
                 decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20)
+                    color: Colors.lightGreen.shade100,
+                    borderRadius: BorderRadius.circular(10)
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -169,14 +167,14 @@ class _MypageState extends State<Mypage> {
                 contentPadding: EdgeInsets.symmetric(horizontal: 0),
               ),
 
-
+              SizedBox(height: 50,),
               // 회원 탈퇴 페이지로 이동
               ListTile(
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(
                       builder: (context) {return Delete();}));},
 
-                title: Text('회원 탈퇴', style: TextStyle(fontSize: 16),),
+                title: Text('회원 탈퇴', style: TextStyle(fontSize: 13),),
                 contentPadding: EdgeInsets.symmetric(horizontal: 0),
               ),
 
@@ -187,7 +185,7 @@ class _MypageState extends State<Mypage> {
                 onTap: () {
                   Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
                       builder: (context) {return Login();}), (route)=>false);},
-                title: Text('로그아웃', style: TextStyle(fontSize: 16),),
+                title: Text('로그아웃', style: TextStyle(fontSize: 13),),
                 contentPadding: EdgeInsets.symmetric(horizontal: 0),
               ),
             ],

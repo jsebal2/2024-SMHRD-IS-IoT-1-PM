@@ -47,6 +47,7 @@ class _JoinState extends State<Join> {
       appBar: AppBar(
         title: Text(''),
       ),
+
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(50.0),
@@ -55,14 +56,14 @@ class _JoinState extends State<Join> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                  child: Image.asset('assets/images/plant_icon.png',width: 70,height: 70,color: Colors.teal.shade900,)
+                  child: Image.asset('assets/images/plant_icon.png',width: 70,height: 70,color: Colors.green.shade800,)
               ),
               SizedBox(height: 15),
               Text('Welcome!',
-                style: TextStyle(fontFamily:'산토끼',fontSize: 30, color:Colors.teal.shade600,fontWeight: FontWeight.bold),
+                style: TextStyle(fontFamily:'산토끼',fontSize: 30, color:Colors.green.shade800,fontWeight: FontWeight.bold),
               ),
               Text('Smart Pot',
-                style: TextStyle(fontFamily:'산토끼',fontSize: 20, color:Colors.teal.shade600,fontWeight: FontWeight.bold),
+                style: TextStyle(fontFamily:'산토끼',fontSize: 20, color:Colors.green.shade800,fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 60),
 
@@ -74,7 +75,7 @@ class _JoinState extends State<Join> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.teal.shade600),
+                    borderSide: BorderSide(color: Colors.green.shade800),
                   ))),
               SizedBox(height: 20),
 
@@ -87,7 +88,7 @@ class _JoinState extends State<Join> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.teal.shade600),
+                    borderSide: BorderSide(color: Colors.green.shade800),
                   ))),
               SizedBox(height: 20),
 
@@ -99,7 +100,7 @@ class _JoinState extends State<Join> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.teal.shade600),
+                    borderSide: BorderSide(color: Colors.green.shade800),
                   ))),
               SizedBox(height: 50),
 
@@ -109,8 +110,8 @@ class _JoinState extends State<Join> {
                   onPressed: _signUp,
                   child: Text('회원가입',style: TextStyle(fontFamily: '머니그라피',fontSize: 20,color: Colors.white,letterSpacing: 10 )),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.tealAccent.shade700,
-                    padding: EdgeInsets.all(10),
+                    backgroundColor: Colors.green.shade800,
+                    padding: EdgeInsets.all(20),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     )
