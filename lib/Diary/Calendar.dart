@@ -161,9 +161,9 @@ class _CalendarState extends State<Calendar> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      backgroundColor: Colors.lime.shade50,
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.lime.shade50,
+        backgroundColor: Colors.white,
         toolbarHeight: 20,),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

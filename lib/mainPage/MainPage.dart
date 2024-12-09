@@ -160,13 +160,30 @@ class _MainpageState extends State<Mainpage> {
         ),
         //Container(height: 1.0, width: 370,color: Colors.grey.shade400,),
         SizedBox(height: 20),
-
         Container(
           padding: EdgeInsets.all(8.0),
           decoration: BoxDecoration(
-            color: Colors.lightGreen.shade100,
+            color: Colors.lime.shade50,
             borderRadius: BorderRadius.circular(8.0),
           ),
+          child: Row(
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  //Icon(Icons., size: 25,),
+                  SizedBox(width: 20,),
+                  Text(tempMessages[0], style: TextStyle(fontFamily:'카페24', fontSize: 25),),
+                  SizedBox(width: 20,),
+                  Center(
+                      child: Text(tempMessages[1], style: TextStyle(fontFamily:'카페24', fontSize: 22, color: Colors.red.shade500),)),
+                ],
+              ),
+            ],),
+        ),
+        SizedBox(height: 70,),
+        Container(
+          padding: EdgeInsets.all(8.0),
           child: Center(
             child: Padding(
               padding: const EdgeInsets.all(10.0),
@@ -231,21 +248,7 @@ class _MainpageState extends State<Mainpage> {
 
         ),
 
-        SizedBox(height: 20,),
-        Row(
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                //Icon(Icons., size: 25,),
-                SizedBox(width: 30,),
-                Text(tempMessages[0], style: TextStyle(fontFamily:'카페24', fontSize: 20),),
-                SizedBox(width: 30,),
-                Center(
-                    child: Text(tempMessages[1], style: TextStyle(fontFamily:'카페24', fontSize: 20, color: Colors.red.shade500),)),
-              ],
-            ),
-          ],),
+
 
       ],
     );
@@ -275,44 +278,47 @@ class _MainpageState extends State<Mainpage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      backgroundColor: Colors.lime.shade50,
-      appBar: AppBar(
-        backgroundColor: Colors.lime.shade50,
-        //title: Text('Smart Pot', style: TextStyle(fontFamily:'산토끼',fontSize: 40,fontWeight: FontWeight.w600),),
-        toolbarHeight: 100,
-        centerTitle: true,
-        //elevation: 0.0,
-        actions:[
-          IconButton(
-            onPressed: () async {
-              final imageBytes = await fetchImage();
-              if (imageBytes != null){
-                showDialog(context: context,
-                  builder: (context) => ImagePopup(imageBytes: imageBytes),
-                );
-              } else {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('이미지 불러오기 실패')),
-                );
-              }
-            },
-            icon: Column(
-              children: [
-                Text('Live',style: TextStyle(fontFamily: '카페24',color: Colors.redAccent,),),
-                Icon(Icons.photo_camera, size: 35,color: Colors.amber.shade900,),
-              ],
-            ),
-          ),
-
-          //💡 play 버튼
-          IconButton(onPressed: () async {},
+      backgroundColor: Colors.white,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(90), // 높이
+        child: AppBar(
+          backgroundColor: Colors.white,
+          toolbarHeight: 90,
+          centerTitle: true,
+          //elevation: 0.0,
+          actions:[
+            IconButton(
+              onPressed: () async {
+                final imageBytes = await fetchImage();
+                if (imageBytes != null){
+                  showDialog(context: context,
+                    builder: (context) => ImagePopup(imageBytes: imageBytes),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('이미지 불러오기 실패')),
+                  );
+                }
+              },
               icon: Column(
                 children: [
-                  Text('Play', style: TextStyle(fontFamily: '카페24', color: Colors.redAccent,),),
-                  Icon(Icons.play_arrow,  size: 35,color: Colors.amber.shade900,)
+                  Text('Live',style: TextStyle(fontFamily: '카페24',color: Colors.redAccent,),),
+                  Icon(Icons.photo_camera, size: 35,color: Colors.amber.shade900,),
                 ],
-              ))
-        ],
+              ),
+            ),
+
+            //💡 play 버튼
+            IconButton(onPressed: () async {},
+                icon: Column(
+                  children: [
+                    Text('Play', style: TextStyle(fontFamily: '카페24', color: Colors.redAccent,),),
+                    Icon(Icons.play_arrow,  size: 35,color: Colors.amber.shade900,)
+                  ],
+                ))
+          ],
+
+        ),
       ),
 
       body: SingleChildScrollView(
@@ -359,8 +365,8 @@ class _MainpageState extends State<Mainpage> {
                             } else if (snapshot.hasData) {
                               return  Column(children: [
                                 buildSensorDataText(snapshot.data!),
-                                Container(height: 1.0,
-                                  width: 370,color: Colors.grey.shade400,)
+                                // Container(height: 1.0,
+                                //   width: 370,color: Colors.grey.shade400,)
                               ],
                               );
                             } else {
@@ -368,11 +374,10 @@ class _MainpageState extends State<Mainpage> {
                             }
                           }),
                     ],
-                  ),
                 ),
               ),
-
-              SizedBox(height: 20),
+              ),
+              SizedBox(height: 40),
 
               // 조명 지속 시간 부분
               Container(
@@ -485,7 +490,7 @@ class _MainpageState extends State<Mainpage> {
 
               SizedBox(height: 18),
             ],
-          ),
+          )
         ),
       ),
     );

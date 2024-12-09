@@ -21,8 +21,8 @@ class _DeleteState extends State<Delete> {
       appBar: AppBar(
         title: Text('회원탈퇴',
           style: TextStyle(
-            fontFamily: '을지로',fontSize: 30,fontWeight: FontWeight.bold,color: Colors.white,letterSpacing: 15),),
-        backgroundColor: Colors.redAccent.shade700,
+            fontFamily: '산토끼',fontSize: 30,fontWeight: FontWeight.bold,color: Colors.white,letterSpacing: 15),),
+        backgroundColor: Colors.green.shade800,
         centerTitle: true,
       ),
       body: Padding(
@@ -63,7 +63,7 @@ class _DeleteState extends State<Delete> {
                   borderRadius: BorderRadius.circular(10)
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.redAccent.shade200),
+                  borderSide: BorderSide(color: Colors.green.shade800),
                 )
               ),
             ),
@@ -78,7 +78,7 @@ class _DeleteState extends State<Delete> {
                   borderRadius: BorderRadius.circular(10)
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.redAccent.shade200),
+                  borderSide: BorderSide(color: Colors.green.shade800),
               ),
             ),
             ),
@@ -113,11 +113,14 @@ class _DeleteState extends State<Delete> {
                 
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.redAccent.shade700,
-                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+                backgroundColor: Colors.green.shade800,
+                  padding: EdgeInsets.all(20),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 textStyle: TextStyle(fontSize: 18),
               ),
-              child: Text('회원탈퇴', style: TextStyle(fontFamily: '을지로', fontSize: 20, color: Colors.white, letterSpacing: 10),),
+              child: Text('회원탈퇴', style: TextStyle(fontFamily: '머니그라피',fontSize: 20,color: Colors.white,letterSpacing: 10),),
             ),
             Spacer(),
 
