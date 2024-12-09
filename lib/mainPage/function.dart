@@ -5,9 +5,9 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'dart:async';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:pm_project/baseUrl.dart';
 
 final dio = Dio();
-const String baseUrl = 'http://192.168.219.73:8000';
 
 late Timer _timer;
 
@@ -37,7 +37,7 @@ void getDio() async{
 void postDio() async{
   // post 방식의 데이터 전달을 위한 option
   dio.options.contentType = Headers.formUrlEncodedContentType;
-  Response res = await dio.post('http://192.168.219.61:8000/',
+  Response res = await dio.post('$baseUrl/',
       data: {'data' : 'asdsad', 'send' : 'post'});
 
   // 전송결과 출력

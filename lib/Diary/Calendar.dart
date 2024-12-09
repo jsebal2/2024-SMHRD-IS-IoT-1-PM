@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:pm_project/baseUrl.dart';
 
 class Calendar extends StatefulWidget {
   const Calendar({super.key});
@@ -35,7 +36,7 @@ class _CalendarState extends State<Calendar> {
     try {
       print('보내는 함수 내부 프린트 $token');
       // 서버로부터 데이터 가져오기
-      final response = await dio.post("http://192.168.219.73:8000/diary/marker",
+      final response = await dio.post("$baseUrl/diary/marker",
         options : Options(
           headers: {
             'Authorization': '$token'
@@ -123,13 +124,13 @@ class _CalendarState extends State<Calendar> {
     }
 
     Map<String, dynamic>? diaryData = await fetchDateForServer(
-        token, selectedDate, 'http://192.168.219.73:8000/diary/load');
+        token, selectedDate, '$baseUrl/diary/load');
 
     Map<String, dynamic>? picData = await fetchDateForServer(
-        token, selectedDate, 'http://192.168.219.73:8000/pic/pull');
+        token, selectedDate, '$baseUrl/pic/pull');
 
     Map<dynamic, dynamic>? markerData = await fetchDateForServer(
-        token, selectedDate,'http://192.168.219.73:8000/diary/marker');
+        token, selectedDate,'$baseUrl/diary/marker');
 
 
     if (diaryData != null) {
@@ -401,7 +402,7 @@ class _CalendarState extends State<Calendar> {
 
     try {
       final response = await dio.post(
-        'http://192.168.219.73:8000/diary/save',
+        '$baseUrl/diary/save',
         options: Options(
           headers: {
             'Content-Type': 'application/json',

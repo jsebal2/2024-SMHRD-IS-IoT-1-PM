@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:pm_project/baseUrl.dart';
 
 class Join extends StatefulWidget {
   const Join({super.key});
@@ -13,7 +14,6 @@ class _JoinState extends State<Join> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final dio = Dio();
-  final String baseUrl = 'http://192.168.219.73:8000';
 
   void _signUp() async{
     final id = _idController.text;

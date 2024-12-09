@@ -7,6 +7,7 @@ import 'package:pm_project/mainPage/Login.dart';
 import 'package:pm_project/user/update.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../mainPage/Pot.dart';
+import 'package:pm_project/baseUrl.dart';
 
 class Mypage extends StatefulWidget {
   const Mypage({super.key});
@@ -19,7 +20,6 @@ class _MypageState extends State<Mypage> {
 
   final FlutterSecureStorage secureStorage = FlutterSecureStorage();
   String? _token;
-  final String baseUrl = 'http://192.168.219.73:8000';
 
   @override
   void initState() {

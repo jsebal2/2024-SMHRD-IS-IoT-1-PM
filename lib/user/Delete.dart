@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:pm_project/baseUrl.dart';
 
 class Delete extends StatefulWidget {
   const Delete({super.key});
@@ -13,7 +14,6 @@ class _DeleteState extends State<Delete> {
   final dio = Dio();
   final TextEditingController idController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final String baseUrl = 'http://192.168.219.73:8000';
 
   @override
   Widget build(BuildContext context) {
