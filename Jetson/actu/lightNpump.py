@@ -5,13 +5,13 @@ import os
 
 GPIO.setmode(GPIO.BOARD)
 print(os.getcwd())
-command_file = str(os.getcwd())+"/Project/jetson/actu/pwm_command.txt"
+command_file = str(os.getcwd())+"/Project/Jetson/actu/pwm_command.txt"
 # 실제 핀 정의
 #PWM PIN
 ENA,ENB = 32,33
 #GPIO PIN
-IN1,IN2 = 31,29
-IN3,IN4 = 24,22
+IN1,IN2 = 24,23
+IN3,IN4 = 22,21
 
 # 핀 설정 함수
 def setPinConfig(EN, INA, INB):        
@@ -53,7 +53,21 @@ def pwm_control_thread(pwmA,pwmB):
         with open(command_file, "w") as f:
             f.write("100\non")  # 초기 PWM 값 0
     last_modified = os.path.getmtime(command_file)  # 초기 수정 시간 설정
-
+    # 파일 읽기
+    with open(command_file, "r") as f:
+        bright = f.readline().strip()
+        pump = f.readline().strip()
+    if bright.isdigit():
+        bright = int(bright)
+        if 0<=bright<=100:
+            setMotorControl(pwmB,IN3,IN4,bright)
+            print(f"bright : {bright}")
+        if pump.lower() == "on":
+            print("on")
+            setMotorControl(pwmA,IN1,IN2,47)
+            print("pump on")
+        elif pump.lower()=="off":
+            setMotorControl(pwmA,IN1,IN2,0)
     while True:
         try:
             # 현재 수정 시간 가져오기
@@ -71,17 +85,13 @@ def pwm_control_thread(pwmA,pwmB):
                         setMotorControl(pwmB, IN3, IN4, bright)
                         print(f"bright 값이 {bright}로 업데이트되었습니다.")
                 if pump.lower() == "on":
-                    setMotorControl(pwmA,IN1,IN2,100)
+                    setMotorControl(pwmA,IN1,IN2,47)
                 elif pump.lower() == "off":
                     setMotorControl(pwmA,IN1,IN2,0)
         except Exception as e:
             print(f"오류 발생: {e}")
         time.sleep(0.1)  # 0.1초마다 파일 확인
-        
-os.system("sudo busybox devmem 0x700031fc 32 0x45")
-os.system("sudo busybox devmem 0x6000d504 32 0x2")
-os.system("sudo busybox devmem 0x70003248 32 0x46")
-os.system("sudo busybox devmem 0x6000d100 32 0x00")
+os.system('/usr/local/bin/hardware_control.sh')
 GPIO.setwarnings(False)
 pwmA = setPinConfig(ENA, IN1, IN2)  #pump
 pwmB = setPinConfig(ENB, IN3, IN4)  #led

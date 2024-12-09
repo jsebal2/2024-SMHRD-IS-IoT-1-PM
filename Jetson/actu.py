@@ -8,22 +8,23 @@ kind = sys.argv[1]
 speed = json.loads(sys.argv[2])
 print(speed['time'])
 # kind = "pump" 
-command_file = str(os.getcwd())+"/Project/jetson/actu/pwm_command.txt"
+command_file = str(os.getcwd())+"/Project/Jetson/actu/pwm_command.txt"
 
 def flie(speed,lien):
     # 파일을 읽고 모든 줄을 리스트에 저장
     with open(command_file, 'r') as f:
         lines = f.readlines()
-        print(len(lines))
+    print(len(lines))
 
     # 두 번째 줄 수정 (인덱스는 1)
-    lines[lien-1] = str(speed)  # 두 번째 줄에 쓸 내용
+    lines[lien-1] = str(speed)+'\n'  # 두 번째 줄에 쓸 내용
 
     # 수정된 내용을 파일에 다시 쓰기
     with open(command_file, 'w') as f:
         f.writelines(lines)
 try:
     if kind=='light':           # pwm
+        print(kind)
         while True:
             new_speed = input("PWM 값 입력 (0-100, exit로 종료): ").strip()
             if new_speed.lower() == "exit":
@@ -38,12 +39,13 @@ try:
             else:
                 print("유효한 숫자를 입력하세요.")
     elif kind == 'pump':        # on/off
+        print(kind)
         while True:
             new_speed = input("PWM 값 입력 (on/off, exit로 종료): ").strip()
             if new_speed.lower() == "exit":
                 flie("exit",2)
                 break
-            else:
+            elif not new_speed.isdigit():
                 flie(new_speed.lower(),2)
 
     else:

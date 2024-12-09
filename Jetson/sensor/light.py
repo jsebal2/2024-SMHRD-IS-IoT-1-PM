@@ -1,3 +1,5 @@
+#-*-coding : utf-8-*-
+
 import smbus
 import time
 
@@ -21,9 +23,9 @@ def readLight(addr=DEVICE):
 
 
 def main():
-
-    print ("Light Level : " + str(readLight()) + " lux")
+    # print ("Light Level : " + str(readLight()) + " lux")
     time.sleep(0.5)
+    return str(readLight())
 
 if __name__=="__main__":
     main()
