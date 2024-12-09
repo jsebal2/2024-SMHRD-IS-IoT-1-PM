@@ -24,11 +24,12 @@ class _MainpageState extends State<Mainpage> {
   double lightPower = 0;
   final FlutterSecureStorage secureStorage = FlutterSecureStorage();
   final String baseUrl = 'http://192.168.219.73:8000';
-  String _imageUrl = 'assets/images/1/normal_normal_normal.png';
+  String _imageUrl = 'assets/images/1level/normal_normal_normal.png';
   int _level = 1;
   String _temperatureStatus = 'normal';
   String _waterStatus = 'normal';
   String _diseaseStatus = 'normal';
+  bool _isLoading = true;
 
 
   @override
@@ -107,7 +108,6 @@ class _MainpageState extends State<Mainpage> {
   }
 
   Future<void> _fetchSensorDataAndSetImage() async {
-    print("dld");
     try {
       print("SSSSSSSSSSSSSSSSSSS");
       final sensorData = await fetchSensorData();
@@ -136,16 +136,20 @@ class _MainpageState extends State<Mainpage> {
         _temperatureStatus =temperatureStatus;
         _waterStatus = waterLevel;
         _diseaseStatus = diseaseStatus;
-        _imageUrl = 'assets/images/${_level}/${_diseaseStatus}_${_waterStatus}_${_temperatureStatus}.png';
+        _imageUrl = 'assets/images/${_level}level/${_diseaseStatus}_${_waterStatus}_${_temperatureStatus}.png';
       });
     } catch (e) {
       print('사진 변경하는중에 에러 발생 $e');
     }
   }
 
+
+
   Widget buildSensorDataText(Map<String, dynamic> data) {
     final temp = data['temp'].toDouble();
     final tempMessages = generateMessage(temp);
+
+
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -181,7 +185,7 @@ class _MainpageState extends State<Mainpage> {
                   FutureBuilder(future: fetchSensorData(),
                     builder: (context,snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting){
-                        return Center(child: CircularProgressIndicator()); // 로딩중
+                        return Center(child: Container(width: 100, height: 120, child: Center(child: CircularProgressIndicator())),); // 로딩중
                       } else if (snapshot.hasError) {
                         return Text('Error : ${snapshot.error}'); // 에러처리
                       } else if (snapshot.hasData) {
@@ -352,7 +356,7 @@ class _MainpageState extends State<Mainpage> {
                       FutureBuilder<Map <String, dynamic>>(future: fetchSensorData(),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState == ConnectionState.waiting) {
-                              return Center(child: CircularProgressIndicator(),);
+                              return Center(child: Container(width: 100, height: 300, child: Center(child: CircularProgressIndicator())),);
                             } else if (snapshot.hasError) {
                               return Center(child: Text('Error : ${snapshot.error}'),);
                             } else if (snapshot.hasData) {
@@ -483,26 +487,7 @@ class _MainpageState extends State<Mainpage> {
               ),
 
               SizedBox(height: 18),
-              // 하단 버튼 (CCTV로 이동)
-              // Center(
-              //   child: ElevatedButton(
-              //     onPressed: () async {
-              //       final imageBytes = await fetchImage();
-              //       if (imageBytes != null){
-              //         showDialog(context: context,
-              //           builder: (context) => ImagePopup(imageBytes: imageBytes),
-              //         );
-              //       } else {
-              //         ScaffoldMessenger.of(context).showSnackBar(
-              //           SnackBar(content: Text('이미지 불러오기 실패')),
-              //         );
-              //       }
-              //     }, child: Icon(Icons.camera, color: Colors.white,),
-              //     style: ElevatedButton.styleFrom(
-              //       backgroundColor: Colors.green.shade600,
-              //       padding: EdgeInsets.all(10),
-              //       shape: RoundedRectangleBorder(
-              //         borderRadius: BorderRadius.circular(10)
+
               ],
            ),
         ),
