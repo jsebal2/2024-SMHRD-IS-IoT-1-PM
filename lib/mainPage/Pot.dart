@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:pm_project/mainPage/MainPage.dart';
 import 'package:pm_project/page.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:pm_project/baseUrl.dart';
 
 
 class AddPot extends StatefulWidget {
@@ -19,7 +20,6 @@ class _AddPotState extends State<AddPot> {
   final TextEditingController _nickController = TextEditingController();
   final FlutterSecureStorage secureStorage = FlutterSecureStorage();
   String? _token;
-  final String baseUrl = 'http://192.168.219.73:8000';
 
 
 

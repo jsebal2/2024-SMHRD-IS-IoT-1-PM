@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'diaryCard.dart';
+import 'package:pm_project/baseUrl.dart';
 
 class Calendar extends StatefulWidget {
   const Calendar({super.key});
@@ -21,16 +21,13 @@ class _CalendarState extends State<Calendar> {
   String content = '';
   String img_url = '';
   DateTime creat_at = DateTime.now();
-
   List<DateTime> _updatedDates = [];
-  List<Map<String, String>> diaryList = []; // 선택된 날짜의 일기 리스트
 
   @override
   void initState () {
     super.initState();
     _loadMarkedDates();
   }
-
   // 📆 달력 마커 날짜 불러오기
   Future<void> _loadMarkedDates() async{
     // 저장한 값 가져오기(읽기 - key : "키값")
@@ -39,7 +36,7 @@ class _CalendarState extends State<Calendar> {
     try {
       print('보내는 함수 내부 프린트 $token');
       // 서버로부터 데이터 가져오기
-      final response = await dio.post("http://192.168.219.73:8000/diary/marker",
+      final response = await dio.post("$baseUrl/diary/marker",
         options : Options(
           headers: {
             'Authorization': '$token'
@@ -127,13 +124,13 @@ class _CalendarState extends State<Calendar> {
     }
 
     Map<String, dynamic>? diaryData = await fetchDateForServer(
-        token, selectedDate, 'http://192.168.219.73:8000/diary/load');
+        token, selectedDate, '$baseUrl/diary/load');
 
     Map<String, dynamic>? picData = await fetchDateForServer(
-        token, selectedDate, 'http://192.168.219.73:8000/pic/pull');
+        token, selectedDate, '$baseUrl/pic/pull');
 
     Map<dynamic, dynamic>? markerData = await fetchDateForServer(
-        token, selectedDate,'http://192.168.219.73:8000/diary/marker');
+        token, selectedDate,'$baseUrl/diary/marker');
 
 
     if (diaryData != null) {

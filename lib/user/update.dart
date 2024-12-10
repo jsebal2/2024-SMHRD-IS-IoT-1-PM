@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:pm_project/baseUrl.dart';
 
 class Update extends StatefulWidget {
   const Update({super.key});
@@ -13,7 +14,6 @@ class _UpdateState extends State<Update> {
   final dio = Dio();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final String baseUrl = 'http://192.168.219.73:8000';
 
 
 

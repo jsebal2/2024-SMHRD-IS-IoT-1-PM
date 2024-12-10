@@ -6,8 +6,7 @@ import 'dart:async';
 import 'custom_widget.dart';
 import 'function.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
-
+import 'package:pm_project/baseUrl.dart';
 
 class Mainpage extends StatefulWidget {
   const Mainpage({super.key});
@@ -23,13 +22,11 @@ class _MainpageState extends State<Mainpage> {
   double lightTime = 0;
   double lightPower = 0;
   final FlutterSecureStorage secureStorage = FlutterSecureStorage();
-  final String baseUrl = 'http://192.168.219.73:8000';
   String _imageUrl = 'assets/images/1level/normal_normal_normal.png';
   int _level = 1;
   String _temperatureStatus = 'normal';
   String _waterStatus = 'normal';
   String _diseaseStatus = 'normal';
-
 
   @override
   void initState() {
@@ -42,21 +39,14 @@ class _MainpageState extends State<Mainpage> {
   void _startAutoRefresh() {
     _timer = Timer.periodic(Duration(milliseconds: 10000), (timer) {
       _fetchSensorDataAndSetImage();
-      // setState(() {
-      //   _sensorDataFuture = fetchSensorData(); // 1분뒤 데이터 다시 가져오기
-      //
-      // });
     });
-
   }
 
   @override
   void dispose() {
-    _timer.cancel(); // 타이머해제
+    _timer.cancel(); // 타이머 해제
     super.dispose();
   }
-
-
 
   Future<void> _checkPlantData() async {
     try {
@@ -97,19 +87,17 @@ class _MainpageState extends State<Mainpage> {
       ];
     } else if (temp < 18) {
       return [
-        '🤧', '"온도를 올려주는 것이 좋습니다."'
+        '🤧', '"온도를 올려주는 것이 좋습니다."',
       ];
     } else {
       return [
-        '🥵', '"온도를 낮춰주는 것이 좋습니다."'
+        '🥵', '"온도를 낮춰주는 것이 좋습니다."',
       ];
     }
   }
 
   Future<void> _fetchSensorDataAndSetImage() async {
-    print("dld");
     try {
-      print("SSSSSSSSSSSSSSSSSSS");
       final sensorData = await fetchSensorData();
       int level = sensorData["level"];
       int temp = sensorData["temp"];
@@ -127,7 +115,6 @@ class _MainpageState extends State<Mainpage> {
       }
 
       String waterLevel = (water == 0) ? 'normal' : 'dry';
-
       String diseaseStatus = (disease == 1) ? 'normal' : 'disease';
 
       setState(() {
@@ -139,7 +126,7 @@ class _MainpageState extends State<Mainpage> {
         _imageUrl = 'assets/images/${_level}level/${_diseaseStatus}_${_waterStatus}_${_temperatureStatus}.png';
       });
     } catch (e) {
-      print('사진 변경하는중에 에러 발생 $e');
+      print('사진 변경 중 에러 발생: $e');
     }
   }
 
@@ -153,14 +140,18 @@ class _MainpageState extends State<Mainpage> {
         Center(
           child: Column(
             children: [
-              Text('Level. ${data['level']}',
-                style: TextStyle(fontFamily:'둥근모', fontSize: 24, fontWeight: FontWeight.bold,),),
+              Text(
+                'Level. ${data['level']}',
+                style: TextStyle(
+                  fontFamily: '둥근모',
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ],
           ),
         ),
-        //Container(height: 1.0, width: 370,color: Colors.grey.shade400,),
         SizedBox(height: 20),
-
         Container(
           padding: EdgeInsets.all(8.0),
           decoration: BoxDecoration(
@@ -172,17 +163,28 @@ class _MainpageState extends State<Mainpage> {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  //Icon(Icons., size: 25,),
-                  SizedBox(width: 20,),
-                  Text(tempMessages[0], style: TextStyle(fontFamily:'카페24', fontSize: 25),),
-                  SizedBox(width: 20,),
+                  SizedBox(width: 20),
+                  Text(
+                    tempMessages[0],
+                    style: TextStyle(fontFamily: '카페24', fontSize: 25),
+                  ),
+                  SizedBox(width: 20),
                   Center(
-                      child: Text(tempMessages[1], style: TextStyle(fontFamily:'카페24', fontSize: 22, color: Colors.red.shade500),)),
+                    child: Text(
+                      tempMessages[1],
+                      style: TextStyle(
+                        fontFamily: '카페24',
+                        fontSize: 22,
+                        color: Colors.red.shade500,
+                      ),
+                    ),
+                  ),
                 ],
               ),
-            ],),
+            ],
+          ),
         ),
-        SizedBox(height: 70,),
+        SizedBox(height: 70),
         Container(
           padding: EdgeInsets.all(8.0),
           child: Center(
@@ -191,66 +193,93 @@ class _MainpageState extends State<Mainpage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Text('"함께한지 ${data["date"]}일이 지났어요!"',
-                    style: TextStyle(fontFamily:'카페24',fontSize: 20,fontWeight: FontWeight.w400),),
-                  SizedBox(height: 10,),
-                  Divider(thickness: 1,color: Colors.green.shade800,),
-                  SizedBox(height: 20,),
-                  FutureBuilder(future: fetchSensorData(),
-                    builder: (context,snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting){
-                        return Center(child: Container(width: 100, height: 120, child: Center(child: CircularProgressIndicator())),); // 로딩중
+                  Text(
+                    '"함께한지 ${data["date"]}일이 지났어요!"',
+                    style: TextStyle(
+                      fontFamily: '카페24',
+                      fontSize: 20,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Divider(
+                    thickness: 1,
+                    color: Colors.green.shade800,
+                  ),
+                  SizedBox(height: 20),
+                  FutureBuilder(
+                    future: fetchSensorData(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(
+                          child: Container(
+                            width: 100,
+                            height: 120,
+                            child: Center(child: CircularProgressIndicator()),
+                          ),
+                        ); // 로딩중
                       } else if (snapshot.hasError) {
-                        return Text('Error : ${snapshot.error}'); // 에러처리
+                        return Text('Error : ${snapshot.error}'); // 에러 처리
                       } else if (snapshot.hasData) {
                         final data = snapshot.data!;
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Container(
-                                child:
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Icon(Icons.device_thermostat, size: 25,color: Colors.red.shade700,),
-                                    SensorDataCard(label: '온도', value: '${data['temp']}°C'),
-                                  ],
-                                )),
-
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Icon(
+                                    Icons.device_thermostat,
+                                    size: 25,
+                                    color: Colors.red.shade700,
+                                  ),
+                                  SensorDataCard(
+                                      label: '온도', value: '${data['temp']}°C'),
+                                ],
+                              ),
+                            ),
                             Container(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Icon(Icons.water_drop,size: 25,color: Colors.blueAccent.shade200,),
-                                    SensorDataCard(label: '습도', value: '${data['humidity']}%'),
-                                  ],
-                                )),
-
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Icon(
+                                    Icons.water_drop,
+                                    size: 25,
+                                    color: Colors.blueAccent.shade200,
+                                  ),
+                                  SensorDataCard(
+                                      label: '습도',
+                                      value: '${data['humidity']}%'),
+                                ],
+                              ),
+                            ),
                             Container(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Icon(Icons.sunny, size: 25, color: Colors.amber.shade400),
-                                    SensorDataCard(label: '조도', value: '${data['light']}lx'),
-                                  ],
-                                )),
-
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Icon(
+                                    Icons.sunny,
+                                    size: 25,
+                                    color: Colors.amber.shade400,
+                                  ),
+                                  SensorDataCard(
+                                      label: '조도', value: '${data['light']}lx'),
+                                ],
+                              ),
+                            ),
                           ],
                         );
                       } else {
                         return Text('No Data'); // 데이터 없음 처리
                       }
                     },
-                  )
+                  ),
                 ],
               ),
             ),
           ),
-
         ),
-
-
-
       ],
     );
   }
@@ -258,8 +287,8 @@ class _MainpageState extends State<Mainpage> {
   Future<void> lightTimer(double value) async {
     try {
       final respose = await dio.get('$baseUrl/sensor/act',
-          queryParameters: {'lightTimer' : '$value'});
-    }catch(e) {
+          queryParameters: {'lightTimer': '$value'});
+    } catch (e) {
       print('Error => $e');
     }
   }
@@ -267,13 +296,11 @@ class _MainpageState extends State<Mainpage> {
   Future<void> lightControl(double value) async {
     try {
       final respose = await dio.get('$baseUrl/sensor/act',
-          queryParameters: {'lightTimer' : '$value'});
-    }catch(e) {
+          queryParameters: {'lightTimer': '$value'});
+    } catch (e) {
       print('Error => $e');
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -326,71 +353,74 @@ class _MainpageState extends State<Mainpage> {
           ),
         ),
       ),
-
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(14.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // 식물 성장 단계
               Container(
-                //color: Colors.grey.shade300,
                 child: Center(
                   child: Column(
                     children: [
-
                       SizedBox(height: 8),
                       InkWell(
-
                         child: Container(
-                          width: 250.0, // 원형의 크기 (지름)
+                          width: 250.0,
                           height: 250.0,
                           decoration: BoxDecoration(
-                            color: Colors.grey.shade100, // 배경색 추가
+                            color: Colors.grey.shade100,
                             shape: BoxShape.circle,
                             border: Border.all(
                               color: Colors.lightGreen,
                               width: 2.0,
-                            ),// 원형으로 설정
+                            ),
                             image: DecorationImage(
-                              image: AssetImage(_imageUrl), // 이미지 경로
-                              fit: BoxFit.cover, // 이미지가 원 안에 잘 채워짐
+                              image: AssetImage(_imageUrl),
+                              fit: BoxFit.cover,
                             ),
                           ),
                         ),
                       ),
-                      SizedBox(height: 10,),
-
-                      FutureBuilder<Map <String, dynamic>>(future: fetchSensorData(),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState == ConnectionState.waiting) {
-                              return Center(child: Container(width: 100, height: 300, child: Center(child: CircularProgressIndicator())),);
-                            } else if (snapshot.hasError) {
-                              return Center(child: Text('Error : ${snapshot.error}'),);
-                            } else if (snapshot.hasData) {
-                              return  Column(children: [
+                      SizedBox(height: 10),
+                      FutureBuilder<Map<String, dynamic>>(
+                        future: fetchSensorData(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Center(
+                              child: Container(
+                                width: 100,
+                                height: 300,
+                                child: Center(
+                                    child: CircularProgressIndicator()),
+                              ),
+                            );
+                          } else if (snapshot.hasError) {
+                            return Center(
+                              child: Text('Error : ${snapshot.error}'),
+                            );
+                          } else if (snapshot.hasData) {
+                            return Column(
+                              children: [
                                 buildSensorDataText(snapshot.data!),
-                                // Container(height: 1.0,
-                                //   width: 370,color: Colors.grey.shade400,)
                               ],
-                              );
-                            } else {
-                              return Center(child: Text('No data'),);
-                            }
-                          }),
+                            );
+                          } else {
+                            return Center(child: Text('No data'));
+                          }
+                        },
+                      ),
                     ],
+                  ),
                 ),
               ),
-              ),
               SizedBox(height: 40),
-
-              // 조명 지속 시간 부분
               Container(
                 padding: EdgeInsets.all(13.0),
                 decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20)
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -404,10 +434,19 @@ class _MainpageState extends State<Mainpage> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child:Text('$lightTime 시간',style: TextStyle(fontFamily: '카페24',fontSize: 18)),
-                        ),],),
-                    SizedBox(height: 10,),
+                          padding:
+                          const EdgeInsets.symmetric(horizontal: 20.0),
+                          child: Text(
+                            '$lightTime 시간',
+                            style: TextStyle(
+                              fontFamily: '카페24',
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 10),
                     Container(
                       child: Slider(
                           activeColor: Colors.lightGreenAccent.shade700,
@@ -422,18 +461,25 @@ class _MainpageState extends State<Mainpage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('0h',style: TextStyle(fontFamily:'카페24',fontSize: 16),),
-                        Text('10h',style: TextStyle(fontFamily:'카페24',fontSize: 16),),
-                      ],),],),),
-
-              SizedBox(height: 20,),
-
-              // 조명 밝기 부분
+                        Text(
+                          '0h',
+                          style: TextStyle(fontFamily: '카페24', fontSize: 16),
+                        ),
+                        Text(
+                          '10h',
+                          style: TextStyle(fontFamily: '카페24', fontSize: 16),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 20),
               Container(
                 padding: EdgeInsets.all(13.0),
                 decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20)
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -514,15 +560,10 @@ class _MainpageState extends State<Mainpage> {
                   ],
                 ),
               ),
-
-              SizedBox(height: 18),
-
-              ],
-           ),
-          )
+            ],
+          ),
         ),
+      ),
     );
-
-
   }
 }
