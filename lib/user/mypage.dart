@@ -87,81 +87,83 @@ class _MypageState extends State<Mypage> {
 
 
 
-              Container(
-                padding: EdgeInsets.all(20.0),
-                width: MediaQuery.of(context).size.height * 0.8,
-                height: MediaQuery.of(context).size.height * 0.2,
-                decoration: BoxDecoration(
-                    color: Colors.lightGreen.shade100,
-                    borderRadius: BorderRadius.circular(10)
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+              Center(
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(25,40,25,20),
+                  width: MediaQuery.of(context).size.height*1,
+                  height: 250,
+                  decoration: BoxDecoration(
+                      color: Colors.lightGreen.shade100,
+                      borderRadius: BorderRadius.circular(10)
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
 
-                  children: [
-                    FutureBuilder(
-                      future : fetchUserData(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator()); // 로딩중
-                        } else if (snapshot.hasError) {
-                          return Text('Error : ${snapshot.error}');
-                        } else if (snapshot.hasData) {
-                          final data = snapshot.data!;
-                          return Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(Icons.person),
-                                  SizedBox(width: 10,),
-                                  Text('나의 ID  :  ${snapshot.data!['id']}',
-                                    style: TextStyle(fontSize: 18, fontFamily: '눈누토끼',letterSpacing: 3),),
-                                ],
-                              ),
-                              SizedBox(height: 20,),
-                              Row(
-                                children: [
-                                  Icon(Icons.park),
-                                  SizedBox(width: 10,),
-                                  Text('나의 식물 ID  :  ${snapshot.data!['username']}',
-                                      style: TextStyle(fontSize: 18, fontFamily: '눈누토끼',letterSpacing: 3)),
-                                ],
-                              ),
-                              SizedBox(height: 30,),
-                              Center(
-                                child: ElevatedButton(
-                                    onPressed: (){
-                                      showModalBottomSheet(context: context,
-                                          builder: (BuildContext context) {
-                                        return AddPot();
-                                      });
-                                      }, child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            Icon(Icons.add, color: Colors.white,size: 30,),
-                                            SizedBox(width: 10,),
-                                            Text('반려식물 추가하기',style: TextStyle(fontFamily: '눈누토끼',fontSize: 18,color: Colors.white),),
-                                      ],
-                                    ),
-                                    style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.green.shade500,
-                                        padding: EdgeInsets.all(10),
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(80)
-                                        )
-                                    )
+                    children: [
+                      FutureBuilder(
+                        future : fetchUserData(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return Center(child: CircularProgressIndicator()); // 로딩중
+                          } else if (snapshot.hasError) {
+                            return Text('Error : ${snapshot.error}');
+                          } else if (snapshot.hasData) {
+                            final data = snapshot.data!;
+                            return Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(Icons.person),
+                                    SizedBox(width: 10,),
+                                    Text('나의 ID  :  ${snapshot.data!['id']}',
+                                      style: TextStyle(fontSize: 18, fontFamily: '눈누토끼',letterSpacing: 3),),
+                                  ],
                                 ),
-                              ),
-                            ],
-                          );
-                        } else {
-                          return Text('데이터를 가져오지 못했습니다.');
-                        }
-                      },
-                    ),
-                  ],),),
+                                SizedBox(height: 20,),
+                                Row(
+                                  children: [
+                                    Icon(Icons.park),
+                                    SizedBox(width: 10,),
+                                    Text('나의 식물 ID  :  ${snapshot.data!['username']}',
+                                        style: TextStyle(fontSize: 18, fontFamily: '눈누토끼',letterSpacing: 3)),
+                                  ],
+                                ),
+                                SizedBox(height: 50,),
+                                Center(
+                                  child: ElevatedButton(
+                                      onPressed: (){
+                                        showModalBottomSheet(context: context,
+                                            builder: (BuildContext context) {
+                                          return AddPot();
+                                        });
+                                        }, child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Icon(Icons.add, color: Colors.white,size: 30,),
+                                              SizedBox(width: 10,),
+                                              Text('반려식물 추가하기',style: TextStyle(fontFamily: '눈누토끼',fontSize: 18,color: Colors.white),),
+                                        ],
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.green.shade500,
+                                          padding: EdgeInsets.all(10),
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(80)
+                                          )
+                                      )
+                                  ),
+                                ),
+                              ],
+                            );
+                          } else {
+                            return Text('데이터를 가져오지 못했습니다.');
+                          }
+                        },
+                      ),
+                    ],),),
+              ),
 
               SizedBox(height: 70,),
               Divider(thickness: 0.5, height: 1, color: Colors.green.shade700,),

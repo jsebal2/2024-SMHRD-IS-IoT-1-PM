@@ -66,104 +66,108 @@ class _JoinState extends State<Join> {
       ),
 
 
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(50.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                  child: Image.asset('assets/images/plant_icon.png',width: 70,height: 70,color: Colors.green.shade800,)
-              ),
-              SizedBox(height: 15),
-              Text('Welcome!',
-                style: TextStyle(fontFamily:'산토끼',fontSize: 30, color:Colors.green.shade800,fontWeight: FontWeight.bold),
-              ),
-              Text('Smart Pot',
-                style: TextStyle(fontFamily:'산토끼',fontSize: 20, color:Colors.green.shade800,fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 60),
-
-              TextField(
-                controller: _idController,
-                decoration: InputDecoration(
-                  labelText: 'ID',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(50.0,20,50,0),
+            child: Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                      child: Image.asset('assets/images/plant_icon.png',width: 70,height: 70,color: Colors.green.shade800,)
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.green.shade800),
-                  ))),
-              SizedBox(height: 20),
-
-              TextField(
-                controller: _passwordController,
-                obscureText: true,
-                decoration: InputDecoration(
-                  labelText: '비밀번호',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
+                  SizedBox(height: 15),
+                  Text('Welcome!',
+                    style: TextStyle(fontFamily:'산토끼',fontSize: 30, color:Colors.green.shade800,fontWeight: FontWeight.bold),
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.green.shade800),
-                  ))),
-              SizedBox(height: 20),
-
-              TextField(
-                controller: _usernameController,
-                decoration: InputDecoration(
-                  labelText: '사용자 이름',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
+                  Text('Smart Pot',
+                    style: TextStyle(fontFamily:'산토끼',fontSize: 20, color:Colors.green.shade800,fontWeight: FontWeight.bold),
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.green.shade800),
-                  ))),
-              SizedBox(height: 20),
+                  SizedBox(height: 60),
 
-              TextField(
-                  controller: _plantnameController,
-                  decoration: InputDecoration(
-                      labelText: '식물의 종류',
+                  TextField(
+                    controller: _idController,
+                    decoration: InputDecoration(
+                      labelText: 'ID',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.green.shade800),
                       ))),
-              SizedBox(height: 20),
+                  SizedBox(height: 20),
 
-              TextField(
-                  controller: _nicknameController,
-                  decoration: InputDecoration(
-                      labelText: '식물의 애칭',
+                  TextField(
+                    controller: _passwordController,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      labelText: '비밀번호',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.green.shade800),
                       ))),
-              SizedBox(height: 50),
+                  SizedBox(height: 20),
 
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: _signUp,
-                  child: Text('회원가입',style: TextStyle(fontFamily: '머니그라피',fontSize: 20,color: Colors.white,letterSpacing: 10 )),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green.shade800,
-                    padding: EdgeInsets.all(20),
-                    shape: RoundedRectangleBorder(
+                  TextField(
+                    controller: _usernameController,
+                    decoration: InputDecoration(
+                      labelText: '사용자 이름',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.green.shade800),
+                      ))),
+                  SizedBox(height: 20),
 
+                  TextField(
+                      controller: _plantnameController,
+                      decoration: InputDecoration(
+                          labelText: '식물의 종류',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.green.shade800),
+                          ))),
+                  SizedBox(height: 20),
+
+                  TextField(
+                      controller: _nicknameController,
+                      decoration: InputDecoration(
+                          labelText: '식물의 애칭',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.green.shade800),
+                          ))),
+                  SizedBox(height: 50),
+
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: _signUp,
+                      child: Text('회원가입',style: TextStyle(fontFamily: '머니그라피',fontSize: 20,color: Colors.white,letterSpacing: 10 )),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green.shade800,
+                        padding: EdgeInsets.all(20),
+                        shape: RoundedRectangleBorder(
+
+                        ),
+                      ),
                     ),
-                  ),
+                  )
+                  ],
                 ),
-              )
-              ],
+            ),
             ),
           ),
-        ),
+      ),
       );
   }
 }
