@@ -322,7 +322,7 @@ class _MainpageState extends State<Mainpage> {
                   final imageBytes = await fetchImage();
                   if (imageBytes != null){
                     showDialog(context: context,
-                      builder: (context) => ImagePopup(imageBytes: imageBytes),
+                      builder: (context) => ImagePopup(imageBytes: imageBytes!),
                     );
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -334,7 +334,7 @@ class _MainpageState extends State<Mainpage> {
                   children: [
                     Text('Live',style: TextStyle(fontFamily: '카페24',color: Colors.orangeAccent.shade700,),),
                     Icon(Icons.photo_camera, size: 40
-                      ,color: Colors.orangeAccent.shade400,),
+                      ,color: Colors.orangeAccent.shade400,)
                   ],
                 ),
               ),

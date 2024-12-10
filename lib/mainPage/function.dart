@@ -84,13 +84,13 @@ void controlDevice(String device, bool state) async {
   }
 }
 
-Future<typed_data.Uint8List?> fetchImage() async {
+Future<String?> fetchImage() async {
   try {
     final response = await dio.get(
-      '$baseUrl/pic/pull', options: Options(responseType: ResponseType.bytes));
+      '$baseUrl/pic/pull?id=test1&date=2024-11-26');
 
     if (response.statusCode == 200) {
-      return typed_data.Uint8List.fromList(response.data);
+      return response.data;
     } else {
       print('실패 ${response.statusCode}');
     }
@@ -100,7 +100,7 @@ Future<typed_data.Uint8List?> fetchImage() async {
 }
 
 class ImagePopup extends StatelessWidget {
-  final typed_data.TypedData imageBytes;
+  final String imageBytes;
 
   ImagePopup({required this.imageBytes});
 
@@ -112,8 +112,8 @@ class ImagePopup extends StatelessWidget {
         height: 300,
         child: Column(
           children: [
-            Expanded(child: Image.memory(
-                imageBytes as typed_data.Uint8List),),
+            Expanded(child: Image.network(
+                imageBytes as String),),
             ElevatedButton(onPressed: () {Navigator.of(context).pop();},
                 child: Text("close"))
           ],
