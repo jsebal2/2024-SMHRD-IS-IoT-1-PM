@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:pm_project/baseUrl.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:intl/intl.dart';
 
 class Join extends StatefulWidget {
   const Join({super.key});
@@ -13,32 +15,44 @@ class _JoinState extends State<Join> {
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _plantnameController = TextEditingController();
+  final TextEditingController _nicknameController = TextEditingController();
+  final FlutterSecureStorage secureStorage = FlutterSecureStorage();
   final dio = Dio();
 
   void _signUp() async{
     final id = _idController.text;
     final password = _passwordController.text;
     final username = _usernameController.text;
+    final plantname = _plantnameController.text;
+    final nickname = _nicknameController.text;
+    final currentTime = DateTime.now();
+    final formattedDate = "${currentTime.year}-${currentTime.month.toString().padLeft(2, '0')}-${currentTime.day.toString().padLeft(2, '0')}";
+
+    final data = {'id' : "$id", 'password' : '$password', 'username':'$username','plantname':'$plantname','nickname':'$nickname','date':formattedDate};
 
 
 
       // post 방식의 데이터 전달을 위한 option
       dio.options.contentType = Headers.formUrlEncodedContentType;
-      Response res = await dio.post('$baseUrl/user/join',
-          data: {'id' : "$id", 'password' : '$password', 'username':'$username'});
 
-      // 전송결과 출력
-      print(res);
-      if(res.statusCode == 200){
-        print('dio|${res}');
-      } else {
-        print('error 발생');
+      try {
+        final responses = await Future.wait([
+          dio.post('$baseUrl/user/join',data: data),
+          dio.post('$baseUrl/plant/enroll',data: data),
+        ]);
+
+        for (var i = 0; i < responses.length; i++) {
+          final res = responses[i];
+          if (res.statusCode == 200) {
+            print('${ i+1 } 번째 위치로 실행');
+          } else {
+            print('${ i+1 }의 위치에서 오류');
+          }
+        }
+      }catch(e) {
+        print('회원가입 오류 : $e');
       }
-
-// post 방식 끝
-
-    // 회원가입 로직 처리
-    print('ID: $id, Password: $password, Username: $username');
   }
 
   @override
@@ -102,6 +116,30 @@ class _JoinState extends State<Join> {
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.green.shade800),
                   ))),
+              SizedBox(height: 20),
+
+              TextField(
+                  controller: _plantnameController,
+                  decoration: InputDecoration(
+                      labelText: '식물의 종류',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.green.shade800),
+                      ))),
+              SizedBox(height: 20),
+
+              TextField(
+                  controller: _nicknameController,
+                  decoration: InputDecoration(
+                      labelText: '식물의 애칭',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.green.shade800),
+                      ))),
               SizedBox(height: 50),
 
               SizedBox(
