@@ -22,11 +22,22 @@ class _MypageState extends State<Mypage> {
   final dio =Dio();
   final FlutterSecureStorage secureStorage = FlutterSecureStorage();
   String? _token;
+  String? nickName;
 
   @override
   void initState() {
     super.initState();
     _loadToken();
+    _initializeData();
+  }
+
+  Future<void> _initializeData() async {
+    await _loadToken(); // 토큰을 로드한 후
+    if (_token != null) {
+      _loadNickname(); // 토큰이 유효하면 닉네임 로드
+    } else {
+      print('유효한 토큰이 없습니다.');
+    }
   }
 
   Future<void> _loadToken() async {
@@ -44,13 +55,24 @@ class _MypageState extends State<Mypage> {
   }
 
   void _loadNickname() async{
-    final id = _token;
-    final data = {'id' : "$id"};
+
+    final data = {'id' : "$_token"};
 
     // post 방식의 데이터 전달을 위한 option
     dio.options.contentType = Headers.formUrlEncodedContentType;
 
     Response res = await dio.post('$baseUrl/plant/isthere', data: data);
+
+    print(res);
+    if(res.statusCode == 200){
+      print('dio|${res.data}');
+    } else {
+      print('식물이름 받아오기 error 발생');
+    }
+
+    String nickName = res.data["plant_nick"];
+
+    print(nickName);
   }
 
 
@@ -66,7 +88,7 @@ class _MypageState extends State<Mypage> {
   // id 및 식물 id 값 가져오기
   Future<Map<String, String>> fetchUserData() async{
     await Future.delayed(Duration(seconds: 1));
-    return {'id' : '$_token', 'username' : '1234'};
+    return {'id' : '$_token', 'username' : '$nickName'};
   }
 
   @override
