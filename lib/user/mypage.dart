@@ -23,6 +23,10 @@ class _MypageState extends State<Mypage> {
   final FlutterSecureStorage secureStorage = FlutterSecureStorage();
   String? _token;
   String? nickName;
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _idCotroller = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  //final TextEditingController _plantnameController = TextEditingController();
 
   @override
   void initState() {
@@ -54,6 +58,52 @@ class _MypageState extends State<Mypage> {
     }
   }
 
+  Future<void> update (BuildContext context) async {
+    final name = _nameController.text;
+    final id = _idCotroller.text;
+    final password = _passwordController.text;
+    //final plantname = _plantnameController.text;
+
+    final data = {'name': '$name', 'id': '$id', 'password': '$password'};
+
+    dio.options.contentType = Headers.formUrlEncodedContentType;
+
+    try {
+      final responses = await Future.wait([
+        dio.post('$baseUrl/user/change', data: data),
+        //dio.post('$baseUrl/plant/change', data: data),
+      ]);
+
+      for (var i = 0; i < responses.length; i++) {
+        final res = responses[i];
+        if (res.statusCode == 200) {
+          print('${ i + 1 } 번째 위치로 실행');
+          String token = "$id";
+          await secureStorage.write(key: 'authToken', value: token);
+          showDialog(context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  content: Text('회원정보가 수정되었습니다.'),
+                  actions: [
+                    ElevatedButton(onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                        child: Text('닫기'))
+                  ],
+                );
+              });
+        } else {
+          print('${ i + 1 }의 위치에서 오류');
+        }
+      }
+    } catch (e) {
+      print('회원정보수정 오류 : $e');
+    }
+  }
+    
+
+
+
   void _loadNickname() async{
 
     final data = {'id' : "$_token"};
@@ -66,13 +116,17 @@ class _MypageState extends State<Mypage> {
     print(res);
     if(res.statusCode == 200){
       print('dio|${res.data}');
+      setState(() {
+        nickName = res.data["select"]["plant_nick"];
+      });
+
+
+      print(res.data["plant_nick"]);
     } else {
       print('식물이름 받아오기 error 발생');
     }
 
-    String nickName = res.data["plant_nick"];
 
-    print(nickName);
   }
 
 
@@ -147,14 +201,22 @@ class _MypageState extends State<Mypage> {
                                   ),
                                   SizedBox(height: 20,),
                                   Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Icon(Icons.park),
                                       SizedBox(width: 10,),
-                                      Text('나의 식물 ID  :  ${snapshot.data!['username']}',
-                                          style: TextStyle(fontSize: 18, fontFamily: '눈누토끼',letterSpacing: 3)),
+                                      Column(
+                                        children: [
+                                          Text('나의 식물 ID  :',
+                                              style: TextStyle(fontSize: 18, fontFamily: '눈누토끼',letterSpacing: 3)),
+                                          Text('${snapshot.data!['username']}',
+                                              style: TextStyle(fontSize: 18, fontFamily: '눈누토끼',letterSpacing: 3)),
+                                        ],
+                                      ),
+
                                     ],
                                   ),
-                                  SizedBox(height: 50,),
+                                  SizedBox(height: 40,),
                                   Center(
                                     child: ElevatedButton(
                                         onPressed: (){
@@ -204,8 +266,84 @@ class _MypageState extends State<Mypage> {
                   title: Text('회원정보 수정', style: TextStyle(fontSize: 16,color: Colors.blueAccent.shade700),),
                   contentPadding: EdgeInsets.symmetric(horizontal: 0),
                 ),
-        
-                SizedBox(height: 100,),
+
+                TextField(
+                  controller: _nameController,
+                  decoration: InputDecoration(
+                      labelText: 'name',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.green.shade300),
+                      )
+                  ),
+                ),
+                SizedBox(height: 30),
+
+                TextField(
+                  controller: _idCotroller,
+                  decoration: InputDecoration(
+                      labelText: 'ID',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.green.shade300),
+                      )
+                  ),
+                ),
+                SizedBox(height: 30),
+
+                // TextField(
+                //   controller: _plantnameController,
+                //   decoration: InputDecoration(
+                //       labelText: '식물의 이름',
+                //       border: OutlineInputBorder(
+                //         borderRadius: BorderRadius.circular(10),
+                //       ),
+                //       focusedBorder: OutlineInputBorder(
+                //         borderSide: BorderSide(color: Colors.green.shade300),
+                //       )
+                //   ),
+                // ),
+                // SizedBox(height: 30),
+
+                TextField(
+                  controller: _passwordController,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                      labelText: '비밀번호',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.green.shade300)
+                      )
+                  ),
+                ),
+                SizedBox(height: 30),
+
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      await update(context);
+                    },
+                    child: Text('회원정보 수정', style: TextStyle(fontFamily: '머니그라피',fontSize: 20,color: Colors.white,letterSpacing: 10 ),),
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green.shade600,
+                        padding: EdgeInsets.all(20),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)
+                        )
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: 50,),
+
+
                 // 회원 탈퇴 페이지로 이동
                 ListTile(
                   onTap: () {
