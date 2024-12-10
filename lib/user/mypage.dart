@@ -94,137 +94,140 @@ class _MypageState extends State<Mypage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
-      body: Center(
-        child: Padding(
-          padding: EdgeInsets.all(50.0), // 중단 - content
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [ // 상단 프로필
-              Container(
-                child: Text('\n회원님\n'
-                    '안녕하세요!😀',
-                  style: TextStyle(fontFamily:'카페24',fontSize: 25, fontWeight: FontWeight.bold,letterSpacing: 5),),),
-              SizedBox(height: 50),
-
-
-
-              Center(
-                child: Container(
-                  padding: EdgeInsets.fromLTRB(25,40,25,20),
-                  width: MediaQuery.of(context).size.height*1,
-                  height: 250,
-                  decoration: BoxDecoration(
-                      color: Colors.lightGreen.shade100,
-                      borderRadius: BorderRadius.circular(10)
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-
-                    children: [
-                      FutureBuilder(
-                        future : fetchUserData(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.waiting) {
-                            return Center(child: CircularProgressIndicator()); // 로딩중
-                          } else if (snapshot.hasError) {
-                            return Text('Error : ${snapshot.error}');
-                          } else if (snapshot.hasData) {
-                            final data = snapshot.data!;
-                            return Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Icon(Icons.person),
-                                    SizedBox(width: 10,),
-                                    Text('나의 ID  :  ${snapshot.data!['id']}',
-                                      style: TextStyle(fontSize: 18, fontFamily: '눈누토끼',letterSpacing: 3),),
-                                  ],
-                                ),
-                                SizedBox(height: 20,),
-                                Row(
-                                  children: [
-                                    Icon(Icons.park),
-                                    SizedBox(width: 10,),
-                                    Text('나의 식물 ID  :  ${snapshot.data!['username']}',
-                                        style: TextStyle(fontSize: 18, fontFamily: '눈누토끼',letterSpacing: 3)),
-                                  ],
-                                ),
-                                SizedBox(height: 50,),
-                                Center(
-                                  child: ElevatedButton(
-                                      onPressed: (){
-                                        showModalBottomSheet(context: context,
-                                            builder: (BuildContext context) {
-                                          return AddPot();
-                                        });
-                                        }, child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: [
-                                              Icon(Icons.add, color: Colors.white,size: 30,),
-                                              SizedBox(width: 10,),
-                                              Text('반려식물 추가하기',style: TextStyle(fontFamily: '눈누토끼',fontSize: 18,color: Colors.white),),
-                                        ],
-                                      ),
-                                      style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.green.shade500,
-                                          padding: EdgeInsets.all(10),
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(80)
-                                          )
-                                      )
+      body: SingleChildScrollView(
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.all(50.0), // 중단 - content
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [ // 상단 프로필
+                Container(
+                  child: Text('\n회원님\n'
+                      '안녕하세요!😀',
+                    style: TextStyle(fontFamily:'카페24',fontSize: 25, fontWeight: FontWeight.bold,letterSpacing: 5),),),
+                SizedBox(height: 50),
+        
+        
+        
+                Center(
+                  child: Container(
+                    padding: EdgeInsets.fromLTRB(25,40,25,20),
+                    width: MediaQuery.of(context).size.height*1,
+                    height: 250,
+                    decoration: BoxDecoration(
+                        color: Colors.lightGreen.shade100,
+                        borderRadius: BorderRadius.circular(10)
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+        
+                      children: [
+                        FutureBuilder(
+                          future : fetchUserData(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return Center(child: CircularProgressIndicator()); // 로딩중
+                            } else if (snapshot.hasError) {
+                              return Text('Error : ${snapshot.error}');
+                            } else if (snapshot.hasData) {
+                              final data = snapshot.data!;
+                              return Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Icon(Icons.person),
+                                      SizedBox(width: 10,),
+                                      Text('나의 ID  :  ${snapshot.data!['id']}',
+                                        style: TextStyle(fontSize: 18, fontFamily: '눈누토끼',letterSpacing: 3),),
+                                    ],
                                   ),
-                                ),
-                              ],
-                            );
-                          } else {
-                            return Text('데이터를 가져오지 못했습니다.');
-                          }
-                        },
-                      ),
-                    ],),),
-              ),
-
-              SizedBox(height: 70,),
-              Divider(thickness: 0.5, height: 1, color: Colors.green.shade700,),
-              SizedBox(height: 20,),
-              // 💡 하단 버튼 (회원정보 수정, 회원탈퇴, 로그아웃)
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-              ),
-
-              ListTile(
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(
-                      builder: (context) {return Update();}));},
-                title: Text('회원정보 수정', style: TextStyle(fontSize: 16,color: Colors.blueAccent.shade700),),
-                contentPadding: EdgeInsets.symmetric(horizontal: 0),
-              ),
-
-              SizedBox(height: 100,),
-              // 회원 탈퇴 페이지로 이동
-              ListTile(
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(
-                      builder: (context) {return Delete();}));},
-
-                title: Text('회원 탈퇴', style: TextStyle(fontSize: 13,color: Colors.grey.shade600 ),),
-                contentPadding: EdgeInsets.symmetric(horizontal: 0),
-              ),
-
-
-
-              // 로그아웃
-              ListTile(
-                onTap: () {
-                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
-                      builder: (context) {return Login();}), (route)=>false);},
-                title: Text('로그아웃', style: TextStyle(fontSize: 13,color: Colors.grey.shade700),),
-                contentPadding: EdgeInsets.symmetric(horizontal: 0),
-              ),
-            ],
+                                  SizedBox(height: 20,),
+                                  Row(
+                                    children: [
+                                      Icon(Icons.park),
+                                      SizedBox(width: 10,),
+                                      Text('나의 식물 ID  :  ${snapshot.data!['username']}',
+                                          style: TextStyle(fontSize: 18, fontFamily: '눈누토끼',letterSpacing: 3)),
+                                    ],
+                                  ),
+                                  SizedBox(height: 50,),
+                                  Center(
+                                    child: ElevatedButton(
+                                        onPressed: (){
+                                          showModalBottomSheet(context: context,
+                                              builder: (BuildContext context) {
+                                            return AddPot();
+                                          });
+                                          }, child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                Icon(Icons.add, color: Colors.white,size: 30,),
+                                                SizedBox(width: 10,),
+                                                Text('반려식물 추가하기',style: TextStyle(fontFamily: '눈누토끼',fontSize: 18,color: Colors.white),),
+                                          ],
+                                        ),
+                                        style: ElevatedButton.styleFrom(
+                                            backgroundColor: Colors.green.shade500,
+                                            padding: EdgeInsets.all(10),
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(80)
+                                            )
+                                        )
+                                    ),
+                                  ),
+                                ],
+                              );
+                            } else {
+                              return Text('데이터를 가져오지 못했습니다.');
+                            }
+                          },
+                        ),
+                      ],),),
+                ),
+        
+                SizedBox(height: 70,),
+                Divider(thickness: 0.5, height: 1, color: Colors.green.shade700,),
+                SizedBox(height: 20,),
+                // 💡 하단 버튼 (회원정보 수정, 회원탈퇴, 로그아웃)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                ),
+        
+                ListTile(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(
+                        builder: (context) {return Update();}));},
+                  title: Text('회원정보 수정', style: TextStyle(fontSize: 16,color: Colors.blueAccent.shade700),),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 0),
+                ),
+        
+                SizedBox(height: 100,),
+                // 회원 탈퇴 페이지로 이동
+                ListTile(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(
+                        builder: (context) {return Delete();}));},
+        
+                  title: Text('회원 탈퇴', style: TextStyle(fontSize: 13,color: Colors.grey.shade600 ),),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 0),
+                ),
+        
+        
+        
+                // 로그아웃
+                ListTile(
+                  onTap: () {
+                    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+                        builder: (context) {return Login();}), (route)=>false);},
+                  title: Text('로그아웃', style: TextStyle(fontSize: 13,color: Colors.grey.shade700),),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 0),
+                ),
+              ],
+            ),
           ),
         ),
       ),
