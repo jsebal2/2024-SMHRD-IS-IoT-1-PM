@@ -1,13 +1,17 @@
+#-*-coding : utf-8-*-
+import sys
+sys.path.append("/home/jetbot/Project/Jetson/sensor")
+import light, waterLavel
 
-# 센서값을 모아서 받아옴
-light = 200
-temp = 23
-he = 20
+light1 = light.main()
+water_level = waterLavel.main() 
+temp = 30
+humidity = 20
 level = 2
 date = 20
-water_level = 1 # 0은 물이 있다, 1은 물이 없다
-disease = 0 # 0은 병이 없다, 1은 병이 있다.
+disease = 0
 # print(light)
 # print(temp)
 # print(he)
-print('{"light":%f,"temp":%f,"humidity":%f, "level" : %d, "date": %d, "water_level": %d, "disease" : %d}'%(light,temp,he,level,date,water_level,disease))
+print('{"light":%s,"temp":%f,"humidity":%f, "level" : %d, "date": %d, "water_level": %d, "disease" : %d}'%(light1,temp,humidity,level,date,water_level,disease))
+
