@@ -243,88 +243,105 @@ class _CalendarState extends State<Calendar> {
               ),
             ),
           ),
-
-
+          SizedBox(height: 10,),
+          Divider(
+            thickness: 1,
+            color: Colors.grey.shade300,
+          ),
+          Container(
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: Colors.lightGreenAccent.shade100,
+              ),
+              child: Text(_selectedDay != null
+                  ? DateFormat('📆  yyyy년 MM월 dd일').format(_selectedDay!)
+                  : '날짜를 선택하세요',
+                style: TextStyle(fontFamily:'카페24',fontWeight: FontWeight.bold, fontSize: 18, letterSpacing: 2),),
+          ),
           // 선택된 날짜와 정보 표시
           Expanded(
-              child: Padding(
-                padding: EdgeInsets.all(15.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  child: Visibility(
-                                    visible: img_url.isNotEmpty, // 조건에 따라 표시 여부 결정
-                                    replacement: Container(
-                                      padding: EdgeInsets.all(20),
-                                      decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.circular(20)
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(30,5,30,10),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+
+                                  SizedBox(height: 20,),
+
+
+                                  Row(
+                                    children: [
+                                      Text('제목 : ',
+                                        style: TextStyle(fontFamily:'카페24', fontSize: 18, fontWeight: FontWeight.bold, letterSpacing: 2),
                                       ),
-                                      child: Container(
-                                        child: Text(
-                                          '이미지가 없습니다.',
-                                          style: TextStyle(fontFamily:'눈눈토끼',fontSize: 16, color: Colors.grey),
+                                      Text(title.isNotEmpty ? title : '',
+                                        style: TextStyle(fontFamily:'눈누토끼',fontSize: 18, letterSpacing: 2 ),
+                                      ),
+                                    ],
+                                  ),
+
+                                  SizedBox(height: 20,),
+
+                                  Container(
+                                    child: Visibility(
+                                      visible: img_url.isNotEmpty, // 조건에 따라 표시 여부 결정
+                                      replacement: Container(
+                                        padding: EdgeInsets.all(20),
+                                        height: MediaQuery.of(context).size.width * 0.5,
+                                        width: MediaQuery.of(context).size.width * 0.85,
+                                        decoration: BoxDecoration(
+                                            color: Colors.white,
                                         ),
 
-                                      ),
-                                    ), // visible이 false일 때 대체할 위젯
+                                        child: Center(
+                                          child: Container(
+                                            child: Text(
+                                              '이미지가 없습니다. '  '(카메라 매일 하루에 하나씩 자동으로 업로드)',
+                                              style: TextStyle(fontFamily:'눈눈토끼',fontSize: 20, color: Colors.grey),
+                                            ),
+                                          ),
+                                        ),
+                                      ), // visible이 false일 때 대체할 위젯
 
-                                    child: Container(
-                                      child: Image.network(img_url,
-                                        width: 200, height: 200, fit: BoxFit.contain,
+                                      child: Container(
+                                        child: Image.network(img_url,
+                                          width: 200, height: 200, fit: BoxFit.contain,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                                Text('선택된 날짜',
-                                  style: TextStyle(fontFamily:'눈누토끼',fontSize: 18,fontWeight: FontWeight.bold,letterSpacing: 2),
-                                ),
-                                Text(_selectedDay != null
-                                    ? DateFormat('yyyy-MM-dd').format(_selectedDay!)
-                                    : '날짜를 선택하세요',
-                                  style: TextStyle(fontFamily:'눈누토끼', fontSize: 18, letterSpacing: 2),),
-                                SizedBox(height: 20,),
-
-                                Text('제목',
-                                  style: TextStyle(fontFamily:'눈누토끼', fontSize: 18, fontWeight: FontWeight.bold, letterSpacing: 2),
-                                ),
-                                Text(title.isNotEmpty ? title : '',
-                                  style: TextStyle(fontFamily:'눈누토끼',fontSize: 18, letterSpacing: 2 ),
-                                ),
-                                SizedBox(height: 20,),
-                              ],
-                            ),
-                          ],
-                        ),
-
-
-
-
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('내용',
-                              style: TextStyle(fontFamily:'눈누토끼',fontSize: 18, fontWeight: FontWeight.bold,letterSpacing: 2),
-                            ),
-                            Text(content.isNotEmpty ? content : '',
-                              style: TextStyle(fontFamily:'눈누토끼',fontSize: 18,letterSpacing: 2),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),))],
+                                  SizedBox(height: 20,),
+                                ],
+                              ),
+                            ],
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('내용 : ',
+                                style: TextStyle(fontFamily:'카페24',fontSize: 18, fontWeight: FontWeight.bold,letterSpacing: 2),
+                              ),
+                              Text(content.isNotEmpty ? content : '',
+                                style: TextStyle(fontFamily:'눈누토끼',fontSize: 18,letterSpacing: 2),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),),
+              ))],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showModalBottomSheet(context),
@@ -409,7 +426,8 @@ class _CalendarState extends State<Calendar> {
                                 }
                               } else {
                                 // 입력값 검증 실패 시 알림
-                                ScaffoldMessenger.of(context).showSnackBar(
+                                ScaffoldMessenger.of(context
+                                ).showSnackBar(
                                   SnackBar(content: Text('제목과 내용을 입력해주세요!')),
                                 );
                               }
