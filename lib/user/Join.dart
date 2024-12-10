@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:pm_project/baseUrl.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:intl/intl.dart';
+import 'package:pm_project/mainPage/Login.dart';
 
 class Join extends StatefulWidget {
   const Join({super.key});
@@ -46,6 +47,7 @@ class _JoinState extends State<Join> {
           final res = responses[i];
           if (res.statusCode == 200) {
             print('${ i+1 } 번째 위치로 실행');
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Login()));
           } else {
             print('${ i+1 }의 위치에서 오류');
           }
