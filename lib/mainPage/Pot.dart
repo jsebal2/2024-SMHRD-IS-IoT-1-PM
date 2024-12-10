@@ -71,70 +71,90 @@ class _AddPotState extends State<AddPot> {
       appBar: AppBar(
         title: Text(''),
       ),
-      body: Expanded(
-        child: Padding(
-          padding: const EdgeInsets.all(30.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                '새로운 반려식물 등록하기',
-                style: TextStyle(fontFamily:'눈누토끼',fontSize: 24, fontWeight: FontWeight.bold,letterSpacing: 4),
-              ),
-              SizedBox(height: 40),
-              TextField(
-                controller: _nameController,
-                decoration: InputDecoration(
-                  labelText: '식물종류',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.green)
-                  )
+      body: SingleChildScrollView(
+        child: Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(30.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '새로운 반려식물 등록하기',
+                  style: TextStyle(fontFamily:'눈누토끼',fontSize: 24, fontWeight: FontWeight.bold,letterSpacing: 4),
                 ),
-              ),
-        
-              SizedBox(height: 20),
-              TextField(
-                controller: _nickController,
-                decoration: InputDecoration(
-                  labelText: '별칭',
+                SizedBox(height: 40),
+                TextField(
+                  controller: _nameController,
+                  decoration: InputDecoration(
+                    labelText: '식물종류',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
                     focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.green)
+                      borderSide: BorderSide(color: Colors.green)
                     )
+                  ),
                 ),
-              ),
-        
-              SizedBox(height: 40,),
-              SizedBox(
-                //width: double.infinity,
-                width: 200,
-                child: ElevatedButton(
-                  onPressed: _signUp,
-                  child: Text('등록하기',style: TextStyle(fontFamily: '눈누토끼',color: Colors.white,fontSize: 20),),
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green.shade600,
-                      padding: EdgeInsets.all(15),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)
+          
+                SizedBox(height: 20),
+                TextField(
+                  controller: _nickController,
+                  decoration: InputDecoration(
+                    labelText: '별칭',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.green)
                       )
                   ),
                 ),
-              ),
+          
+                SizedBox(height: 40,),
+                    Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          ElevatedButton(
+                            onPressed: _signUp,
+                            child: Text('등록하기',style: TextStyle(fontFamily: '눈누토끼',color: Colors.white,fontSize: 15),),
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: Size(120, 50),
+                                backgroundColor: Colors.green.shade400,
+                                padding: EdgeInsets.all(15),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(40)
+                                )
+                            ),
+                          ),
+                          SizedBox(width: 10,),
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.of(context).pop(); // 모달 닫기
+                            },
+                            child: Text('Close',style: TextStyle(fontFamily: '눈누토끼',color:Colors.white,fontSize: 15),),
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: Size(120, 40),
+                                backgroundColor: Colors.grey.shade400,
+                                padding: EdgeInsets.all(15),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(40)
+                                )
+                            ),
+                          ),
+
+                        ],
+                      ),
+                    ),
         
-              SizedBox(height: 50,),
+
+          
+                SizedBox(height: 50,),
+          
         
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pop(); // 모달 닫기
-                },
-                child: Text('Close'),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

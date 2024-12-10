@@ -108,15 +108,31 @@ class ImagePopup extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dialog(
       child: Container(
-        width: 300,
-        height: 300,
-        child: Column(
-          children: [
-            Expanded(child: Image.network(
-                imageBytes as String),),
-            ElevatedButton(onPressed: () {Navigator.of(context).pop();},
-                child: Text("close"))
-          ],
+        width: MediaQuery.of(context).size.width * 0.9, // 화면 너비의 90%
+        height: MediaQuery.of(context).size.height * 0.5, // 화면 높이의 80%
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(10,50,10,30),
+          child: Column(
+            children: [
+              Text('실시간 나의 식물 확인하기',
+              style: TextStyle(fontFamily:'카페24',color: Colors.green.shade800,fontSize: 24, fontWeight: FontWeight.bold,letterSpacing: 4),
+              ),
+              Expanded(child: Image.network(
+                  imageBytes as String),),
+              ElevatedButton(onPressed: () {Navigator.of(context).pop();},
+                  child: Text("close",style: TextStyle(fontFamily: '눈누토끼',color: Colors.white,fontSize: 15),),
+              style: ElevatedButton.styleFrom(
+                  minimumSize: Size(100, 50),
+                  backgroundColor: Colors.grey.shade500,
+                  padding: EdgeInsets.all(15),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30)
+
+                  ),
+              ),
+              ),
+            ],
+          ),
         ),
       ),
     );

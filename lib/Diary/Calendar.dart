@@ -243,88 +243,105 @@ class _CalendarState extends State<Calendar> {
               ),
             ),
           ),
-
-
+          SizedBox(height: 10,),
+          Divider(
+            thickness: 1,
+            color: Colors.grey.shade300,
+          ),
+          Container(
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: Colors.lightGreenAccent.shade100,
+              ),
+              child: Text(_selectedDay != null
+                  ? DateFormat('📆  yyyy년 MM월 dd일').format(_selectedDay!)
+                  : '날짜를 선택하세요',
+                style: TextStyle(fontFamily:'카페24',fontWeight: FontWeight.bold, fontSize: 18, letterSpacing: 2),),
+          ),
           // 선택된 날짜와 정보 표시
           Expanded(
-              child: Padding(
-                padding: EdgeInsets.all(15.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  child: Visibility(
-                                    visible: img_url.isNotEmpty, // 조건에 따라 표시 여부 결정
-                                    replacement: Container(
-                                      padding: EdgeInsets.all(20),
-                                      decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.circular(20)
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(30,5,30,10),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+
+                                  SizedBox(height: 20,),
+
+
+                                  Row(
+                                    children: [
+                                      Text('제목 : ',
+                                        style: TextStyle(fontFamily:'카페24', fontSize: 18, fontWeight: FontWeight.bold, letterSpacing: 2),
                                       ),
-                                      child: Container(
-                                        child: Text(
-                                          '이미지가 없습니다.',
-                                          style: TextStyle(fontFamily:'눈눈토끼',fontSize: 16, color: Colors.grey),
+                                      Text(title.isNotEmpty ? title : '',
+                                        style: TextStyle(fontFamily:'눈누토끼',fontSize: 18, letterSpacing: 2 ),
+                                      ),
+                                    ],
+                                  ),
+
+                                  SizedBox(height: 20,),
+
+                                  Container(
+                                    child: Visibility(
+                                      visible: img_url.isNotEmpty, // 조건에 따라 표시 여부 결정
+                                      replacement: Container(
+                                        padding: EdgeInsets.all(20),
+                                        height: MediaQuery.of(context).size.width * 0.5,
+                                        width: MediaQuery.of(context).size.width * 0.85,
+                                        decoration: BoxDecoration(
+                                            color: Colors.white,
                                         ),
 
-                                      ),
-                                    ), // visible이 false일 때 대체할 위젯
+                                        child: Center(
+                                          child: Container(
+                                            child: Text(
+                                              '이미지가 없습니다. '  '(카메라 매일 하루에 하나씩 자동으로 업로드)',
+                                              style: TextStyle(fontFamily:'눈눈토끼',fontSize: 20, color: Colors.grey),
+                                            ),
+                                          ),
+                                        ),
+                                      ), // visible이 false일 때 대체할 위젯
 
-                                    child: Container(
-                                      child: Image.network(img_url,
-                                        width: 200, height: 200, fit: BoxFit.contain,
+                                      child: Container(
+                                        child: Image.network(img_url,
+                                          width: 200, height: 200, fit: BoxFit.contain,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                                Text('선택된 날짜',
-                                  style: TextStyle(fontFamily:'눈누토끼',fontSize: 18,fontWeight: FontWeight.bold,letterSpacing: 2),
-                                ),
-                                Text(_selectedDay != null
-                                    ? DateFormat('yyyy-MM-dd').format(_selectedDay!)
-                                    : '날짜를 선택하세요',
-                                  style: TextStyle(fontFamily:'눈누토끼', fontSize: 18, letterSpacing: 2),),
-                                SizedBox(height: 20,),
-
-                                Text('제목',
-                                  style: TextStyle(fontFamily:'눈누토끼', fontSize: 18, fontWeight: FontWeight.bold, letterSpacing: 2),
-                                ),
-                                Text(title.isNotEmpty ? title : '',
-                                  style: TextStyle(fontFamily:'눈누토끼',fontSize: 18, letterSpacing: 2 ),
-                                ),
-                                SizedBox(height: 20,),
-                              ],
-                            ),
-                          ],
-                        ),
-
-
-
-
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('내용',
-                              style: TextStyle(fontFamily:'눈누토끼',fontSize: 18, fontWeight: FontWeight.bold,letterSpacing: 2),
-                            ),
-                            Text(content.isNotEmpty ? content : '',
-                              style: TextStyle(fontFamily:'눈누토끼',fontSize: 18,letterSpacing: 2),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),))],
+                                  SizedBox(height: 20,),
+                                ],
+                              ),
+                            ],
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('내용 : ',
+                                style: TextStyle(fontFamily:'카페24',fontSize: 18, fontWeight: FontWeight.bold,letterSpacing: 2),
+                              ),
+                              Text(content.isNotEmpty ? content : '',
+                                style: TextStyle(fontFamily:'눈누토끼',fontSize: 18,letterSpacing: 2),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),),
+              ))],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showModalBottomSheet(context),
@@ -351,96 +368,101 @@ class _CalendarState extends State<Calendar> {
           appBar: AppBar(
             title: Text(''),
           ),
-          body: Expanded(
-            child: Padding(padding: EdgeInsets.all(30),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                // mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text('오늘의 식물 일기 작성!',
-                    style: TextStyle(fontFamily:'눈누토끼',color: Colors.green.shade800,fontSize: 24, fontWeight: FontWeight.bold,letterSpacing: 4),
-                  ),
-                  SizedBox(height: 40,),
-                  TextField(
-                    controller: titleController,
-                    decoration: InputDecoration(
-                      labelText: '제목을 입력해주세요 : )',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.green)
-                      )
+          body: SingleChildScrollView(
+            child: Expanded(
+              child: Padding(padding: EdgeInsets.all(30),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  // mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text('오늘의 식물 일기 작성!',
+                      style: TextStyle(fontFamily:'눈누토끼',color: Colors.green.shade800,fontSize: 24, fontWeight: FontWeight.bold,letterSpacing: 4),
                     ),
-                  ),
-                  SizedBox(height: 20),
-                  TextField(
-                    controller: contentController,
-                    maxLines: 4,
-                    decoration: InputDecoration(
-                      labelText: '내용을 입력해주세요.',
+                    SizedBox(height: 40,),
+                    TextField(
+                      controller: titleController,
+                      decoration: InputDecoration(
+                        labelText: '제목을 입력해주세요 : )',
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
                         focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.green)
+                          borderSide: BorderSide(color: Colors.green)
                         )
+                      ),
                     ),
-                  ),
-
-                  SizedBox(height: 40,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () async {
-                          final title = titleController.text.trim();
-                          final content = contentController.text.trim();
-
-                          if (title.isNotEmpty && content.isNotEmpty) {
-                            final token = await getToken();
-                            if (token != null) {
-                              await saveDiary(
-                                  token, _selectedDay ?? _focusedDay, title, content);
-                              Navigator.of(context).pop(); // 다이얼로그 닫기
-                            }
-                          } else {
-                            // 입력값 검증 실패 시 알림
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('제목과 내용을 입력해주세요!')),
-                            );
-                          }
-                        },
-                        child: Text('저장',style: TextStyle(fontFamily: '눈누토끼',color: Colors.white,fontSize: 15),),
-                        style: ElevatedButton.styleFrom(
-                            minimumSize: Size(100, 50),
-                            backgroundColor: Colors.green.shade400,
-                            padding: EdgeInsets.all(15),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30)
-                            )
-                        ),
+                    SizedBox(height: 20),
+                    TextField(
+                      controller: contentController,
+                      maxLines: 4,
+                      decoration: InputDecoration(
+                        labelText: '내용을 입력해주세요.',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.green)
+                          )
                       ),
-
-                      TextButton(
-                        onPressed: () => Navigator.of(context).pop(), // 다이얼로그 닫기
-                        child: Text('취소',style: TextStyle(fontFamily: '눈누토끼',color: Colors.white,fontSize: 15),),
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: Size(100, 50),
-                            backgroundColor: Colors.grey.shade400,
-                            padding: EdgeInsets.all(15),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30)
-                            )
-                        ),
+                    ),
+            
+                    SizedBox(height: 30,),
+                    Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () async {
+                              final title = titleController.text.trim();
+                              final content = contentController.text.trim();
+            
+                              if (title.isNotEmpty && content.isNotEmpty) {
+                                final token = await getToken();
+                                if (token != null) {
+                                  await saveDiary(
+                                      token, _selectedDay ?? _focusedDay, title, content);
+                                  Navigator.of(context).pop(); // 다이얼로그 닫기
+                                }
+                              } else {
+                                // 입력값 검증 실패 시 알림
+                                ScaffoldMessenger.of(context
+                                ).showSnackBar(
+                                  SnackBar(content: Text('제목과 내용을 입력해주세요!')),
+                                );
+                              }
+                            },
+                            child: Text('저장',style: TextStyle(fontFamily: '눈누토끼',color: Colors.white,fontSize: 15),),
+                            style: ElevatedButton.styleFrom(
+                                minimumSize: Size(120, 50),
+                                backgroundColor: Colors.green.shade400,
+                                padding: EdgeInsets.all(15),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30)
+                                )
+                            ),
+                          ),
+                          SizedBox(height: 20,),
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(), // 다이얼로그 닫기
+                            child: Text('취소',style: TextStyle(fontFamily: '눈누토끼',color: Colors.white,fontSize: 15),),
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: Size(100, 50),
+                                backgroundColor: Colors.grey.shade400,
+                                padding: EdgeInsets.all(15),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30)
+                                )
+                            ),
+                          ),
+            
+                        ]
+            
                       ),
-
-                    ]
-
-                  )
-
-                ],
+                    )
+            
+                  ],
+                ),
               ),
             ),
           ),
