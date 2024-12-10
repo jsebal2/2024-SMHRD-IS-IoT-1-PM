@@ -338,16 +338,6 @@ class _MainpageState extends State<Mainpage> {
                   ],
                 ),
               ),
-
-              //💡 play 버튼
-              IconButton(onPressed: () async {},
-                  icon: Column(
-                    children: [
-                      Text('Play', style: TextStyle(fontFamily: '카페24', color: Colors.orangeAccent.shade700,),),
-                      Icon(Icons.play_arrow,  size: 40
-                        ,color: Colors.orangeAccent.shade400,)
-                    ],
-                  ))
             ],
 
           ),
