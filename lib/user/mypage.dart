@@ -8,6 +8,7 @@ import 'package:pm_project/user/update.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../mainPage/Pot.dart';
 import 'package:pm_project/baseUrl.dart';
+import 'package:dio/dio.dart';
 
 class Mypage extends StatefulWidget {
   const Mypage({super.key});
@@ -18,6 +19,7 @@ class Mypage extends StatefulWidget {
 
 class _MypageState extends State<Mypage> {
 
+  final dio =Dio();
   final FlutterSecureStorage secureStorage = FlutterSecureStorage();
   String? _token;
 
@@ -39,6 +41,16 @@ class _MypageState extends State<Mypage> {
         _token = '토큰을 가져오는 중 오류 발생 : $e';
       });
     }
+  }
+
+  void _loadNickname() async{
+    final id = _token;
+    final data = {'id' : "$id"};
+
+    // post 방식의 데이터 전달을 위한 option
+    dio.options.contentType = Headers.formUrlEncodedContentType;
+
+    Response res = await dio.post('$baseUrl/plant/isthere', data: data);
   }
 
 
