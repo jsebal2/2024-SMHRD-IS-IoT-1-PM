@@ -58,9 +58,11 @@ class _JoinState extends State<Join> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text(''),
       ),
+
 
       body: Center(
         child: Padding(
@@ -151,15 +153,15 @@ class _JoinState extends State<Join> {
                     backgroundColor: Colors.green.shade800,
                     padding: EdgeInsets.all(20),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    )
+
+                    ),
                   ),
                 ),
-              ),
-            ],
+              )
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
   }
 }

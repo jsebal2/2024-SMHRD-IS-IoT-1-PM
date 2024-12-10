@@ -407,7 +407,7 @@ class _CalendarState extends State<Calendar> {
 
     try {
       final response = await dio.post(
-        '$baseUrl/diary/save',
+        'http://192.168.219.73:8000/diary/save',
         options: Options(
           headers: {
             'Content-Type': 'application/json',
