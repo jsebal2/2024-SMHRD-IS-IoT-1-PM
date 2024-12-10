@@ -327,7 +327,7 @@ class _CalendarState extends State<Calendar> {
                 ),))],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _showDiaryDialog(context),
+        onPressed: () => _showModalBottomSheet(context),
         child: Icon(Icons.edit,color: Colors.white,),
         backgroundColor: Colors.orangeAccent.shade700,
         elevation: 0,
@@ -338,63 +338,112 @@ class _CalendarState extends State<Calendar> {
 
 
 // 다이얼로그를 통해 일기 작성
-  void _showDiaryDialog(BuildContext context) {
+  void _showModalBottomSheet(BuildContext context) {
     final TextEditingController titleController = TextEditingController();
     final TextEditingController contentController = TextEditingController();
 
-    showDialog(
+    showModalBottomSheet(
+      enableDrag: false,
+      isDismissible: false,
       context: context,
       builder: (context) {
-        return AlertDialog(
-          title: Text('일기 작성'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: titleController,
-                decoration: InputDecoration(
-                  labelText: '제목',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              SizedBox(height: 10),
-              TextField(
-                controller: contentController,
-                maxLines: 4,
-                decoration: InputDecoration(
-                  labelText: '내용',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-            ],
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(''),
           ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(), // 다이얼로그 닫기
-              child: Text('취소'),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                final title = titleController.text.trim();
-                final content = contentController.text.trim();
+          body: Expanded(
+            child: Padding(padding: EdgeInsets.all(30),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                // mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text('오늘의 식물 일기 작성!',
+                    style: TextStyle(fontFamily:'눈누토끼',color: Colors.green.shade800,fontSize: 24, fontWeight: FontWeight.bold,letterSpacing: 4),
+                  ),
+                  SizedBox(height: 40,),
+                  TextField(
+                    controller: titleController,
+                    decoration: InputDecoration(
+                      labelText: '제목을 입력해주세요 : )',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.green)
+                      )
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  TextField(
+                    controller: contentController,
+                    maxLines: 4,
+                    decoration: InputDecoration(
+                      labelText: '내용을 입력해주세요.',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.green)
+                        )
+                    ),
+                  ),
 
-                if (title.isNotEmpty && content.isNotEmpty) {
-                  final token = await getToken();
-                  if (token != null) {
-                    await saveDiary(
-                        token, _selectedDay ?? _focusedDay, title, content);
-                    Navigator.of(context).pop(); // 다이얼로그 닫기
-                  }
-                } else {
-                  // 입력값 검증 실패 시 알림
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('제목과 내용을 입력해주세요!')),
-                  );
-                }
-              },
-              child: Text('저장'),
+                  SizedBox(height: 40,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () async {
+                          final title = titleController.text.trim();
+                          final content = contentController.text.trim();
+
+                          if (title.isNotEmpty && content.isNotEmpty) {
+                            final token = await getToken();
+                            if (token != null) {
+                              await saveDiary(
+                                  token, _selectedDay ?? _focusedDay, title, content);
+                              Navigator.of(context).pop(); // 다이얼로그 닫기
+                            }
+                          } else {
+                            // 입력값 검증 실패 시 알림
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('제목과 내용을 입력해주세요!')),
+                            );
+                          }
+                        },
+                        child: Text('저장',style: TextStyle(fontFamily: '눈누토끼',color: Colors.white,fontSize: 15),),
+                        style: ElevatedButton.styleFrom(
+                            minimumSize: Size(100, 50),
+                            backgroundColor: Colors.green.shade400,
+                            padding: EdgeInsets.all(15),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30)
+                            )
+                        ),
+                      ),
+
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(), // 다이얼로그 닫기
+                        child: Text('취소',style: TextStyle(fontFamily: '눈누토끼',color: Colors.white,fontSize: 15),),
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: Size(100, 50),
+                            backgroundColor: Colors.grey.shade400,
+                            padding: EdgeInsets.all(15),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30)
+                            )
+                        ),
+                      ),
+
+                    ]
+
+                  )
+
+                ],
+              ),
             ),
-          ],
+          ),
         );
       },
     );
