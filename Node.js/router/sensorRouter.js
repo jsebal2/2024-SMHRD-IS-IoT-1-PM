@@ -10,6 +10,8 @@ const path = require("path");
 let timeoutId = null; // 타임아웃 ID
 
 router.get("/act",(req,res)=>{
+    console.log(req.query);
+    
     let jsonToSend = {}
     
     // 이전 타임아웃이 있다면 클리어
@@ -17,7 +19,7 @@ router.get("/act",(req,res)=>{
         clearTimeout(timeoutId);
     }
     // 일정 시간 후에 마지막 값을 처리
-    timeoutId = setTimeout(() => {
+    // timeoutId = setTimeout(() => {
         // console.log(lastValue);
         console.log(req.query);
         
@@ -50,7 +52,7 @@ router.get("/act",(req,res)=>{
                 return;
             })
         })
-    },1000);
+    // },1000);
     
 })
 router.get("/sen",(req,res)=>{
