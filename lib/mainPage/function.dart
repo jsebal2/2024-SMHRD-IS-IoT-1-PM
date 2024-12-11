@@ -119,6 +119,8 @@ class ImagePopup extends StatelessWidget {
               ),
               Expanded(child: Image.network(
                   imageBytes as String),),
+
+              SizedBox(height: 20,),
               ElevatedButton(onPressed: () {Navigator.of(context).pop();},
                   child: Text("close",style: TextStyle(fontFamily: '눈누토끼',color: Colors.white,fontSize: 15),),
               style: ElevatedButton.styleFrom(
