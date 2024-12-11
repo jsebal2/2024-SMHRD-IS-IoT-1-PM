@@ -34,17 +34,12 @@ class _CalendarState extends State<Calendar> {
   Future<void> _loadMarkedDates() async{
     // 저장한 값 가져오기(읽기 - key : "키값")
     String? token = await secureStorage.read(key : 'authToken');
+    final data = {'id':'$token'};
 
     try {
       print('보내는 함수 내부 프린트 $token');
       // 서버로부터 데이터 가져오기
-      final response = await dio.post("$baseUrl/diary/marker",
-        options : Options(
-          headers: {
-            'Authorization': '$token'
-          },
-        ),
-      );
+      final response = await dio.post("$baseUrl/diary/marker", data: data);
 
       if (response.statusCode == 200) {
         //print('성공 : ${response.data}');
@@ -85,18 +80,11 @@ class _CalendarState extends State<Calendar> {
   Future<Map<String, dynamic>?> fetchDateForServer(String token,
       DateTime selectedDate, String endpoint) async {
     final formattedDate = DateFormat('yyyy-MM-dd').format(selectedDate);
+    final data = {'date':'$selectedDate','id':'$token'};
 
     try {
       print('보내는 함수 내부 프린트 $token');
-      final response = await dio.post(endpoint,
-          options: Options(
-            headers: {
-              'Content-Type': 'application/json', 'Authorization': '$token'
-            },
-          ),
-          data: {
-            'date': formattedDate,
-          }
+      final response = await dio.post(endpoint, data: data
       );
       if (response.statusCode == 200) {
         print('성공 : ${response.data}');
@@ -129,7 +117,7 @@ class _CalendarState extends State<Calendar> {
         token, selectedDate, '$baseUrl/diary/load');
 
     Map<String, dynamic>? picData = await fetchDateForServer(
-        token, selectedDate, '$baseUrl/pic/pull');
+        token, selectedDate, '$baseUrl/pic/diary');
 
     Map<dynamic, dynamic>? markerData = await fetchDateForServer(
         token, selectedDate,'$baseUrl/diary/marker');

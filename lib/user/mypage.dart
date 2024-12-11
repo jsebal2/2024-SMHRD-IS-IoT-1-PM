@@ -23,7 +23,9 @@ class _MypageState extends State<Mypage> {
   final FlutterSecureStorage secureStorage = FlutterSecureStorage();
   String? _token;
   String? nickName;
-  final TextEditingController _nameController = TextEditingController();
+  String? _username;
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _plantnameController = TextEditingController();
   final TextEditingController _idCotroller = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   //final TextEditingController _plantnameController = TextEditingController();
@@ -59,19 +61,20 @@ class _MypageState extends State<Mypage> {
   }
 
   Future<void> update (BuildContext context) async {
-    final name = _nameController.text;
+    final username = _usernameController.text;
+    final plantname = _plantnameController.text;
     final id = _idCotroller.text;
     final password = _passwordController.text;
-    //final plantname = _plantnameController.text;
 
-    final data = {'name': '$name', 'id': '$id', 'password': '$password'};
+    final data = {'username': '$username','plantname':'$plantname', 'id': '$id', 'password': '$password'};
+    print('$plantname');
 
     dio.options.contentType = Headers.formUrlEncodedContentType;
 
     try {
       final responses = await Future.wait([
         dio.post('$baseUrl/user/change', data: data),
-        //dio.post('$baseUrl/plant/change', data: data),
+        dio.post('$baseUrl/plant/change', data: data),
       ]);
 
       for (var i = 0; i < responses.length; i++) {
@@ -100,7 +103,7 @@ class _MypageState extends State<Mypage> {
       print('회원정보수정 오류 : $e');
     }
   }
-    
+
 
 
 
@@ -111,22 +114,30 @@ class _MypageState extends State<Mypage> {
     // post 방식의 데이터 전달을 위한 option
     dio.options.contentType = Headers.formUrlEncodedContentType;
 
-    Response res = await dio.post('$baseUrl/plant/isthere', data: data);
+    try {
+      final responses = await Future.wait([
+        dio.post('$baseUrl/plant/isthere', data: data),
+        dio.post('$baseUrl/user/isthere', data: data)
 
-    print(res);
-    if(res.statusCode == 200){
-      print('dio|${res.data}');
-      setState(() {
-        nickName = res.data["select"]["plant_nick"];
-      });
+      ]);
 
+      for (var i = 0; i < responses.length; i++) {
+        final res = responses[i];
+        if (res.statusCode == 200) {
+          print('${ i + 1 } 번째 위치로 실행');
+          print(responses);
+          nickName = responses[0].data["select"]["plant_nick"];
+          _username = responses[1].data["res"][0]["user_name"];
+          print('$nickName ,$_username');
 
-      print(res.data["plant_nick"]);
-    } else {
-      print('식물이름 받아오기 error 발생');
+        } else {
+          print('${ i + 1 }의 위치에서 오류');
+        }
+      }
+
+    }catch(e) {
+      print('정보불러오기 오류 : $e');
     }
-
-
   }
 
 
@@ -142,7 +153,7 @@ class _MypageState extends State<Mypage> {
   // id 및 식물 id 값 가져오기
   Future<Map<String, String>> fetchUserData() async{
     await Future.delayed(Duration(seconds: 1));
-    return {'id' : '$_token', 'username' : '$nickName'};
+    return {'id' : '$_username', 'username' : '$nickName'};
   }
 
   @override
@@ -195,7 +206,7 @@ class _MypageState extends State<Mypage> {
                                     children: [
                                       Icon(Icons.person),
                                       SizedBox(width: 10,),
-                                      Text('나의 ID  :  ${snapshot.data!['id']}',
+                                      Text('닉네임  :  ${snapshot.data!['id']}',
                                         style: TextStyle(fontSize: 18, fontFamily: '눈누토끼',letterSpacing: 3),),
                                     ],
                                   ),
@@ -207,7 +218,7 @@ class _MypageState extends State<Mypage> {
                                       SizedBox(width: 10,),
                                       Column(
                                         children: [
-                                          Text('나의 식물 ID  :',
+                                          Text('나의 식물 이름  :',
                                               style: TextStyle(fontSize: 18, fontFamily: '눈누토끼',letterSpacing: 3)),
                                           Text('${snapshot.data!['username']}',
                                               style: TextStyle(fontSize: 18, fontFamily: '눈누토끼',letterSpacing: 3)),
@@ -268,9 +279,23 @@ class _MypageState extends State<Mypage> {
                 ),
 
                 TextField(
-                  controller: _nameController,
+                  controller: _usernameController,
                   decoration: InputDecoration(
-                      labelText: 'name',
+                      labelText: '수정할 닉네임',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.green.shade300),
+                      )
+                  ),
+                ),
+                SizedBox(height: 30),
+
+                TextField(
+                  controller: _plantnameController,
+                  decoration: InputDecoration(
+                      labelText: '수정할 식물 이름',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -284,7 +309,7 @@ class _MypageState extends State<Mypage> {
                 TextField(
                   controller: _idCotroller,
                   decoration: InputDecoration(
-                      labelText: 'ID',
+                      labelText: 'id',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -294,20 +319,6 @@ class _MypageState extends State<Mypage> {
                   ),
                 ),
                 SizedBox(height: 30),
-
-                // TextField(
-                //   controller: _plantnameController,
-                //   decoration: InputDecoration(
-                //       labelText: '식물의 이름',
-                //       border: OutlineInputBorder(
-                //         borderRadius: BorderRadius.circular(10),
-                //       ),
-                //       focusedBorder: OutlineInputBorder(
-                //         borderSide: BorderSide(color: Colors.green.shade300),
-                //       )
-                //   ),
-                // ),
-                // SizedBox(height: 30),
 
                 TextField(
                   controller: _passwordController,
