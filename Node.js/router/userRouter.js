@@ -49,7 +49,7 @@ router.post('/login',(req,res)=>{
         console.log('err',err);
         if (rows[0]){
             // 토큰 
-            res.json({"result":true,  "token":rows[0].user_name})
+            res.json({"result":true,  "token":rows[0].user_id})
             //  토큰 발급
             // accToken = token.createToken({'id': rows[0].user_id,
             //                             'email': rows[0].user_email},'acc');
@@ -96,9 +96,9 @@ router.post("/change",(req,res)=>{
     console.log(req.body);
     const data = req.body;
     // username
-    let sql = "update tbl_user set user_name = ? where user_pw=SHA2(?,256)"
+    let sql = "update tbl_user set user_name = ? where user_id = ? and user_pw=SHA2(?,256)"
     // let sql = "select * from tbl_user where user_pw=SHA2(?,256)"
-    conn.query(sql,[data.name,data.password],(err,rows)=>{
+    conn.query(sql,[data.username, data.id, data.password],(err,rows)=>{
         console.log(rows)
         console.log(err);
         
@@ -109,5 +109,21 @@ router.post("/change",(req,res)=>{
         }
     })
     
+})
+
+router.post('/isthere', (req, res) => {
+    console.log('유저라우터에서 보냄',req.body)
+    const {id} = req.body
+    let sql = 'select user_name from tbl_user where user_id = ?'
+    conn.query(sql,[id], (err,rows) => {
+        console.log(rows);
+
+        if (rows.length > 0){
+            res.json({"result":true, 'res':rows})
+        }else{
+            res.json({"result":false});
+        }
+        
+    })
 })
 module.exports = router;

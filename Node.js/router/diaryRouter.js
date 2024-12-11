@@ -22,11 +22,9 @@ router.post("/save",(req,res)=>{
 // {"date": yyyymmdd, user_id : "EEEE"}
 router.post("/load",(req,res)=>{
     console.log(req.body);
-    const data = req.body;
-    const token = req.header('Authorization');
-    console.log(token);
+    let {id,date} = req.body
     let sql = "select * from tbl_diary where created_at = ? and user_id =?;"
-    conn.query(sql,[data.date,token],(err,rows)=>{
+    conn.query(sql,[date,id],(err,rows)=>{
         console.log("rows | ",rows);    
         console.log("err  | ",err);
         console.log(rows.length);
@@ -75,9 +73,9 @@ router.post("/del",(req,res)=>{
 
 router.post("/marker", (req, res) => {
     console.log(req.body);
-    const token = req.header('Authorization');
+    let {id} = req.body
     let sql = 'select created_at from tbl_diary where user_id = ?;'
-    conn.query(sql, [token], (err, rows) => {
+    conn.query(sql, [id], (err, rows) => {
         console.log("rows | ",rows);
         console.log('err | ',err);
         if (rows)   res.json({"result":true, "rows":rows});
@@ -86,4 +84,4 @@ router.post("/marker", (req, res) => {
 })
 
 module.exports = router; 
->>>>>>> 9f08a3dd7014358283f1ab728450b64ac01e7eae:Node.js/router/diaryRouter.js
+
