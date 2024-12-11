@@ -279,85 +279,90 @@ class _MypageState extends State<Mypage> {
                         });
                         },
                       title: Text('▶ 회원정보 수정', style: TextStyle(
-                          fontWeight:FontWeight.bold, fontSize: 16,color: Colors.green.shade700),),
+                          fontWeight:FontWeight.bold, fontSize: 16,color: Colors.blue.shade600),),
                       contentPadding: EdgeInsets.symmetric(horizontal: 0),
                     ),
                   ],
                 ),
 
-                TextField(
-                  controller: _usernameController,
-                  decoration: InputDecoration(
-                      labelText: '수정할 닉네임',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.green.shade300),
-                      )
-                  ),
-                ),
-                SizedBox(height: 30),
-
-                TextField(
-                  controller: _plantnameController,
-                  decoration: InputDecoration(
-                      labelText: '수정할 식물 이름',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.green.shade300),
-                      )
-                  ),
-                ),
-                SizedBox(height: 30),
-
-                TextField(
-                  controller: _idCotroller,
-                  decoration: InputDecoration(
-                      labelText: 'id',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.green.shade300),
-                      )
-                  ),
-                ),
-                SizedBox(height: 30),
-
-                TextField(
-                  controller: _passwordController,
-                  obscureText: true,
-                  decoration: InputDecoration(
-                      labelText: '비밀번호',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.green.shade300)
-                      )
-                  ),
-                ),
-                SizedBox(height: 30),
-
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      await update(context);
-                    },
-                    child: Text('회원정보 수정', style: TextStyle(fontFamily: '머니그라피',fontSize: 20,color: Colors.white,letterSpacing: 10 ),),
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green.shade600,
-                        padding: EdgeInsets.all(20),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)
+                if (_isUpdateToggle) ...[
+                  TextField(
+                    controller: _usernameController,
+                    decoration: InputDecoration(
+                        labelText: '수정할 닉네임',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.green.shade300),
                         )
                     ),
                   ),
-                ),
+                  SizedBox(height: 30),
+
+                  TextField(
+                    controller: _plantnameController,
+                    decoration: InputDecoration(
+                        labelText: '수정할 식물 이름',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.green.shade300),
+                        )
+                    ),
+                  ),
+                  SizedBox(height: 30),
+
+                  TextField(
+                    controller: _idCotroller,
+                    decoration: InputDecoration(
+                        labelText: 'ID 확인',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.green.shade300),
+                        )
+                    ),
+                  ),
+                  SizedBox(height: 30),
+
+                  TextField(
+                    controller: _passwordController,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                        labelText: '비밀번호 확인',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.green.shade300)
+                        )
+                    ),
+                  ),
+                  SizedBox(height: 30),
+
+                  Center(
+                    child: ElevatedButton(
+                        onPressed: () async {
+                          await update(context);
+                        },
+                        child: Text('회원정보 수정', style: TextStyle(
+                            fontFamily: '머니그라피',fontSize: 15,color: Colors.white,letterSpacing: 10 ),),
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: Size(100, 50),
+                            backgroundColor: Colors.green.shade500,
+                            padding: EdgeInsets.all(20),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(40)
+                            )
+                        ),
+                      ),
+                  ),
+
+                ],
+
 
                 SizedBox(height: 50,),
 
@@ -367,7 +372,8 @@ class _MypageState extends State<Mypage> {
                     Navigator.push(context, MaterialPageRoute(
                         builder: (context) {return Delete();}));},
         
-                  title: Text('회원 탈퇴', style: TextStyle(fontWeight:FontWeight.bold,fontSize: 13,color: Colors.grey.shade600 ),),
+                  title: Text('회원 탈퇴', style: TextStyle(
+                      fontWeight:FontWeight.bold,fontSize: 13,color: Colors.grey.shade600 ),),
                   contentPadding: EdgeInsets.symmetric(horizontal: 0),
                 ),
 
