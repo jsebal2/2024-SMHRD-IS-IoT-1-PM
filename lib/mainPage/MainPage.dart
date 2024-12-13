@@ -286,8 +286,8 @@ class _MainpageState extends State<Mainpage> {
 
   Future<void> lightTimer(double value) async {
     try {
-      final respose = await dio.get('$baseUrl/sensor/act',
-          queryParameters: {'lightTimer': '$value'});
+      final response = await dio.get('$baseUrl/sensor/act',
+          queryParameters: {'sensor':'lightTimer','state': '$value'});
     } catch (e) {
       print('Error => $e');
     }
@@ -295,8 +295,8 @@ class _MainpageState extends State<Mainpage> {
 
   Future<void> lightControl(double value) async {
     try {
-      final respose = await dio.get('$baseUrl/sensor/act',
-          queryParameters: {'lightTimer': '$value'});
+      final response = await dio.get('$baseUrl/sensor/act',
+          queryParameters: {'sensor':'lightPower','state': '$value'});
     } catch (e) {
       print('Error => $e');
     }

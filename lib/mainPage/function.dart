@@ -76,7 +76,7 @@ void controlDevice(String device, bool state) async {
   try {
     Response res = await dio.get(
       '$baseUrl/sensor/act',
-      queryParameters: {"senser": device, "state": '$state'},
+      queryParameters: {"sensor": device, "state": '$state'},
     );
     print('Device $device set to ${state ? "ON" : "OFF"}');
   } catch (e) {
@@ -90,6 +90,7 @@ Future<String?> fetchImage() async {
       '$baseUrl/pic/pull?id=test1&date=2024-11-26');
 
     if (response.statusCode == 200) {
+
       return response.data;
     } else {
       print('실패 ${response.statusCode}');

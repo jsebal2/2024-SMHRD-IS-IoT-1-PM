@@ -133,9 +133,12 @@ class _CalendarState extends State<Calendar> {
     }
     if (picData != null) {
       setState(() {
+        print("EEEEEEEEEEEEEEEEEEEEEEEEEEEE");
         img_url = picData['img_url'] ?? '';
+        print(img_url);
       });
     } else {
+      print(picData);
       print('사진 데이터 없음');
     }
     if (markerData != null) {
@@ -306,6 +309,7 @@ class _CalendarState extends State<Calendar> {
                                         child: Image.network(img_url,
                                           width: 200, height: 200, fit: BoxFit.contain,
                                         ),
+                                        //Image(image: NetworkImage(img_url))
                                       ),
                                     ),
                                   ),
@@ -466,7 +470,7 @@ class _CalendarState extends State<Calendar> {
 
     try {
       final response = await dio.post(
-        'http://192.168.219.73:8000/diary/save',
+        '${baseUrl}:8000/diary/save',
         options: Options(
           headers: {
             'Content-Type': 'application/json',
